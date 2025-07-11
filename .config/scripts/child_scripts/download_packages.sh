@@ -89,6 +89,7 @@ echo "---------------------------------------------------"
 # Official Arch Linux packages (install with pacman)
 declare -a PACMAN_PACKAGES=(
     "github-cli"
+    "hypridle"
     "hyprlock"
     "hyprpolkitagent"
     "ufw"
