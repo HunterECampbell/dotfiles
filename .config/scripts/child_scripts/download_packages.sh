@@ -90,6 +90,8 @@ echo "---------------------------------------------------"
 declare -a PACMAN_PACKAGES=(
     "zsh"
     "ufw"
+    "github-cli"
+    "wl-clipboard"
 )
 
 # AUR packages (install with yay)
