@@ -88,16 +88,18 @@ echo "---------------------------------------------------"
 # Define arrays for packages
 # Official Arch Linux packages (install with pacman)
 declare -a PACMAN_PACKAGES=(
-    "zsh"
-    "ufw"
     "github-cli"
+    "hyprlock"
+    "hyprpolkitagent"
+    "ufw"
     "wl-clipboard"
+    "zsh"
 )
 
 # AUR packages (install with yay)
 declare -a YAY_PACKAGES=(
     "google-chrome"
-    "visual-studio-code-bin" # VS Code from AUR
+    "visual-studio-code-bin"
 )
 
 # Function to check if a package is installed
