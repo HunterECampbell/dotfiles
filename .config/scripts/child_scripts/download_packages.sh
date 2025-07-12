@@ -91,6 +91,7 @@ declare -a PACMAN_PACKAGES=(
     "github-cli"
     "hypridle"
     "hyprlock"
+    "hyprpaper"
     "hyprpolkitagent"
     "pipewire" // For screen sharing
     "ttf-fira-code-nerd"
