@@ -92,8 +92,8 @@ declare -a PACMAN_PACKAGES=(
     "hypridle"
     "hyprlock"
     "hyprpolkitagent"
-    "nerd-fonts"
     "pipewire" // For screen sharing
+    "ttf-fira-code-nerd"
     "ufw"
     "waybar"
     "wl-clipboard"
