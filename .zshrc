@@ -148,6 +148,7 @@ alias gchb='git checkout -b'
 alias gm='git merge'
 alias gmd='git merge develop'
 alias gp='git push'
+alias gpso='git push --set-upstream origin'
 alias grh='git reset --hard'
 alias rh='git reset --hard'
 
