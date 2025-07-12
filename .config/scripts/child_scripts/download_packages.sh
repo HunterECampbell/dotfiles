@@ -92,6 +92,7 @@ declare -a PACMAN_PACKAGES=(
     "hypridle"
     "hyprlock"
     "hyprpolkitagent"
+    "nerd-fonts"
     "pipewire" // For screen sharing
     "ufw"
     "waybar"

@@ -1,0 +1,72 @@
+{
+    "layer": "top",
+    "position": "top",
+    "mod": "dock",
+    "height": 36,
+    "spacing": 4,
+
+    "modules-left": [
+        "hyprland/workspaces"
+    ],
+    "modules-center": [],
+    "modules-right": [
+        "network",
+        "clock"
+    ],
+
+    "hyprland/workspaces": {
+        "format": "{icon}",
+        "format-icons": {
+            "1": "", // U+eabc
+            "2": "", // U+eabc
+            "3": "", // U+eabc
+            "4": "", // U+eabc
+            "5": "", // U+eabc
+            "6": "", // U+eabc
+            "7": "", // U+eabc
+            "8": "", // U+eabc
+            "9": "", // U+eabc
+            "10": "", // U+eabc
+            "11": "", // U+eabc
+            "12": "", // U+eabc
+            "13": "", // U+eabc
+            "14": "", // U+eabc
+            "15": "", // U+eabc
+            "active": "", // U+f111
+            "default": "" // U+eabc
+        },
+        "on-click": "activate"
+    },
+    "hyprland/window": {
+        "format": "{}"
+    },
+    "clock": {
+        "format": "{:%H:%M %p, %m/%d}",
+        "tooltip-format": "<tt>{calendar}</tt>",
+        "calendar": {
+            "format": {
+                "today": "<span color='#2E8B57'><b>{}</b></span>"
+            }
+        }
+    },
+    "network": {
+        "format-ethernet": "󱚽", // U+f16bd
+        "format-wifi": "󰖩", // U+f05a9
+        "format-vpn": "󰖂", // U+f0582
+        "format-disconnected": "󰖪 Disconnected", // U+f05aa
+        "tooltip-format": "{ipaddr}",
+        "on-click-right": "nm-connection-editor"
+    },
+    "pulseaudio": {
+        "format": "{icon} {volume}%",
+        "format-muted": " Muted",
+        "format-icons": {
+            "default": ["", ""]
+        },
+        "on-click": "pavucontrol"
+    },
+    "tray": {
+        "icon-size": 18,
+        "spacing": 10
+    }
+}

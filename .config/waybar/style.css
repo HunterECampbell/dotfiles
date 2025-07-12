@@ -1,0 +1,60 @@
+* {
+    border: none;
+    border-radius: 0px;
+    font-family: "Inter", "FiraCode Nerd Font Mono", sans-serif;
+    font-size: 14px;
+    font-weight: bold;
+    min-height: 0;
+    border: none;
+    outline: none;
+    box-shadow: none;
+    text-shadow: none;
+}
+
+window#waybar {
+    background-color: rgba(46, 139, 87, 0.3);
+    color: #cdd6f4;
+    transition-property: background-color;
+    transition-duration: .5s;
+}
+
+/* Common module styling */
+#workspaces,
+#window,
+#clock,
+#network,
+#pulseaudio,
+#battery,
+#tray {
+    padding: 0 8px;
+    margin: 2px;
+    background: transparent;
+}
+
+#network,
+#tray {
+    font-size: 24px;
+}
+
+#workspaces button {
+    border-radius: 4px;
+    color: #2E8B57;
+    padding: 0 4px;
+    margin: 4px 0;
+}
+
+#workspaces button.active {
+    color: #2E8B57;
+}
+
+#workspaces button:hover {
+    background: rgba(46, 139, 87, 0.4);
+}
+
+#clock {
+    font-weight: bold;
+}
+
+#pulseaudio.muted {
+    color: #eba0ac;
+}
