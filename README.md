@@ -52,12 +52,11 @@ Example commands for symlinking (adjust paths and files as needed for your setup
 [ -d ~/.config/scripts ] && mv ~/.config/scripts ~/.config/scripts.bak
 # ... (repeat for other configs like ~/.config/hypr, ~/.config/kitty, etc.)
 
-# Create symlinks from your dotfiles repo to your home directory
-ln -s ~/dotfiles/.zshrc ~/.zshrc
+# Create symlinks from your dotfiles repo to your home directory. Here are the symlinks you need:
 ln -s ~/dotfiles/.config/scripts ~/.config/scripts
 ln -s ~/dotfiles/.config/hypr ~/.config/hypr
-# ... (add more symlinks for other configs you've put in ~/dotfiles/.config/)
-```
+ln -s ~/dotfiles/.config/waybar ~/.config/waybar
+ln -s ~/dotfiles/.zshrc ~/.zshrc
 
 ### Running Setup Scripts
 

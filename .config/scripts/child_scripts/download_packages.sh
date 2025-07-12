@@ -94,6 +94,7 @@ declare -a PACMAN_PACKAGES=(
     "hyprpolkitagent"
     "pipewire" // For screen sharing
     "ufw"
+    "waybar"
     "wl-clipboard"
     "zsh"
 )
