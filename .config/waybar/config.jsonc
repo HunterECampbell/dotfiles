@@ -41,7 +41,7 @@
         "format": "{}"
     },
     "clock": {
-        "format": "{:%H:%M %p, %m/%d}",
+        "format": "{:%I:%M %p, %m/%d/%y}",
         "tooltip-format": "<tt>{calendar}</tt>",
         "calendar": {
             "format": {
@@ -54,8 +54,13 @@
         "format-wifi": "󰖩", // U+f05a9
         "format-vpn": "󰖂", // U+f0582
         "format-disconnected": "󰖪 Disconnected", // U+f05aa
-        "tooltip-format": "{ipaddr}",
-        "on-click-right": "nm-connection-editor"
+        "format-disabled": "󱚼", // U+f16bc
+        "tooltip-format-ethernet": "Ethernet\n{ipaddr}",
+        "tooltip-format-wifi": "Wifi\n{ipaddr}",
+        "tooltip-format-disconnected": "No Internet - Disconnected",
+        "tooltip-format-disabled": "No Internet - Disabled",
+        "tooltip-format": "{ifname}",
+        "on-click": "nm-connection-editor"
     },
     "pulseaudio": {
         "format": "{icon} {volume}%",
