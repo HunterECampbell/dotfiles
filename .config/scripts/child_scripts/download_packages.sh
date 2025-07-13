@@ -93,15 +93,24 @@ declare -a PACMAN_PACKAGES=(
     "hyprlock"
     "hyprpaper"
     "hyprpolkitagent"
+    # "lib32-nvidia-utils" // Setup in child script - Steam Setup
+    # "lib32-vulkan-icd-loader" // Setup in child script - Steam Setup
+    # "lib32-vulkan-mesa-layers" // Setup in child script - Steam Setup
     "nodejs"
     "npm"
+    # "nvidia-utils" // Setup in a child script - Steam Setup
     "nvm"
     "pipewire" // For screen sharing
+    # "steam" // Setup in child script - Steam Setup
     "ttf-fira-code-nerd"
-    "ufw"
+    # "ufw" // Setup in a child script - UFW Setup
+    # "vulkan-icd-loader" // Setup in child script - Steam Setup
+    # "vulkan-mesa-layers" // Setup in child script - Steam Setup
     "waybar"
+    # "wine-staging" // Setup in child script - Steam Setup
+    # "winetricks" // Setup in child script - Steam Setup
     "wl-clipboard"
-    "zsh"
+    # "zsh" // Setup in a child script - ZSH Setup
 )
 
 # AUR packages (install with yay)
