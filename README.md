@@ -57,6 +57,7 @@ ln -s ~/dotfiles/.config/scripts ~/.config/scripts
 ln -s ~/dotfiles/.config/hypr ~/.config/hypr
 ln -s ~/dotfiles/.config/waybar ~/.config/waybar
 ln -s ~/dotfiles/.zshrc ~/.zshrc
+```
 
 ### Running Setup Scripts
 
@@ -76,7 +77,6 @@ This script will execute child scripts, which will handle package installations,
 ~/.config/scripts/run_all_scripts.sh
 ```
 
-
 **Note:** Pay attention to the output. If any child script fails, the master script will report it at the end.
 
 ## 3. GitHub CLI Setup
@@ -84,6 +84,17 @@ This script will execute child scripts, which will handle package installations,
 For seamless interaction with GitHub from your terminal (e.g., `git push`, `git pull` without password prompts), it's highly recommended to set up `github-cli` (`gh`).
 
 Refer to the dedicated guide: [github-cli-setup.md](./github-cli-setup.md)
+
+## 4. Steam Settings
+
+For faster steam load times, make sure to follow these steps:
+
+1. Open **Steam** (This will usually take a second if it's loading for the first time during a login session).
+1. Go to **Steam** (top-left corner) -> **Settings**
+1. Navigate to the **Interface** tab.
+1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
+1. Click **OK** and **restart Steam**.
+
 
 ## 4. Important Notes
 
