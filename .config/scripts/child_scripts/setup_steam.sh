@@ -107,6 +107,12 @@ if [ $? -ne 0 ]; then
     echo -e "${YELLOW}Warning: Failed to install Vulkan Mesa layers. This might affect some Vulkan applications.${NC}"
 fi
 
+echo -e "${GREEN}Installing XDG Desktop Portal layers...${NC}"
+pacman -S --noconfirm --needed xdg-desktop-portal xdg-desktop-portal-hyprland
+if [ $? -ne 0 ]; then
+    echo -e "${YELLOW}Warning: Failed to install XDG Desktop Portal layers. This might affect some XDG applications.${NC}"
+fi
+
 echo -e "${GREEN}All additional gaming packages installation attempts completed.${NC}"
 
 # --- 6. Install Proton-GE-Custom via Yay ---
