@@ -1,4 +1,3 @@
-- Add power options to waybar
 - Add arch updates notification/status to waybar
 - Add slack notification to waybar
 - Add discord notification to waybar
