@@ -13,9 +13,9 @@
 
 window#waybar {
     background-color: rgba(46, 139, 87, 0.3);
-    color: #cdd6f4;
     transition-property: background-color;
     transition-duration: .5s;
+    color: #2E8B57;
 }
 
 /* Common module styling */
@@ -24,11 +24,15 @@ window#waybar {
 #clock,
 #network,
 #pulseaudio,
-#battery,
-#tray {
+#tray,
+#custom-power {
     padding: 0 8px;
     margin: 2px;
     background: transparent;
+}
+
+#clock {
+    margin-top: 6px;
 }
 
 #network,
@@ -36,18 +40,30 @@ window#waybar {
     font-size: 24px;
 }
 
-#workspaces button {
+#network,
+#custom-power {
     border-radius: 4px;
-    color: #2E8B57;
-    padding: 0 4px;
     margin: 4px 0;
 }
 
-#workspaces button.active {
+#custom-power {
+    font-size: 20px;
+    margin-right: 8px;
+    padding: 0 10px;
+}
+
+#workspaces button {
+    border-radius: 4px;
+    padding-left: 6px;
+    padding-right: 4px;
+    margin-top: 5.5px;
+    margin-bottom: 4px;
     color: #2E8B57;
 }
 
-#workspaces button:hover {
+#workspaces button:hover,
+#network:hover,
+#custom-power:hover {
     background: rgba(46, 139, 87, 0.4);
 }
 
@@ -55,6 +71,30 @@ window#waybar {
     font-weight: bold;
 }
 
-#pulseaudio.muted {
-    color: #eba0ac;
+menu {
+    padding: 8px 4px;
+	border-radius: 8px;
+    background-color: rgba(38, 115, 71, 1);
+    /* color: #cdd6f4; */
+    color: rgba(121, 210, 160, 1);
+}
+
+menuitem {
+	border-radius: 8px;
+    margin: 2px 4px;
+}
+menuitem:hover {
+    background-color: rgba(46, 139, 87, 0.7);
+    color: rgba(121, 210, 160, 1);
+}
+
+menuitem label {
+    padding: 0;
+}
+menuitem label:not(:first-child) {
+    margin-top: 3px;
+}
+menuitem label:first-child {
+    font-size: 24px;
+    margin-right: 4px;
 }

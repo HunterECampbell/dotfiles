@@ -11,7 +11,8 @@
     "modules-center": [],
     "modules-right": [
         "network",
-        "clock"
+        "clock",
+        "custom/power"
     ],
 
     "hyprland/workspaces": {
@@ -73,5 +74,19 @@
     "tray": {
         "icon-size": 18,
         "spacing": 10
+    },
+    "custom/power": {
+        "format": "", // U+f011
+        "tooltip": false,
+        "menu": "on-click",
+        "position": "bottom",
+        "anchor": "right",
+        "menu-file": "~/.config/waybar/power_menu.xml",
+        "menu-actions": {
+            "lock": "hyprlock",
+            "logout": "hyprctl dispatch exit",
+            "restart": "systemctl reboot",
+            "shutdown": "systemctl poweroff"
+        }
     }
 }
