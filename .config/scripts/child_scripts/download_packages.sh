@@ -93,6 +93,9 @@ declare -a PACMAN_PACKAGES=(
     "hyprlock"
     "hyprpaper"
     "hyprpolkitagent"
+    "nodejs"
+    "npm"
+    "nvm"
     "pipewire" // For screen sharing
     "ttf-fira-code-nerd"
     "ufw"
