@@ -1,3 +1,0 @@
-- Add arch updates status to waybar
-- Add slack notification to waybar
-- Add discord notification to waybar
