@@ -33,7 +33,7 @@ window#waybar {
 
 #clock {
     margin-top: 6px;
-    margin-right: -2px;
+    margin-right: 0;
 }
 
 #network,
