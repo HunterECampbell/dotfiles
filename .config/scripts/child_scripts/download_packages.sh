@@ -116,6 +116,7 @@ declare -a PACMAN_PACKAGES=(
 # AUR packages (install with yay)
 declare -a YAY_PACKAGES=(
     "google-chrome"
+    # "proton-ge-custom" // Setup in child script - Steam Setup
     "visual-studio-code-bin"
 )
 
