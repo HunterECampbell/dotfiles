@@ -215,7 +215,7 @@ export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 
 # Workflow GW Setup
-export GITHUB_TOKEN=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
+export GITHUB_TOKEN=
 
 
 # NVM auto-use for directories with .nvmrc - Recommended by nvm
