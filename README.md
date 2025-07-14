@@ -6,11 +6,14 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 
 1. [Initial Arch Linux Installation](#1-initial-arch-linux-installation)
 1. [Post-Installation Setup](#2-post-installation-setup)
-    - [Cloning the Dotfiles Repository](#3-github-cli-setup)
-    - [Symlinking Dotfiles](#4-important-notes)
+    - [Cloning the Dotfiles Repository](#cloning-the-dotfiles-repository)
+    - [Symlinking Dotfiles](#symlinking-dotfiles)
     - [Running Setup Scripts](#running-setup-scripts)
-1. [GitHub CLI Setup](#3-github-cli-setup)
-1. [Important Notes](#4-important-notes)
+1. [Chrome Proile Setup](#3-chrome-profile-setup)
+1. [Discord Settings](#4-discord-settings)
+1. [GitHub CLI Setup](#5-github-cli-setup)
+1. [Steam Settings](#6-steam-settings)
+1. [Important Notes](#7-important-notes)
 
 ## 1. Initial Arch Linux Installation
 
@@ -92,13 +95,22 @@ To open personal vs work accounts, follow these steps:
     - Edit these bindings to use the two different profiles
 1. Remove the default binding and uncomment the new ones
 
-## 4. GitHub CLI Setup
+## 4. Discord Settings
+
+You need to turn off Desktop Notifications:
+
+1. Open **Discord** ($SUPER + D)
+1. Click your **Profile Picutre** -> **Edit Profile**
+1. Click **Notifications**
+1. Uncheck **Enable Desktop Notifications**
+
+## 5. GitHub CLI Setup
 
 For seamless interaction with GitHub from your terminal (e.g., `git push`, `git pull` without password prompts), it's highly recommended to set up `github-cli` (`gh`).
 
 Refer to the dedicated guide: [github-cli-setup.md](./github-cli-setup.md)
 
-## 5. Steam Settings
+## 6. Steam Settings
 
 For faster steam load times, make sure to follow these steps:
 
@@ -109,7 +121,7 @@ For faster steam load times, make sure to follow these steps:
 1. Click **OK** and **restart Steam**.
 
 
-## 6. Important Notes
+## 7. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
 
