@@ -124,6 +124,7 @@ declare -a YAY_PACKAGES=(
     # "proton-ge-custom" // Setup in child script - Steam Setup
     "slack-desktop"
     "visual-studio-code-bin"
+    "zoom"
 )
 
 # Function to check if a package is installed

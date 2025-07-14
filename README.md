@@ -13,7 +13,8 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [Discord Settings](#4-discord-settings)
 1. [GitHub CLI Setup](#5-github-cli-setup)
 1. [Steam Settings](#6-steam-settings)
-1. [Important Notes](#7-important-notes)
+1. [Zoom Settings](#7-zoom-settings)
+1. [Important Notes](#8-important-notes)
 
 ## 1. Initial Arch Linux Installation
 
@@ -120,8 +121,24 @@ For faster steam load times, make sure to follow these steps:
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
+## 7. Zoom Settings
 
-## 7. Important Notes
+Zoom needs some settings turned on for screen sharing:
+
+1. Open **Zoom* and login
+1. Open the **Settings** by clicking on the **Cog Icon**
+1. Click **Screen Sharing**
+1. Scroll down and click **Advanced**
+1. For the **Screen capture mode on Wayland** dropdown, select **Pipewire Mode**
+1. Enable **Use TCP connection for screen sharing**
+
+**Make sure your audio and video is using the correct:**
+
+- Microphone
+- Audio Output (Headset)
+- Camera
+
+## 8. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
 
