@@ -23,12 +23,14 @@ fi
 
 # From this point onwards, the script is running with root privileges.
 
-# --- 2. Check if Steam is already installed ---
-if command -v steam &> /dev/null; then
-    echo -e "${GREEN}Steam is already installed.${NC}"
-    echo -e "${YELLOW}Skipping Steam installation and proceeding with dependency checks.${NC}"
+# --- 2. Update System Packages ---
+echo -e "${GREEN}Updating system packages...${NC}"
+pacman -Syu --noconfirm
+if [ $? -ne 0 ]; then
+    echo -e "${RED}Error: Failed to update system packages. Please check your internet connection or pacman configuration.${NC}"
+    exit 1
 else
-    echo -e "${YELLOW}Steam is not detected. Proceeding with installation.${NC}"
+    echo -e "${GREEN}System updated successfully.${NC}"
 fi
 
 # --- 3. Enable Multilib Repository ---
@@ -59,21 +61,42 @@ else
     echo -e "${GREEN}Pacman database refreshed.${NC}"
 fi
 
-# --- 4. Install Steam and NVIDIA 32-bit Compatibility Libraries ---
-echo -e "${YELLOW}Installing Steam and 'lib32-nvidia-utils' (NVIDIA 32-bit drivers).${NC}"
-echo -e "${YELLOW}!!! IMPORTANT: You MAY be prompted to select a repository for 'lib32-nvidia-utils' (e.g., 'multilib').${NC}"
-echo -e "${YELLOW}!!! Please read the prompt carefully and type the correct number (often '2') and press Enter.${NC}"
-echo -e "${YELLOW}Example prompt: 'Enter a number (default=1):'${NC}"
-
-# We do NOT use --noconfirm here to allow for interactive repository selection if needed (less common for steam itself)
-echo -e "${YELLOW}Installing Steam...${NC}"
-pacman -S steam
-if [ $? -ne 0 ]; then
-    echo -e "${RED}Error: Failed to install Steam.${NC}"
-    echo -e "${RED}Please review the output above for errors and try installing it manually.${NC}"
-    exit 1
+# --- 4. Install Steam (if not already installed) ---
+if ! command -v steam &> /dev/null; then
+    echo -e "${YELLOW}Steam not detected. Installing Steam...${NC}"
+    # We do NOT use --noconfirm here to allow for interactive repository selection if needed (less common for steam itself)
+    pacman -S steam
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error: Failed to install Steam.${NC}"
+        echo -e "${RED}Please review the output above for errors and try installing it manually.${NC}"
+        exit 1
+    else
+        echo -e "${GREEN}Steam installed successfully.${NC}"
+    fi
 else
-    echo -e "${GREEN}Steam installed successfully.${NC}"
+    echo -e "${GREEN}Steam is already installed. Skipping installation.${NC}"
+fi
+
+# --- 4.1 Install NVIDIA 32-bit Compatibility Libraries ---
+# Check if lib32-nvidia-utils is already installed
+if ! pacman -Q lib32-nvidia-utils &> /dev/null; then
+    echo -e "${YELLOW}'lib32-nvidia-utils' not detected. Installing NVIDIA 32-bit drivers...${NC}"
+    echo -e "${YELLOW}!!! IMPORTANT: You MAY be prompted to select a repository for 'lib32-nvidia-utils' (e.g., 'multilib').${NC}"
+    echo -e "${YELLOW}!!! Please read the prompt carefully and type the correct number (often '2') and press Enter.${NC}"
+    echo -e "${YELLOW}Example prompt: 'Enter a number (default=1):'${NC}"
+
+    # We do NOT use --noconfirm here to allow for interactive repository selection
+    pacman -S lib32-nvidia-utils
+    if [ $? -ne 0 ]; then
+        echo -e "${RED}Error: Failed to install 'lib32-nvidia-utils'.${NC}"
+        echo -e "${RED}This often happens if the repository selection was incorrect or dependencies are missing.${NC}"
+        echo -e "${RED}Please review the output above for errors and try installing this package manually.${NC}"
+        exit 1
+    else
+        echo -e "${GREEN}'lib32-nvidia-utils' installed successfully (manual selection permitting).${NC}"
+    fi
+else
+    echo -e "${GREEN}'lib32-nvidia-utils' is already installed. Skipping installation.${NC}"
 fi
 
 # --- 5. Install Additional Recommended Gaming Packages ---
