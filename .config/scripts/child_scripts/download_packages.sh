@@ -96,6 +96,7 @@ declare -a PACMAN_PACKAGES=(
     # "lib32-nvidia-utils" // Setup in child script - Steam Setup
     # "lib32-vulkan-icd-loader" // Setup in child script - Steam Setup
     # "lib32-vulkan-mesa-layers" // Setup in child script - Steam Setup
+    "nautilus"
     "nodejs"
     "npm"
     # "nvidia-utils" // Setup in a child script - Steam Setup
