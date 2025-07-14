@@ -90,6 +90,7 @@ echo "---------------------------------------------------"
 declare -a PACMAN_PACKAGES=(
     "github-cli"
     "gnome-calculator"
+    "gnome-text-editor"
     "hypridle"
     "hyprlock"
     "hyprpaper"
