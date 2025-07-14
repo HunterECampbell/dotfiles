@@ -1,3 +1,2 @@
-- Update the run_all_scripts.sh to first run download_packages.sh before anything else
 - Make workspace icons different if there is a window open in one of them.
 - Add a waybar audio selection menu to switch between outputs
