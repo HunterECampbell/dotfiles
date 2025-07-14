@@ -34,6 +34,8 @@ After a fresh Arch Linux installation and rebooting into your new system:
 
 ### Cloning the Dotfiles Repository
 
+Open up a new terminal with $SUPER + W (This is the default binding, it will change to $Super + T once you use this custom setup.)  $SUPER is the Windows key on Windows.
+
 First, clone this repository to your home directory:
 
 ```
@@ -79,13 +81,24 @@ This script will execute child scripts, which will handle package installations,
 
 **Note:** Pay attention to the output. If any child script fails, the master script will report it at the end.
 
-## 3. GitHub CLI Setup
+## 3. Chrome Profile Setup
+
+To open personal vs work accounts, follow these steps:
+
+1. Open **Google Chrome** and go to **chrome://version**
+1. Find the **Profile Path** value and copy it
+1. Go to your `~/.config/hypr/hyprland.conf` and find the binding section
+    - There should be some commented out bindings for **Personal** and **Work** Chrome profiles
+    - Edit these bindings to use the two different profiles
+1. Remove the default binding and uncomment the new ones
+
+## 4. GitHub CLI Setup
 
 For seamless interaction with GitHub from your terminal (e.g., `git push`, `git pull` without password prompts), it's highly recommended to set up `github-cli` (`gh`).
 
 Refer to the dedicated guide: [github-cli-setup.md](./github-cli-setup.md)
 
-## 4. Steam Settings
+## 5. Steam Settings
 
 For faster steam load times, make sure to follow these steps:
 
@@ -96,7 +109,7 @@ For faster steam load times, make sure to follow these steps:
 1. Click **OK** and **restart Steam**.
 
 
-## 4. Important Notes
+## 6. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
 
