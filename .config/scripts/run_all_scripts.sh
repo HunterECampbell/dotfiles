@@ -77,7 +77,9 @@ echo "---------------------------------------------------"
 
 # Loop through all other executable files in the child_scripts directory
 # Using 'find' to ensure we only execute regular files and they are executable
-find "$SCRIPTS_DIR" -maxdepth 1 -type f -executable | sort | while read -r script; do
+# The < <(...) construct ensures the while loop runs in the current shell,
+# allowing FAILED_SCRIPTS array modifications to persist.
+while read -r script; do
     # Skip this master script itself if it happens to be in the same directory
     # (though it should be in a parent directory)
     if [[ "$(basename "$script")" == "run_all_scripts.sh" ]]; then
@@ -99,7 +101,7 @@ find "$SCRIPTS_DIR" -maxdepth 1 -type f -executable | sort | while read -r scrip
         echo "  SUCCESS: $(basename "$script") completed successfully."
     fi
     echo "---------------------------------------------------"
-done
+done < <(find "$SCRIPTS_DIR" -maxdepth 1 -type f -executable | sort)
 
 # Summary of failed scripts
 echo -e "\n--- Script Execution Summary ---"
