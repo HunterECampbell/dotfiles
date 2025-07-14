@@ -21,6 +21,10 @@
 # Define the directory containing your child scripts
 SCRIPTS_DIR="$HOME/.config/scripts/child_scripts"
 
+# Define the path to the sibling download_packages.sh script
+# $(dirname "$0") gets the directory where the current script is located
+DOWNLOAD_PACKAGES_SCRIPT="$(dirname "$0")/download_packages.sh"
+
 # Array to store failed scripts and their error messages
 declare -a FAILED_SCRIPTS=()
 
@@ -40,7 +44,38 @@ chmod +x "$SCRIPTS_DIR"/* 2>/dev/null || true # Ignore errors if there are no fi
 echo "Permissions updated."
 echo "---------------------------------------------------"
 
-# Loop through all executable files in the directory
+# --- Execute download_packages.sh first ---
+echo "Executing: $(basename "$DOWNLOAD_PACKAGES_SCRIPT")..."
+
+# Ensure download_packages.sh is executable
+echo "Ensuring '$DOWNLOAD_PACKAGES_SCRIPT' is executable..."
+chmod +x "$DOWNLOAD_PACKAGES_SCRIPT" 2>/dev/null || true # Ignore errors if file doesn't exist yet or permissions issues
+echo "Permissions updated for '$DOWNLOAD_PACKAGES_SCRIPT'."
+
+# Check if download_packages.sh exists and is executable
+if [ ! -f "$DOWNLOAD_PACKAGES_SCRIPT" ] || [ ! -x "$DOWNLOAD_PACKAGES_SCRIPT" ]; then
+    echo "  ERROR: '$DOWNLOAD_PACKAGES_SCRIPT' not found or not executable. Subsequent scripts will fail. Exiting."
+    FAILED_SCRIPTS+=("$(basename "$DOWNLOAD_PACKAGES_SCRIPT") (Error: Not found or not executable)")
+    exit 1
+else
+    output=$("$DOWNLOAD_PACKAGES_SCRIPT" 2>&1)
+    exit_status=$?
+
+    if [ "$exit_status" -ne 0 ]; then
+        echo "  FAILURE: $(basename "$DOWNLOAD_PACKAGES_SCRIPT") exited with status $exit_status"
+        echo "  Output/Error:"
+        echo "$output" | sed 's/^/    /' # Indent output for readability
+        FAILED_SCRIPTS+=("$(basename "$DOWNLOAD_PACKAGES_SCRIPT") (Exit Status: $exit_status)")
+        echo -e "${RED}Critical Error: download_packages.sh failed. Subsequent scripts will fail. Exiting.${NC}"
+        echo "---------------------------------------------------"
+        exit 1 # Exit immediately if download_packages.sh fails
+    else
+        echo "  SUCCESS: $(basename "$DOWNLOAD_PACKAGES_SCRIPT") completed successfully."
+    fi
+fi
+echo "---------------------------------------------------"
+
+# Loop through all other executable files in the child_scripts directory
 # Using 'find' to ensure we only execute regular files and they are executable
 find "$SCRIPTS_DIR" -maxdepth 1 -type f -executable | sort | while read -r script; do
     # Skip this master script itself if it happens to be in the same directory
