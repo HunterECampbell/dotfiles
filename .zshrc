@@ -209,13 +209,13 @@ alias ru='npm run unleash -w @vac/unleash'
 
 
 # Go Setup
-export GOROOT=/usr/local/go-1.21.3
-export GOPATH=$HOME/go
-export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+# export GOROOT=/usr/local/go-1.21.3
+# export GOPATH=$HOME/go
+# export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
 
 
 # Workflow GW Setup
-export GITHUB_TOKEN=
+# export GITHUB_TOKEN=
 
 
 # NVM auto-use for directories with .nvmrc - Recommended by nvm
@@ -231,6 +231,3 @@ nvm_auto_use() {
    nvm use
  fi
 }
-
-
-

@@ -91,39 +91,49 @@ declare -a PACMAN_PACKAGES=(
     "github-cli"
     "gnome-calculator"
     "gnome-text-editor"
+    "grim" # For screen sharing
     "hypridle"
     "hyprlock"
     "hyprpaper"
     "hyprpolkitagent"
-    # "lib32-nvidia-utils" // Setup in child script - Steam Setup
-    # "lib32-vulkan-icd-loader" // Setup in child script - Steam Setup
-    # "lib32-vulkan-mesa-layers" // Setup in child script - Steam Setup
-    # "nautilus" // Setup in a child script - Replace File Manager
+    # "lib32-nvidia-utils" # Setup in child script - Steam Setup
+    # "lib32-vulkan-icd-loader" # Setup in child script - Steam Setup
+    # "lib32-vulkan-mesa-layers" # Setup in child script - Steam Setup
+    "libva-nvidia-driver"
+    # "nautilus" # Setup in a child script - Replace File Manager
     "nodejs"
     "npm"
-    # "nvidia-utils" // Setup in a child script - Steam Setup
+    # "nvidia-utils" # Setup in a child script - Steam Setup
     "nvm"
-    "pipewire" // For screen sharing
-    # "steam" // Setup in child script - Steam Setup
+    "pipewire" # For screen sharing
+    "pipewire-pulse"
+    "qt5-wayland"
+    "qt6-wayland"
+    "slurp" # For screen sharing
+    # "steam" # Setup in child script - Steam Setup
     "ttf-fira-code-nerd"
-    # "ufw" // Setup in a child script - UFW Setup
-    # "vulkan-icd-loader" // Setup in child script - Steam Setup
-    # "vulkan-mesa-layers" // Setup in child script - Steam Setup
+    # "ufw" # Setup in a child script - UFW Setup
+    # "vulkan-icd-loader" # Setup in child script - Steam Setup
+    # "vulkan-mesa-layers" # Setup in child script - Steam Setup
     "waybar"
-    # "wine-staging" // Setup in child script - Steam Setup
-    # "winetricks" // Setup in child script - Steam Setup
+    # "wine-staging" # Setup in child script - Steam Setup
+    # "winetricks" # Setup in child script - Steam Setup
+    "wireplumber" # For screen sharing
     "wl-clipboard"
-    # "xdg-utils" // Setup in a child script - Replace File Manager
-    # "zsh" // Setup in a child script - ZSH Setup
+    "xdg-desktop-portal" # For screen sharing
+    "xdg-desktop-portal-hyprland" # For screen sharing
+    # "xdg-utils" # Setup in a child script - Replace File Manager
+    # "zsh" # Setup in a child script - ZSH Setup
 )
 
 # AUR packages (install with yay)
 declare -a YAY_PACKAGES=(
     "discord"
     "google-chrome"
-    # "proton-ge-custom" // Setup in child script - Steam Setup
+    # "proton-ge-custom" # Setup in child script - Steam Setup
     "slack-desktop"
     "visual-studio-code-bin"
+    "xdg-desktop-portal-hyprland-git" # For screen sharing
     "zoom"
 )
 

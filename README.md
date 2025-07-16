@@ -9,7 +9,7 @@ This repository contains my personal configuration files (dotfiles) and setup sc
     - [Cloning the Dotfiles Repository](#cloning-the-dotfiles-repository)
     - [Symlinking Dotfiles](#symlinking-dotfiles)
     - [Running Setup Scripts](#running-setup-scripts)
-1. [Chrome Proile Setup](#3-chrome-profile-setup)
+1. [Chrome Setup](#3-chrome-setup)
 1. [Discord Settings](#4-discord-settings)
 1. [GitHub CLI Setup](#5-github-cli-setup)
 1. [Steam Settings](#6-steam-settings)
@@ -59,10 +59,14 @@ Example commands for symlinking (adjust paths and files as needed for your setup
 # ... (repeat for other configs like ~/.config/hypr, ~/.config/kitty, etc.)
 
 # Create symlinks from your dotfiles repo to your home directory. Here are the symlinks you need:
-ln -s ~/dotfiles/.config/scripts ~/.config/scripts
 ln -s ~/dotfiles/.config/hypr ~/.config/hypr
+ln -s ~/dotfiles/.config/scripts ~/.config/scripts
 ln -s ~/dotfiles/.config/waybar ~/.config/waybar
+ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
 ln -s ~/dotfiles/.zshrc ~/.zshrc
+
+# Run this command to update your local applications
+update-desktop-database ~/.local/share/applications/
 ```
 
 ### Running Setup Scripts
@@ -85,7 +89,7 @@ This script will execute child scripts, which will handle package installations,
 
 **Note:** Pay attention to the output. If any child script fails, the master script will report it at the end.
 
-## 3. Chrome Profile Setup
+## 3. Chrome Setup
 
 To open personal vs work accounts, follow these steps:
 
@@ -95,6 +99,12 @@ To open personal vs work accounts, follow these steps:
     - There should be some commented out bindings for **Personal** and **Work** Chrome profiles
     - Edit these bindings to use the two different profiles
 1. Remove the default binding and uncomment the new ones
+
+To help apps to use Wayland:
+
+1. Open **Google Chrome** and go to **chrome://flags**
+1. Search for **ozone**
+1. Select **Wayland**
 
 ## 4. Discord Settings
 
@@ -137,6 +147,8 @@ Zoom needs some settings turned on for screen sharing:
 - Microphone
 - Audio Output (Headset)
 - Camera
+
+**Add a virtual background**
 
 ## 8. Important Notes
 

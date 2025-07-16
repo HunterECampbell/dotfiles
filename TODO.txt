@@ -1,2 +1,3 @@
 - Make workspace icons different if there is a window open in one of them.
 - Add a waybar audio selection menu to switch between outputs
+- Add zoom background to /Pictures/Wallpapers
