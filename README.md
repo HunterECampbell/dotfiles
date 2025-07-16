@@ -61,6 +61,7 @@ Example commands for symlinking (adjust paths and files as needed for your setup
 
 # Create symlinks from your dotfiles repo to your home directory. Here are the symlinks you need:
 ln -s ~/dotfiles/.config/hypr ~/.config/hypr
+ln -s ~/dotfiles/.config/mpv ~/.config/mpv
 ln -s ~/dotfiles/.config/scripts ~/.config/scripts
 ln -s ~/dotfiles/.config/waybar ~/.config/waybar
 ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf

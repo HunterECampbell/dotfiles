@@ -105,6 +105,7 @@ declare -a PACMAN_PACKAGES=(
     # "lib32-vulkan-mesa-layers" # Setup in child script - Steam Setup
     "libnotify"
     "libva-nvidia-driver"
+    "mpv" # For vieweing mp4 files (For screen recordings)
     # "nautilus" # Setup in a child script - Replace File Manager
     "networkmanager"
     "networkmanager-openconnect"
