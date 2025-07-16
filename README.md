@@ -70,11 +70,13 @@ ln -s ~/dotfiles/.zshrc ~/.zshrc
 update-desktop-database ~/.local/share/applications/
 
 # Run these commands to get this to start
+chmod +x ~/.config/scripts/run_all_scripts.sh
+chmod +x ~/.config/scripts/record_screen.sh
+sudo systemctl enable --now NetworkManager.service
 sudo systemctl start docker.service
 sudo systemctl enable docker.service
 sudo usermod -aG docker $USER
 newgrp docker
-sudo systemctl enable --now NetworkManager.service
 ```
 
 ### Running Setup Scripts

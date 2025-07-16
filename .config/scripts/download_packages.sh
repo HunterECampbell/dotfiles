@@ -90,6 +90,7 @@ echo "---------------------------------------------------"
 declare -a PACMAN_PACKAGES=(
     "docker"
     "docker-compose"
+    "ffmpeg" # For screen recording (video encoding)
     "gimp"
     "github-cli"
     "gnome-calculator"
@@ -102,6 +103,7 @@ declare -a PACMAN_PACKAGES=(
     # "lib32-nvidia-utils" # Setup in child script - Steam Setup
     # "lib32-vulkan-icd-loader" # Setup in child script - Steam Setup
     # "lib32-vulkan-mesa-layers" # Setup in child script - Steam Setup
+    "libnotify"
     "libva-nvidia-driver"
     # "nautilus" # Setup in a child script - Replace File Manager
     "networkmanager"
@@ -123,6 +125,7 @@ declare -a PACMAN_PACKAGES=(
     # "vulkan-mesa-layers" # Setup in child script - Steam Setup
     "waybar"
     "webkit2gtk-4.1" # For VPN Usage
+    "wf-recorder" # For screen recording
     # "wine-staging" # Setup in child script - Steam Setup
     # "winetricks" # Setup in child script - Steam Setup
     "wireplumber" # For screen sharing
