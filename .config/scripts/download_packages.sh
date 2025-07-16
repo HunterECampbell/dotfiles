@@ -88,6 +88,8 @@ echo "---------------------------------------------------"
 # Define arrays for packages
 # Official Arch Linux packages (install with pacman)
 declare -a PACMAN_PACKAGES=(
+    "docker"
+    "docker-compose"
     "github-cli"
     "gnome-calculator"
     "gnome-text-editor"

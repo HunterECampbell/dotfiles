@@ -67,6 +67,12 @@ ln -s ~/dotfiles/.zshrc ~/.zshrc
 
 # Run this command to update your local applications
 update-desktop-database ~/.local/share/applications/
+
+# Run these commands to get this to start
+sudo systemctl start docker.service
+sudo systemctl enable docker.service
+sudo usermod -aG docker $USER
+newgrp docker
 ```
 
 ### Running Setup Scripts
