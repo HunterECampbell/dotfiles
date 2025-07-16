@@ -154,10 +154,13 @@ alias rh='git reset --hard'
 
 
 ## Docker Specific Aliases
-alias docker-prune='docker system prune --all --volumes'
 alias dcu='docker compose up -d'
 alias dcd='docker compose down'
 alias dcdu='dcd && dcu'
+alias dps='docker ps -a' # Lists all containers
+alias drestart='f() { docker compose restart $1 };f' # $1 is the container name to restart
+alias dprune='docker system prune --all --volumes'
+alias dlog='f() { docker logs -f $1 };f' # $1 is the container name
 
 
 alias gchd='git checkout develop'
