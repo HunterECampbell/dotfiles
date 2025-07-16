@@ -90,10 +90,11 @@ echo "---------------------------------------------------"
 declare -a PACMAN_PACKAGES=(
     "docker"
     "docker-compose"
+    "gimp"
     "github-cli"
     "gnome-calculator"
     "gnome-text-editor"
-    "grim" # For screen sharing
+    "grim" # For screen shots
     "hypridle"
     "hyprlock"
     "hyprpaper"
@@ -114,7 +115,7 @@ declare -a PACMAN_PACKAGES=(
     "pipewire-pulse"
     "qt5-wayland"
     "qt6-wayland"
-    "slurp" # For screen sharing
+    "slurp" # For screen shots
     # "steam" # Setup in child script - Steam Setup
     "ttf-fira-code-nerd"
     # "ufw" # Setup in a child script - UFW Setup
@@ -125,7 +126,7 @@ declare -a PACMAN_PACKAGES=(
     # "wine-staging" # Setup in child script - Steam Setup
     # "winetricks" # Setup in child script - Steam Setup
     "wireplumber" # For screen sharing
-    "wl-clipboard"
+    "wl-clipboard" # For screen shots
     "xdg-desktop-portal" # For screen sharing
     "xdg-desktop-portal-hyprland" # For screen sharing
     # "xdg-utils" # Setup in a child script - Replace File Manager
@@ -136,6 +137,7 @@ declare -a PACMAN_PACKAGES=(
 declare -a YAY_PACKAGES=(
     "discord"
     "google-chrome"
+    "grimblast-git" # For screen shots
     # "proton-ge-custom" # Setup in child script - Steam Setup
     "slack-desktop"
     "visual-studio-code-bin"
