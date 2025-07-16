@@ -1,13 +1,16 @@
 #!/bin/bash
 
-# This script handles the installation of essential system packages and AUR packages.
+# This script handles the installation of essential system packages, AUR packages,
+# and Flatpak applications.
 # It first sets up 'yay' (an AUR helper) if not already present,
 # then proceeds to install packages defined in arrays, checking if they exist first.
+# It also sets up Flatpak and installs Flatpak applications.
 #
 # IMPORTANT:
 # - This script includes 'sudo' prefixes for commands requiring elevated privileges
-#   (e.g., pacman, yay installation). When run by your master 'run_all_scripts.sh'
-#   script (without sudo), each 'sudo' command will prompt for a password if needed.
+#   (e.g., pacman, yay installation, flatpak remote add). When run by your master
+#   'run_all_scripts.sh' script (without sudo), each 'sudo' command will prompt
+#   for a password if needed.
 
 echo "Starting package installation setup..."
 echo "---------------------------------------------------"
@@ -91,6 +94,7 @@ declare -a PACMAN_PACKAGES=(
     "docker"
     "docker-compose"
     "ffmpeg" # For screen recording (video encoding)
+    "flatpak"
     "gimp"
     "github-cli"
     "gnome-calculator"
@@ -149,15 +153,27 @@ declare -a YAY_PACKAGES=(
     "zoom"
 )
 
-# Function to check if a package is installed
-is_package_installed() {
+# Flatpak applications
+declare -a FLATPAK_PACKAGES=(
+    "org.vinegarhq.Sober" # Roblox Player
+)
+
+# Function to check if a pacman package is installed
+is_pacman_package_installed() {
     pacman -Q "$1" &> /dev/null
 }
+
+# Function to check if a Flatpak application is installed
+is_flatpak_app_installed() {
+    # Use sudo -u "$TARGET_USER" to run flatpak list as the target user
+    sudo -u "$TARGET_USER" flatpak list --app | grep -q "^$1/"
+}
+
 
 # Install Pacman packages
 echo "Installing official Arch Linux packages (via pacman):"
 for package in "${PACMAN_PACKAGES[@]}"; do
-    if ! is_package_installed "$package"; then
+    if ! is_pacman_package_installed "$package"; then
         echo "  - Installing $package..."
         sudo pacman -S "$package" --noconfirm
         if [ $? -ne 0 ]; then
@@ -178,10 +194,10 @@ echo "Installing AUR packages (via yay):"
 # Check if yay command is available before attempting AUR installs
 if command -v yay &> /dev/null; then
     for package in "${YAY_PACKAGES[@]}"; do
-        if ! is_package_installed "$package"; then
+        if ! is_pacman_package_installed "$package"; then # yay packages also show up in pacman -Q
             echo "  - Installing $package (AUR)..."
             # yay drops privileges for building, but needs sudo for pacman part
-            yay -S "$package" --noconfirm
+            sudo -u "$TARGET_USER" yay -S "$package" --noconfirm
             if [ $? -ne 0 ]; then
                 echo "    Error: Failed to install $package (AUR)."
                 FAILED_PACKAGES+=("$package (yay)")
@@ -198,14 +214,57 @@ fi
 
 echo "---------------------------------------------------"
 
+# --- Part 3: Flatpak Setup and Installation ---
+echo "Setting up Flatpak and installing Flatpak applications:"
+
+# Check if flatpak is installed from pacman
+if ! command -v flatpak &> /dev/null; then
+    echo "Error: Flatpak is not installed. Cannot proceed with Flatpak app installation."
+    FAILED_PACKAGES+=("Flatpak (core utility not found)")
+else
+    # Add Flathub remote if not already added
+    echo "  - Adding Flathub remote if not already present..."
+    # Use sudo -u "$TARGET_USER" for user-specific flatpak commands
+    if ! sudo -u "$TARGET_USER" flatpak remotes --user | grep -q "flathub"; then
+        sudo -u "$TARGET_USER" flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+        if [ $? -ne 0 ]; then
+            echo "    Error: Failed to add Flathub remote."
+            FAILED_PACKAGES+=("Flathub Remote")
+        else
+            echo "    Flathub remote added successfully."
+        fi
+    else
+        echo "    Flathub remote is already added."
+    fi
+
+    # Install Flatpak applications
+    for app_id in "${FLATPAK_PACKAGES[@]}"; do
+        if ! is_flatpak_app_installed "$app_id"; then
+            echo "  - Installing Flatpak app: $app_id..."
+            # Use sudo -u "$TARGET_USER" to install flatpak apps for the user
+            sudo -u "$TARGET_USER" flatpak install flathub "$app_id" --or-update --noninteractive
+            if [ $? -ne 0 ]; then
+                echo "    Error: Failed to install Flatpak app: $app_id."
+                FAILED_PACKAGES+=("$app_id (Flatpak)")
+            else
+                echo "    Flatpak app $app_id installed successfully."
+            fi
+        else
+            echo "  - Flatpak app $app_id is already installed."
+        fi
+    done
+fi
+
+echo "---------------------------------------------------"
+
 # --- Installation Summary ---
 echo -e "\n--- Package Installation Summary ---"
 if [ ${#FAILED_PACKAGES[@]} -eq 0 ]; then
-    echo "All specified packages were installed successfully!"
+    echo "All specified packages and applications were installed successfully!"
 else
-    echo "The following packages failed to install:"
-    for failed_package in "${FAILED_PACKAGES[@]}"; do
-        echo "  - $failed_package"
+    echo "The following packages/applications failed to install:"
+    for failed_item in "${FAILED_PACKAGES[@]}"; do
+        echo "  - $failed_item"
     done
     echo "Please review the output above for specific errors during installation."
 fi
