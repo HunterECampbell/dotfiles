@@ -65,6 +65,7 @@ ln -s ~/dotfiles/.config/mpv ~/.config/mpv
 ln -s ~/dotfiles/.config/scripts ~/.config/scripts
 ln -s ~/dotfiles/.config/waybar ~/.config/waybar
 ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
+ln -s ~/dotfiles/Development ~/Development
 ln -s ~/dotfiles/.zshrc ~/.zshrc
 
 # Run this command to update your local applications
