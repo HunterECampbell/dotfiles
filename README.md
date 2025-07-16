@@ -13,8 +13,9 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [Discord Settings](#4-discord-settings)
 1. [GitHub CLI Setup](#5-github-cli-setup)
 1. [Steam Settings](#6-steam-settings)
-1. [Zoom Settings](#7-zoom-settings)
-1. [Important Notes](#8-important-notes)
+1. [VPN Setup](#7-vpn-setup)
+1. [Zoom Settings](#8-zoom-settings)
+1. [Important Notes](#9-important-notes)
 
 ## 1. Initial Arch Linux Installation
 
@@ -73,6 +74,7 @@ sudo systemctl start docker.service
 sudo systemctl enable docker.service
 sudo usermod -aG docker $USER
 newgrp docker
+sudo systemctl enable --now NetworkManager.service
 ```
 
 ### Running Setup Scripts
@@ -137,11 +139,18 @@ For faster steam load times, make sure to follow these steps:
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
-## 7. Zoom Settings
+## 7. VPN Setup
+
+1. Open **Advanced Network Configuration** via the menu ($Super + M)
+1. Click the **+** button
+1. Select a VPN Service
+1. Follow the steps at work to finish setup from here
+
+## 8. Zoom Settings
 
 Zoom needs some settings turned on for screen sharing:
 
-1. Open **Zoom* and login
+1. Open **Zoom** and login
 1. Open the **Settings** by clicking on the **Cog Icon**
 1. Click **Screen Sharing**
 1. Scroll down and click **Advanced**
@@ -156,7 +165,7 @@ Zoom needs some settings turned on for screen sharing:
 
 **Add a virtual background**
 
-## 8. Important Notes
+## 9. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
 

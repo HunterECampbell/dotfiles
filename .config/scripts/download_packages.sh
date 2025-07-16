@@ -103,10 +103,13 @@ declare -a PACMAN_PACKAGES=(
     # "lib32-vulkan-mesa-layers" # Setup in child script - Steam Setup
     "libva-nvidia-driver"
     # "nautilus" # Setup in a child script - Replace File Manager
+    "networkmanager"
+    "networkmanager-openconnect"
     "nodejs"
     "npm"
     # "nvidia-utils" # Setup in a child script - Steam Setup
     "nvm"
+    "openconnect"
     "pipewire" # For screen sharing
     "pipewire-pulse"
     "qt5-wayland"
@@ -118,6 +121,7 @@ declare -a PACMAN_PACKAGES=(
     # "vulkan-icd-loader" # Setup in child script - Steam Setup
     # "vulkan-mesa-layers" # Setup in child script - Steam Setup
     "waybar"
+    "webkit2gtk-4.1" # For VPN Usage
     # "wine-staging" # Setup in child script - Steam Setup
     # "winetricks" # Setup in child script - Steam Setup
     "wireplumber" # For screen sharing
