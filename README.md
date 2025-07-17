@@ -11,11 +11,12 @@ This repository contains my personal configuration files (dotfiles) and setup sc
     - [Running Setup Scripts](#running-setup-scripts)
 1. [Chrome Setup](#3-chrome-setup)
 1. [Discord Settings](#4-discord-settings)
-1. [GitHub CLI Setup](#5-github-cli-setup)
-1. [Steam Settings](#6-steam-settings)
-1. [VPN Setup](#7-vpn-setup)
-1. [Zoom Settings](#8-zoom-settings)
-1. [Important Notes](#9-important-notes)
+1. [FoundryVTT Setup](#5-foundryvtt-setup)
+1. [GitHub CLI Setup](#6-github-cli-setup)
+1. [Steam Settings](#7-steam-settings)
+1. [VPN Setup](#8-vpn-setup)
+1. [Zoom Settings](#9-zoom-settings)
+1. [Important Notes](#10-important-notes)
 
 ## 1. Initial Arch Linux Installation
 
@@ -130,13 +131,23 @@ You need to turn off Desktop Notifications:
 1. Click **Notifications**
 1. Uncheck **Enable Desktop Notifications**
 
-## 5. GitHub CLI Setup
+## 5. FoundryVTT Setup
+
+> [!IMPORTANT]
+> FoundryVTT should not be automatically downloaded/setup, because it uses a **Purchased License** to validate ownership.  Adding an automatic download/setup will make the license public, which is not what we want.
+
+### Downloading FoundryVTT
+
+1. Go to Foundry's [Install](https://foundryvtt.com/article/installation/) page
+1. Follow their instructions
+
+## 6. GitHub CLI Setup
 
 For seamless interaction with GitHub from your terminal (e.g., `git push`, `git pull` without password prompts), it's highly recommended to set up `github-cli` (`gh`).
 
 Refer to the dedicated guide: [github-cli-setup.md](./github-cli-setup.md)
 
-## 6. Steam Settings
+## 7. Steam Settings
 
 For faster steam load times, make sure to follow these steps:
 
@@ -146,14 +157,14 @@ For faster steam load times, make sure to follow these steps:
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
-## 7. VPN Setup
+## 8. VPN Setup
 
 1. Open **Advanced Network Configuration** via the menu ($Super + M)
 1. Click the **+** button
 1. Select a VPN Service
 1. Follow the steps at work to finish setup from here
 
-## 8. Zoom Settings
+## 9. Zoom Settings
 
 Zoom needs some settings turned on for screen sharing:
 
@@ -172,7 +183,7 @@ Zoom needs some settings turned on for screen sharing:
 
 **Add a virtual background**
 
-## 9. Important Notes
+## 10. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
 
