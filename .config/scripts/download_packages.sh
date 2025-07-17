@@ -128,6 +128,7 @@ declare -a PACMAN_PACKAGES=(
     # "steam" # Setup in child script - Steam Setup
     "ttf-fira-code-nerd"
     # "ufw" # Setup in a child script - UFW Setup
+    "unzip"
     # "vulkan-icd-loader" # Setup in child script - Steam Setup
     # "vulkan-mesa-layers" # Setup in child script - Steam Setup
     "waybar"
