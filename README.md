@@ -64,6 +64,7 @@ ln -s ~/dotfiles/.config/hypr ~/.config/hypr
 ln -s ~/dotfiles/.config/mpv ~/.config/mpv
 ln -s ~/dotfiles/.config/scripts ~/.config/scripts
 ln -s ~/dotfiles/.config/waybar ~/.config/waybar
+ln -s ~/dotfiles/.config/wofi ~/.config/wofi 
 ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
 ln -s ~/dotfiles/Development ~/Development
 ln -s ~/dotfiles/.zshrc ~/.zshrc
