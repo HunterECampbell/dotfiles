@@ -64,6 +64,11 @@ Example commands for symlinking (adjust paths and files as needed for your setup
 ln -s ~/dotfiles/.config/hypr ~/.config/hypr
 ln -s ~/dotfiles/.config/mpv ~/.config/mpv
 ln -s ~/dotfiles/.config/scripts ~/.config/scripts
+ln -s ~/dotfiles/.config/systemd/user/hyprsunset.service ~/.config/systemd/user
+ln -s ~/dotfiles/.config/systemd/user/hyprsunset-day.service ~/.config/systemd/user
+ln -s ~/dotfiles/.config/systemd/user/hyprsunset-day.timer ~/.config/systemd/user
+ln -s ~/dotfiles/.config/systemd/user/hyprsunset-night.service ~/.config/systemd/user
+ln -s ~/dotfiles/.config/systemd/user/hyprsunset-night.timer ~/.config/systemd/user
 ln -s ~/dotfiles/.config/waybar ~/.config/waybar
 ln -s ~/dotfiles/.config/wofi ~/.config/wofi 
 ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
@@ -77,11 +82,18 @@ update-desktop-database ~/.local/share/applications/
 chmod +x ~/.config/scripts/run_all_scripts.sh
 chmod +x ~/.config/scripts/record_screen.sh
 chmod +x ~/.config/scripts/notify_of_screenshot_to_clipboard.sh
+systemctl --user daemon-reload
+systemctl --user enable hyprsunset-night.timer
+systemctl --user start hyprsunset-night.timer
+systemctl --user enable hyprsunset-day.timer
+systemctl --user start hyprsunset-day.timer
+systemctl --user start hyprsunset.service
 sudo systemctl enable --now NetworkManager.service
 sudo systemctl start docker.service
 sudo systemctl enable docker.service
 sudo usermod -aG docker $USER
 newgrp docker
+systemctl --user enable --now hyprsunset.service
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 

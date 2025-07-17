@@ -1,0 +1,9 @@
+[Unit]
+Description=Hyprsunset Night Timer
+
+[Timer]
+OnCalendar=*-*-* 19:30:00 # Every day at 7:30 PM (19:30)
+Persistent=true           # Ensures it fires even if the system was off at the trigger time
+
+[Install]
+WantedBy=timers.target

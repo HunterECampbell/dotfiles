@@ -1,0 +1,9 @@
+[Unit]
+Description=Hyprsunset Day Timer
+
+[Timer]
+OnCalendar=*-*-* 08:00:00 # Every day at 8:00 AM
+Persistent=true           # Ensures it fires even if the system was off at the trigger time
+
+[Install]
+WantedBy=timers.target

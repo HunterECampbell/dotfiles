@@ -102,6 +102,7 @@ declare -a PACMAN_PACKAGES=(
     "grim" # For screen shots
     "hypridle"
     "hyprlock"
+    "hyprsunset"
     "hyprpaper"
     "hyprpolkitagent"
     # "lib32-nvidia-utils" # Setup in child script - Steam Setup

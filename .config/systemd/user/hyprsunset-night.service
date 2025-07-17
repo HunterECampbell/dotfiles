@@ -1,0 +1,11 @@
+[Unit]
+Description=Set Hyprsunset Night Temperature
+PartOf=hyprsunset.service
+After=hyprsunset.service
+
+[Service]
+Type=oneshot
+ExecStart=/usr/bin/hyprctl hyprsunset temperature 3750
+
+[Install]
+WantedBy=default.target
