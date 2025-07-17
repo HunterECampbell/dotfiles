@@ -141,6 +141,14 @@ You need to turn off Desktop Notifications:
 1. Go to Foundry's [Install](https://foundryvtt.com/article/installation/) page
 1. Follow their instructions
 
+### Setup Port Forwarding
+
+When running a game, the server address needs to be port forwarded.
+
+### No IP
+
+When setting up a live server, it uses your machine's IP Address.  We want to hide this IP so they don't access our IP directly.  You can setup a hidden IP via [No IP](https://www.noip.com/login).
+
 ## 6. GitHub CLI Setup
 
 For seamless interaction with GitHub from your terminal (e.g., `git push`, `git pull` without password prompts), it's highly recommended to set up `github-cli` (`gh`).
