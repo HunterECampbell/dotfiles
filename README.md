@@ -76,6 +76,7 @@ update-desktop-database ~/.local/share/applications/
 chmod +x ~/.config/scripts/run_all_scripts.sh
 chmod +x ~/.config/scripts/record_screen.sh
 chmod +x ~/.config/scripts/notify_of_screenshot_to_clipboard.sh
+chmod +x ~/.config/waybar/slack_unread_notifications.py
 sudo systemctl enable --now NetworkManager.service
 sudo systemctl start docker.service
 sudo systemctl enable docker.service

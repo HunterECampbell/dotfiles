@@ -10,6 +10,7 @@
     ],
     "modules-center": [],
     "modules-right": [
+        "custom/slack-notification",
         "network",
         "clock",
         "custom/power"
@@ -88,5 +89,13 @@
             "restart": "systemctl reboot",
             "shutdown": "systemctl poweroff"
         }
+    },
+    "custom/slack-notification": {
+        "format": "{}", // The script will provide the format
+        "exec": "~/.config/waybar/slack_unread_notifications.py",
+        "interval": 10, // Check every 10 seconds
+        "return-type": "json",
+        "on-click": "slack",
+        "tooltip": true
     }
 }
