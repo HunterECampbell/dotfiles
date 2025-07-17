@@ -75,6 +75,7 @@ update-desktop-database ~/.local/share/applications/
 # Run these commands to get this to start
 chmod +x ~/.config/scripts/run_all_scripts.sh
 chmod +x ~/.config/scripts/record_screen.sh
+chmod +x ~/.config/scripts/notify_of_screenshot_to_clipboard.sh
 sudo systemctl enable --now NetworkManager.service
 sudo systemctl start docker.service
 sudo systemctl enable docker.service
