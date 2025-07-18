@@ -2,13 +2,6 @@
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 
-# >>> NVM Initialization: MOVED TO TOP to ensure NVM is available before anything uses it <<<
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
-[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-# <<< End NVM Initialization >>>
-
-
 # Path to your oh-my-zsh installation.
 export ZSH="$HOME/.oh-my-zsh"
 
