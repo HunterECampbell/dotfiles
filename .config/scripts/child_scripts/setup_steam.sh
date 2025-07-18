@@ -65,7 +65,7 @@ fi
 if ! command -v steam &> /dev/null; then
     echo -e "${YELLOW}Steam not detected. Installing Steam...${NC}"
     # We do NOT use --noconfirm here to allow for interactive repository selection if needed (less common for steam itself)
-    pacman -S steam
+    sudo pacman -S steam
     if [ $? -ne 0 ]; then
         echo -e "${RED}Error: Failed to install Steam.${NC}"
         echo -e "${RED}Please review the output above for errors and try installing it manually.${NC}"
@@ -86,7 +86,7 @@ if ! pacman -Q lib32-nvidia-utils &> /dev/null; then
     echo -e "${YELLOW}Example prompt: 'Enter a number (default=1):'${NC}"
 
     # We do NOT use --noconfirm here to allow for interactive repository selection
-    pacman -S lib32-nvidia-utils
+    sudo pacman -S lib32-nvidia-utils
     if [ $? -ne 0 ]; then
         echo -e "${RED}Error: Failed to install 'lib32-nvidia-utils'.${NC}"
         echo -e "${RED}This often happens if the repository selection was incorrect or dependencies are missing.${NC}"
@@ -101,37 +101,37 @@ fi
 
 # --- 5. Install Additional Recommended Gaming Packages ---
 echo -e "${GREEN}Installing 'wine-staging' for Proton compatibility...${NC}"
-pacman -S --noconfirm --needed wine-staging
+sudo pacman -S --noconfirm --needed wine-staging
 if [ $? -ne 0 ]; then
     echo -e "${YELLOW}Warning: Failed to install 'wine-staging'. Some games may not run correctly.${NC}"
 fi
 
 echo -e "${GREEN}Installing 'winetricks' for Wine configuration...${NC}"
-pacman -S --noconfirm --needed winetricks
+sudo pacman -S --noconfirm --needed winetricks
 if [ $? -ne 0 ]; then
     echo -e "${YELLOW}Warning: Failed to install 'winetricks'. You may need it for specific game dependencies.${NC}"
 fi
 
 echo -e "${GREEN}Installing Vulkan ICD Loaders...${NC}"
-pacman -S --noconfirm --needed vulkan-icd-loader lib32-vulkan-icd-loader
+sudo pacman -S --noconfirm --needed vulkan-icd-loader lib32-vulkan-icd-loader
 if [ $? -ne 0 ]; then
     echo -e "${YELLOW}Warning: Failed to install Vulkan ICD Loaders. Vulkan-based games may not run.${NC}"
 fi
 
 echo -e "${GREEN}Installing NVIDIA Vulkan drivers and utilities...${NC}"
-pacman -S --noconfirm --needed nvidia-utils lib32-nvidia-utils
+sudo pacman -S --noconfirm --needed nvidia-utils lib32-nvidia-utils
 if [ $? -ne 0 ]; then
     echo -e "${YELLOW}Warning: Failed to install NVIDIA Vulkan drivers. Performance issues may occur.${NC}"
 fi
 
 echo -e "${GREEN}Installing Vulkan Mesa layers...${NC}"
-pacman -S --noconfirm --needed vulkan-mesa-layers lib32-vulkan-mesa-layers
+sudo pacman -S --noconfirm --needed vulkan-mesa-layers lib32-vulkan-mesa-layers
 if [ $? -ne 0 ]; then
     echo -e "${YELLOW}Warning: Failed to install Vulkan Mesa layers. This might affect some Vulkan applications.${NC}"
 fi
 
 echo -e "${GREEN}Installing XDG Desktop Portal layers...${NC}"
-pacman -S --noconfirm --needed xdg-desktop-portal xdg-desktop-portal-hyprland
+sudo pacman -S --noconfirm --needed xdg-desktop-portal xdg-desktop-portal-hyprland
 if [ $? -ne 0 ]; then
     echo -e "${YELLOW}Warning: Failed to install XDG Desktop Portal layers. This might affect some XDG applications.${NC}"
 fi
