@@ -105,8 +105,9 @@ declare -a PACMAN_PACKAGES=(
     "hyprsunset"
     "hyprpaper"
     "hyprpolkitagent"
-    "jre-openjdk-headless"
-    "jre17-openjdk-headless"
+    "jdk8-openjdk" # Minecraft 1.12.x - 1.16.5
+    "jdk17-openjdk" # Minecraft 1.17.x - 1.20.5
+    "jdk21-openjdk" # Minecraft 1.20.6 - 1.21.x
     # "lib32-nvidia-utils" # Setup in child script - Steam Setup
     # "lib32-vulkan-icd-loader" # Setup in child script - Steam Setup
     # "lib32-vulkan-mesa-layers" # Setup in child script - Steam Setup
