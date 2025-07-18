@@ -20,27 +20,88 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 
 ## 1. Initial Arch Linux Installation
 
-During the `archinstall` process, consider the following for a smooth setup with these dotfiles:
+Run `archinstall`
 
-**User Account:** Create a non-root user (e.g., `hcnureth`). All dotfiles and scripts are designed to be managed by this user.
+> [!TIP]
+> You can search with `/`
 
-**File Management:** Select *ext4*
+Use the following settings for a smooth dotfiles setup:
 
-**Desktop Environment:** Select *Hyprland*
+### Mirrors and Repositories:
 
-**Graphics Drivers:** Select *Nvidia (Proprietary)*
+- Select **Regions**
+    - Select **United States**
+- Select **Optional repositories**
+    - Select **multilib**
 
-**Network Configuration:** Select *NetworkManager*
+### Disk Configuartion
 
-**Basic Utilities:** The `run_all_scripts.sh` script will download all necessary utilities
+- Select **Partitioning**
+    - Select **Use a best-effort default partitioning layout**
+- Select **Partitioning Layout**
+    - Select **Select storage device**
+        - Select **ext4**
+            - Select **No** for creating a separate `/home` directory
+- Select **Partition**
+    - Select **Disk Encryption**
+        - Select **Luks**
+        - Select **Encryption password**
+            - This is the password you will use to start up Arch Linux
+        - Select **Partitions**
+            - Select the partition you created
+
+### Hostname
+
+- Add whatever you like for a hostname
+
+### Root Password
+
+- Add a root password
+
+### User Account
+
+- Select **Account**
+    - Select **Add a user**
+        - Fill out a username and password
+    - Make them a `sudo` user
+
+### Profile
+
+- Select **Type**
+    - Select whichever type you like (e.g. **Desktop**)
+        - Select **Hyprland**
+            - Select **Polkit**
+    - Select **Graphic Drivers**
+        - Select **Nvidia (proprietary)**
+
+### Audio
+
+- Select **Pulseaudio**
+
+### Network Configuration
+
+- Select **NetworkManager**
+
+### Finalization
+
+> [!TIP]
+> You won't need to select any additional packages, as the following steps will have you run a script to download all necessary packages automatically.
+
+> [!IMPORTANT]
+> Prepare to remove your USB (Don't do it yet!).  You will want to remove the USB once the system powers down, not while it's in the process of powering down. 
+
+Finish up by installing.  Once the install is complete, select **Reboot**
 
 ## 2. Post-Installation Setup
 
-After a fresh Arch Linux installation and rebooting into your new system:
+After a fresh Arch Linux install, follow the below steps.
 
 ### Cloning the Dotfiles Repository
 
-Open up a new terminal with $SUPER + W (This is the default binding, it will change to $Super + T once you use this custom setup.)  $SUPER is the Windows key on Windows.
+Open up a new terminal with $SUPER + Q (This is the default binding, it will change to $Super + T once you use this custom setup.)  $SUPER is the Windows key on Windows.
+
+> [!IMPORTANT]
+> You will need an internet connection to continue. Run `nmcli` to check that you are connected to the internet.
 
 First, clone this repository to your home directory:
 
@@ -50,17 +111,21 @@ git clone https://github.com/HunterECampbell/dotfiles.git ~/dotfiles
 
 ### Symlinking Dotfiles
 
-This repository uses symbolic links to manage dotfiles. This means the actual configuration files live in `~/dotfiles/`, and symlinks point from their traditional locations (e.g., `~/.zshrc`) to these files.
+This repository uses symbolic links to manage dotfiles. This means the configuration files you edit will live in `~/dotfiles/`, and symlinks point from the dotfiles to their traditional locations (e.g., `~/.config`).
 
-Example commands for symlinking (adjust paths and files as needed for your setup):
+Before symlinking, some directors are required beforehand.
+
+#### 1. Directories to create before symlinking:
 
 ```
-# Back up existing files if they exist (optional, but recommended)
-[ -f ~/.zshrc ] && mv ~/.zshrc ~/.zshrc.bak
-[ -d ~/.config/scripts ] && mv ~/.config/scripts ~/.config/scripts.bak
-# ... (repeat for other configs like ~/.config/hypr, ~/.config/kitty, etc.)
+mkdir ~/.config/systemd
+mkdir ~/.config/systemd/user
+mkdir ~/Development
+```
 
-# Create symlinks from your dotfiles repo to your home directory. Here are the symlinks you need:
+#### 2. Commands for the symlinks you need:
+
+```
 ln -s ~/dotfiles/.config/hypr ~/.config/hypr
 ln -s ~/dotfiles/.config/mpv ~/.config/mpv
 ln -s ~/dotfiles/.config/scripts ~/.config/scripts
@@ -74,23 +139,46 @@ ln -s ~/dotfiles/.config/wofi ~/.config/wofi
 ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
 ln -s ~/dotfiles/Development/"Test Files" ~/Development/"Test Files"
 ln -s ~/dotfiles/.zshrc ~/.zshrc
+```
 
-# Run this command to update your local applications
-update-desktop-database ~/.local/share/applications/
+#### 3. Commands needed to run the necessary scripts:
 
-# Run these commands to get this to start
+```
 chmod +x ~/.config/scripts/run_all_scripts.sh
 chmod +x ~/.config/scripts/record_screen.sh
 chmod +x ~/.config/scripts/notify_of_screenshot_to_clipboard.sh
+```
+
+#### 4. Other necessary commands for your symlinks:
+
+```
 systemctl --user daemon-reload
 systemctl --user enable hyprsunset-night.timer
 systemctl --user start hyprsunset-night.timer
 systemctl --user enable hyprsunset-day.timer
 systemctl --user start hyprsunset-day.timer
 systemctl --user start hyprsunset.service
+```
+
+### Running Setup Scripts
+
+#### 1. Run the master script:
+
+This script will execute the scripts symlinked from `~/dotfiles/.config/scripts/child_scripts/`, which will handle package installations, Zsh setup, UFW configuration, etc. Child scripts that require elevated privileges will prompt you for your sudo password.
+
+```
+~/.config/scripts/run_all_scripts.sh
+```
+
+> [!NOTE]
+> Pay attention to the output. If any child script fails, the master script will report it at the end.
+
+#### 2. Commands to run after the master script finishes:
+
+```
+sudo systemctl enable --now NetworkManager.service
 sudo systemctl enable --now vpnagentd.service
 sudo systemctl status vpnagentd.service
-sudo systemctl enable --now NetworkManager.service
 sudo systemctl start docker.service
 sudo systemctl enable docker.service
 sudo usermod -aG docker $USER
@@ -99,25 +187,9 @@ systemctl --user enable --now hyprsunset.service
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
 ```
 
-### Running Setup Scripts
+#### 4. Restart your computer
 
-Your setup scripts are located in `~/dotfiles/.config/scripts/child_scripts/`. The `run_all_scripts.sh` (found in `~/dotfiles/.config/scripts/`) master script will execute them.
-
-**1. Make the master script executable (if not already):**
-
-```
-chmod +x ~/.config/scripts/run_all_scripts.sh
-```
-
-**2. Run the master script:**
-
-This script will execute child scripts, which will handle package installations, Zsh setup, UFW configuration, etc. Child scripts that require elevated privileges will prompt you for your sudo password.
-
-```
-~/.config/scripts/run_all_scripts.sh
-```
-
-**Note:** Pay attention to the output. If any child script fails, the master script will report it at the end.
+For all changes to take effect, it is best to restart your computer.
 
 ## 3. Chrome Setup
 
@@ -155,13 +227,9 @@ You need to turn off Desktop Notifications:
 1. Go to Foundry's [Install](https://foundryvtt.com/article/installation/) page
 1. Follow their instructions
 
-### Setup Port Forwarding
-
-When running a game, the server address needs to be port forwarded.
-
 ### No IP
 
-When setting up a live server, it uses your machine's IP Address.  We want to hide this IP so they don't access our IP directly.  You can setup a hidden IP via [No IP](https://www.noip.com/login).
+When setting up a live server, it uses your machine's IP Address as the Browser's URL.  We want to hide this IP so players don't access your IP directly.  You can setup a hidden IP via [No IP](https://www.noip.com/login).  No IP essentially creates a different browser URL that will point to your IP (e.g. my-random-name.ddns.net:30000 - 30000 is the default FoundryVTT port).
 
 ## 6. GitHub CLI Setup
 
