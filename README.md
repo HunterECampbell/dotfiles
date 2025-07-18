@@ -6,9 +6,9 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 
 1. [Initial Arch Linux Installation](#1-initial-arch-linux-installation)
 1. [Post-Installation Setup](#2-post-installation-setup)
-    - [Cloning the Dotfiles Repository](#cloning-the-dotfiles-repository)
-    - [Symlinking Dotfiles](#symlinking-dotfiles)
-    - [Running Setup Scripts](#running-setup-scripts)
+   - [Cloning the Dotfiles Repository](#cloning-the-dotfiles-repository)
+   - [Symlinking Dotfiles](#symlinking-dotfiles)
+   - [Running Setup Scripts](#running-setup-scripts)
 1. [Chrome Setup](#3-chrome-setup)
 1. [Discord Settings](#4-discord-settings)
 1. [FoundryVTT Setup](#5-foundryvtt-setup)
@@ -30,25 +30,25 @@ Use the following settings for a smooth dotfiles setup:
 ### Mirrors and Repositories:
 
 - Select **Regions**
-    - Select **United States**
+  - Select **United States**
 - Select **Optional repositories**
-    - Select **multilib**
+  - Select **multilib**
 
 ### Disk Configuartion
 
 - Select **Partitioning**
-    - Select **Use a best-effort default partitioning layout**
+  - Select **Use a best-effort default partitioning layout**
 - Select **Partitioning Layout**
-    - Select **Select storage device**
-        - Select **ext4**
-            - Select **No** for creating a separate `/home` directory
+  - Select **Select storage device**
+    - Select **ext4**
+      - Select **No** for creating a separate `/home` directory
 - Select **Partition**
-    - Select **Disk Encryption**
-        - Select **Luks**
-        - Select **Encryption password**
-            - This is the password you will use to start up Arch Linux
-        - Select **Partitions**
-            - Select the partition you created
+  - Select **Disk Encryption**
+    - Select **Luks**
+    - Select **Encryption password**
+      - This is the password you will use to start up Arch Linux
+    - Select **Partitions**
+      - Select the partition you created
 
 ### Hostname
 
@@ -61,18 +61,18 @@ Use the following settings for a smooth dotfiles setup:
 ### User Account
 
 - Select **Account**
-    - Select **Add a user**
-        - Fill out a username and password
-    - Make them a `sudo` user
+  - Select **Add a user**
+    - Fill out a username and password
+  - Make them a `sudo` user
 
 ### Profile
 
 - Select **Type**
-    - Select whichever type you like (e.g. **Desktop**)
-        - Select **Hyprland**
-            - Select **Polkit**
-    - Select **Graphic Drivers**
-        - Select **Nvidia (proprietary)**
+  - Select whichever type you like (e.g. **Desktop**)
+    - Select **Hyprland**
+      - Select **Polkit**
+  - Select **Graphic Drivers**
+    - Select **Nvidia (proprietary)**
 
 ### Audio
 
@@ -88,9 +88,9 @@ Use the following settings for a smooth dotfiles setup:
 > You won't need to select any additional packages, as the following steps will have you run a script to download all necessary packages automatically.
 
 > [!IMPORTANT]
-> Prepare to remove your USB (Don't do it yet!).  You will want to remove the USB once the system powers down, not while it's in the process of powering down. 
+> Prepare to remove your USB (Don't do it yet!). You will want to remove the USB once the system powers down, not while it's in the process of powering down.
 
-Finish up by installing.  Once the install is complete, select **Reboot**
+Finish up by installing. Once the install is complete, select **Reboot**
 
 ## 2. Post-Installation Setup
 
@@ -98,7 +98,7 @@ After a fresh Arch Linux install, follow the below steps.
 
 ### Cloning the Dotfiles Repository
 
-Open up a new terminal with $SUPER + Q (This is the default binding, it will change to $Super + T once you use this custom setup.)  $SUPER is the Windows key on Windows.
+Open up a new terminal with $SUPER + Q (This is the default binding, it will change to $Super + T once you use this custom setup.) $SUPER is the Windows key on Windows.
 
 > [!IMPORTANT]
 > You will need an internet connection to continue. Run `nmcli` to check that you are connected to the internet.
@@ -111,7 +111,7 @@ git clone https://github.com/HunterECampbell/dotfiles.git ~/dotfiles
 
 ### Symlinking Dotfiles
 
-This repository uses symbolic links to manage dotfiles. This means the configuration files you edit will live in `~/dotfiles/`, and symlinks point from the dotfiles to their traditional locations (e.g., `~/.config`).
+This repository uses symbolic links to manage dotfiles. This means the configuration files you edit will live in `~/Development/repos/dotfiles/`, and symlinks point from the dotfiles to their traditional locations (e.g., `~/.config`).
 
 Before symlinking, some directors are required beforehand.
 
@@ -126,19 +126,19 @@ mkdir ~/Development
 #### 2. Commands for the symlinks you need:
 
 ```
-ln -s ~/dotfiles/.config/hypr ~/.config/hypr
-ln -s ~/dotfiles/.config/mpv ~/.config/mpv
-ln -s ~/dotfiles/.config/scripts ~/.config/scripts
-ln -s ~/dotfiles/.config/systemd/user/hyprsunset.service ~/.config/systemd/user
-ln -s ~/dotfiles/.config/systemd/user/hyprsunset-day.service ~/.config/systemd/user
-ln -s ~/dotfiles/.config/systemd/user/hyprsunset-day.timer ~/.config/systemd/user
-ln -s ~/dotfiles/.config/systemd/user/hyprsunset-night.service ~/.config/systemd/user
-ln -s ~/dotfiles/.config/systemd/user/hyprsunset-night.timer ~/.config/systemd/user
-ln -s ~/dotfiles/.config/waybar ~/.config/waybar
-ln -s ~/dotfiles/.config/wofi ~/.config/wofi
-ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
-ln -s ~/dotfiles/Development/"Test Files" ~/Development/"Test Files"
-ln -s ~/dotfiles/.zshrc ~/.zshrc
+ln -s ~/Development/repos/dotfiles/.config/hypr ~/.config/hypr
+ln -s ~/Development/repos/dotfiles/.config/mpv ~/.config/mpv
+ln -s ~/Development/repos/dotfiles/.config/scripts ~/.config/scripts
+ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset.service ~/.config/systemd/user
+ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-day.service ~/.config/systemd/user
+ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-day.timer ~/.config/systemd/user
+ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-night.service ~/.config/systemd/user
+ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-night.timer ~/.config/systemd/user
+ln -s ~/Development/repos/dotfiles/.config/waybar ~/.config/waybar
+ln -s ~/Development/repos/dotfiles/.config/wofi ~/.config/wofi
+ln -s ~/Development/repos/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
+ln -s ~/Development/repos/dotfiles/Development/"Test Files" ~/Development/"Test Files"
+ln -s ~/Development/repos/dotfiles/.zshrc ~/.zshrc
 ```
 
 #### 3. Commands needed to run the necessary scripts:
@@ -164,7 +164,7 @@ systemctl --user start hyprsunset.service
 
 #### 1. Run the master script:
 
-This script will execute the scripts symlinked from `~/dotfiles/.config/scripts/child_scripts/`, which will handle package installations, Zsh setup, UFW configuration, etc. Child scripts that require elevated privileges will prompt you for your sudo password.
+This script will execute the scripts symlinked from `~/Development/repos/dotfiles/.config/scripts/child_scripts/`, which will handle package installations, Zsh setup, UFW configuration, etc. Child scripts that require elevated privileges will prompt you for your sudo password.
 
 ```
 ~/.config/scripts/run_all_scripts.sh
@@ -198,8 +198,8 @@ To open personal vs work accounts, follow these steps:
 1. Open **Google Chrome** and go to **chrome://version**
 1. Find the **Profile Path** value and copy it
 1. Go to your `~/.config/hypr/hyprland.conf` and find the binding section
-    - There should be some commented out bindings for **Personal** and **Work** Chrome profiles
-    - Edit these bindings to use the two different profiles
+   - There should be some commented out bindings for **Personal** and **Work** Chrome profiles
+   - Edit these bindings to use the two different profiles
 1. Remove the default binding and uncomment the new ones
 
 To help apps to use Wayland:
@@ -220,7 +220,7 @@ You need to turn off Desktop Notifications:
 ## 5. FoundryVTT Setup
 
 > [!IMPORTANT]
-> FoundryVTT should not be automatically downloaded/setup, because it uses a **Purchased License** to validate ownership.  Adding an automatic download/setup will make the license public, which is not what we want.
+> FoundryVTT should not be automatically downloaded/setup, because it uses a **Purchased License** to validate ownership. Adding an automatic download/setup will make the license public, which is not what we want.
 
 ### Downloading FoundryVTT
 
@@ -229,7 +229,7 @@ You need to turn off Desktop Notifications:
 
 ### No IP
 
-When setting up a live server, it uses your machine's IP Address as the Browser's URL.  We want to hide this IP so players don't access your IP directly.  You can setup a hidden IP via [No IP](https://www.noip.com/login).  No IP essentially creates a different browser URL that will point to your IP (e.g. my-random-name.ddns.net:30000 - 30000 is the default FoundryVTT port).
+When setting up a live server, it uses your machine's IP Address as the Browser's URL. We want to hide this IP so players don't access your IP directly. You can setup a hidden IP via [No IP](https://www.noip.com/login). No IP essentially creates a different browser URL that will point to your IP (e.g. my-random-name.ddns.net:30000 - 30000 is the default FoundryVTT port).
 
 ## 6. GitHub CLI Setup
 
