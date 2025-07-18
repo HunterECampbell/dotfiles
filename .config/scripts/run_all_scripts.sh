@@ -91,7 +91,7 @@ else
     LOG_FILE="$LOG_DIR/$(basename "$DOWNLOAD_PACKAGES_SCRIPT" .sh).log"
     # Using echo -e here to interpret the color codes
     echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
-    
+
     # Execute the script, pipe its stdout and stderr to tee.
     # tee will send it to both stdout (your console) and the LOG_FILE.
     # PIPESTATUS[0] gets the exit status of the first command in the pipe (the script itself).
@@ -125,7 +125,7 @@ while read -r script; do
 
     # Using echo -e here to interpret the color codes
     echo -e "${YELLOW}Executing: $(basename "$script")...${NC}"
-    
+
     # Define a specific log file for this script's output
     LOG_FILE="$LOG_DIR/$(basename "$script" .sh).log"
     # Using echo -e here to interpret the color codes

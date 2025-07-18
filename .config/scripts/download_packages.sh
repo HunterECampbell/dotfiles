@@ -177,7 +177,6 @@ is_flatpak_app_installed() {
     sudo -u "$TARGET_USER" flatpak list --app | grep -q "^$1/"
 }
 
-
 # Install Pacman packages
 echo "Installing official Arch Linux packages (via pacman):"
 for package in "${PACMAN_PACKAGES[@]}"; do
