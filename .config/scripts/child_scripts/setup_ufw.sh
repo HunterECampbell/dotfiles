@@ -49,7 +49,8 @@ sudo ufw default allow outgoing
 # Example: "22/tcp" for SSH, "80/tcp" for HTTP, "443/tcp" for HTTPS
 # Including ports 80/tcp and 443/tcp for development
 # Including port 25565/tcp for Minecraft servers
-declare -a ALLOW_PORTS=("80/tcp" "443/tcp" "25565/tcp")
+# Including port 30000/tcp for FoundryVTT
+declare -a ALLOW_PORTS=("80/tcp" "443/tcp" "25565/tcp", "30000/tcp")
 
 echo "Adding specific ALLOW rules for incoming traffic:"
 for port_rule in "${ALLOW_PORTS[@]}"; do
