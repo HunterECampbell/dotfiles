@@ -72,7 +72,7 @@ ln -s ~/dotfiles/.config/systemd/user/hyprsunset-night.timer ~/.config/systemd/u
 ln -s ~/dotfiles/.config/waybar ~/.config/waybar
 ln -s ~/dotfiles/.config/wofi ~/.config/wofi
 ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
-ln -s ~/dotfiles/Development ~/Development
+ln -s ~/dotfiles/Development/"Test Files" ~/Development/"Test Files"
 ln -s ~/dotfiles/.zshrc ~/.zshrc
 
 # Run this command to update your local applications
