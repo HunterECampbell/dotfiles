@@ -70,7 +70,7 @@ ln -s ~/dotfiles/.config/systemd/user/hyprsunset-day.timer ~/.config/systemd/use
 ln -s ~/dotfiles/.config/systemd/user/hyprsunset-night.service ~/.config/systemd/user
 ln -s ~/dotfiles/.config/systemd/user/hyprsunset-night.timer ~/.config/systemd/user
 ln -s ~/dotfiles/.config/waybar ~/.config/waybar
-ln -s ~/dotfiles/.config/wofi ~/.config/wofi 
+ln -s ~/dotfiles/.config/wofi ~/.config/wofi
 ln -s ~/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
 ln -s ~/dotfiles/Development ~/Development
 ln -s ~/dotfiles/.zshrc ~/.zshrc
