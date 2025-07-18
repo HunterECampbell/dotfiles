@@ -105,6 +105,8 @@ declare -a PACMAN_PACKAGES=(
     "hyprsunset"
     "hyprpaper"
     "hyprpolkitagent"
+    "jre-openjdk-headless"
+    "jre17-openjdk-headless"
     # "lib32-nvidia-utils" # Setup in child script - Steam Setup
     # "lib32-vulkan-icd-loader" # Setup in child script - Steam Setup
     # "lib32-vulkan-mesa-layers" # Setup in child script - Steam Setup
