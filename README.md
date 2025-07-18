@@ -185,6 +185,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 systemctl --user enable --now hyprsunset.service
 flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
 #### 4. Restart your computer

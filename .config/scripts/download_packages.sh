@@ -121,7 +121,7 @@ declare -a PACMAN_PACKAGES=(
     "nodejs"
     "npm"
     # "nvidia-utils" # Setup in a child script - Steam Setup
-    "nvm"
+    # "nvm" # Downloaded via a bash command, to it works with the terminal
     "openconnect"
     "papirus-icon-theme"
     "pipewire" # For screen sharing
