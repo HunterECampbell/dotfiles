@@ -139,7 +139,7 @@ To help apps to use Wayland:
 You need to turn off Desktop Notifications:
 
 1. Open **Discord** ($SUPER + D)
-1. Click your **Profile Picutre** -> **Edit Profile**
+1. Click your **Profile Picture** -> **Edit Profile**
 1. Click **Notifications**
 1. Uncheck **Enable Desktop Notifications**
 
