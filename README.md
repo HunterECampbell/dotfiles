@@ -88,6 +88,8 @@ systemctl --user start hyprsunset-night.timer
 systemctl --user enable hyprsunset-day.timer
 systemctl --user start hyprsunset-day.timer
 systemctl --user start hyprsunset.service
+sudo systemctl enable --now vpnagentd.service
+sudo systemctl status vpnagentd.service
 sudo systemctl enable --now NetworkManager.service
 sudo systemctl start docker.service
 sudo systemctl enable docker.service

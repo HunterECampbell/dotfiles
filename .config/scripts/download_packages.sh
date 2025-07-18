@@ -147,6 +147,7 @@ declare -a PACMAN_PACKAGES=(
 
 # AUR packages (install with yay)
 declare -a YAY_PACKAGES=(
+    "cisco-secure-client"
     "discord"
     "google-chrome"
     "grimblast-git" # For screen shots
