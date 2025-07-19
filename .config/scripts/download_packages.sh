@@ -154,6 +154,8 @@ declare -a YAY_PACKAGES=(
     "discord"
     "google-chrome"
     "grimblast-git" # For screen shots
+    "minecraft-launcher"
+    "prismlauncher"
     # "proton-ge-custom" # Setup in child script - Steam Setup
     "slack-desktop"
     "visual-studio-code-bin"
