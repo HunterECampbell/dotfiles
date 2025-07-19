@@ -120,19 +120,28 @@ source $ZSH/oh-my-zsh.sh
 # export ARCHFLAGS="-arch x86_64"
 
 
+# Scripts
+source ~/.config/scripts/zsh_scripts/*
+# This source includes:
+# start_minecraft_server.zsh
+
+
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
 #
+# Script Aliases
+alias mcserver='start_minecraft_server'
+
+
 # Aliases
 alias c='f() { if [[ -z "$1" ]]; then code .; else code "$@"; fi }; f'
 alias cl='clear'
 alias run='npm run'
 alias s='source ~/.zshrc'
 alias z='code ~/.zshrc'
-alias delete='rm -rf'
-alias remove='rm -rf'
+alias repo='f() {~/Development/repos/$1}; f'
 
 
 ## Git Specific Aliases
