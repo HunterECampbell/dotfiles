@@ -91,6 +91,7 @@ echo "---------------------------------------------------"
 # Define arrays for packages
 # Official Arch Linux packages (install with pacman)
 declare -a PACMAN_PACKAGES=(
+    "bc" # Common utility tool for scripts
     "docker"
     "docker-compose"
     "ffmpeg" # For screen recording (video encoding)
@@ -137,6 +138,7 @@ declare -a PACMAN_PACKAGES=(
     # "vulkan-mesa-layers" # Setup in child script - Steam Setup
     "waybar"
     "webkit2gtk-4.1" # For VPN Usage
+    "wev" # Keyboard Troubleshooter
     "wf-recorder" # For screen recording
     # "wine-staging" # Setup in child script - Steam Setup
     # "winetricks" # Setup in child script - Steam Setup
@@ -145,6 +147,8 @@ declare -a PACMAN_PACKAGES=(
     "xdg-desktop-portal" # For screen sharing
     "xdg-desktop-portal-hyprland" # For screen sharing
     # "xdg-utils" # Setup in a child script - Replace File Manager
+    "xorg-xeyes" # XWayland Tester
+    "ydotool" # Input Creation Tool
     # "zsh" # Setup in a child script - ZSH Setup
 )
 

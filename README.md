@@ -147,6 +147,7 @@ ln -s ~/Development/repos/dotfiles/.zshrc ~/.zshrc
 chmod +x ~/.config/scripts/run_all_scripts.sh
 chmod +x ~/.config/scripts/record_screen.sh
 chmod +x ~/.config/scripts/notify_of_screenshot_to_clipboard.sh
+chmod +x ~/.confic/scripts/autoclicker.sh
 ```
 
 #### 4. Other necessary commands for your symlinks:
