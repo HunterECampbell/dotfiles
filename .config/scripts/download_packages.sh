@@ -120,6 +120,9 @@ declare -a PACMAN_PACKAGES=(
     "networkmanager"
     "networkmanager-openconnect"
     "nodejs"
+    "noto-fonts"
+    "noto-fonts-cjk"
+    "noto-fonts-emoji"
     "npm"
     # "nvidia-utils" # Setup in a child script - Steam Setup
     # "nvm" # Downloaded via a bash command, to it works with the terminal
@@ -132,6 +135,9 @@ declare -a PACMAN_PACKAGES=(
     "slurp" # For screen shots
     # "steam" # Setup in child script - Steam Setup
     "ttf-fira-code-nerd"
+    "ttf-liberation"
+    "ttf-nerd-fonts-symbols"
+    "ttf-nerd-fonts-symbols-mono"
     # "ufw" # Setup in a child script - UFW Setup
     "unzip"
     # "vulkan-icd-loader" # Setup in child script - Steam Setup
@@ -162,6 +168,7 @@ declare -a YAY_PACKAGES=(
     "prismlauncher"
     # "proton-ge-custom" # Setup in child script - Steam Setup
     "slack-desktop"
+    "ttf-ms-fonts"
     "visual-studio-code-bin"
     "xdg-desktop-portal-hyprland-git" # For screen sharing
     "zoom"
