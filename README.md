@@ -44,7 +44,7 @@ Use the following settings for a smooth dotfiles setup:
       - Select **No** for creating a separate `/home` directory
 - Select **Partition**
   - Select **Disk Encryption**
-    - Select **Luks**
+    - Select **LUKS**
     - Select **Encryption password**
       - This is the password you will use to start up Arch Linux
     - Select **Partitions**

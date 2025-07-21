@@ -33,84 +33,93 @@ GAMING_SSD_DEVICE="" # This will be set by user selection
 
 echo -e "${BLUE}Scanning for available block devices...${NC}"
 
-# Get block device information in JSON format
-# Filter for disk and partition types, exclude loop and zram devices.
-# Only show partitions or full disks if they are not partitioned themselves.
-LSBLK_OUTPUT=$(lsblk -J -o NAME,SIZE,TYPE,MOUNTPOINTS,MODEL,SERIAL,FSTYPE,UUID | jq -r '.blockdevices[] | select(.type == "disk" or .type == "part") | if .children? then .children[] | select(.type == "part") | "\(.name) \(.size) \(.mountpoints) \(.fstype) \(.model // "") \(.serial // "") \(.uuid // "")" else "\(.name) \(.size) \(.mountpoints) \(.fstype) \(.model // "") \(.serial // "") \(.uuid // "")" end')
+# Improved jq command to list only partitions, ensuring consistent output fields.
+# It iterates through blockdevices and their children, selecting only those of type "part".
+LSBLK_OUTPUT=$(lsblk -J -o NAME,SIZE,TYPE,MOUNTPOINTS,MODEL,SERIAL,FSTYPE,UUID | \
+  jq -r '.blockdevices[] | (.children[]? // .) | select(.type == "part") | "\(.name) \(.size) \(.mountpoints) \(.fstype) \(.model // "") \(.serial // "") \(.uuid // "")"')
 
-mapfile -t ALL_DEVICES <<< "$LSBLK_OUTPUT"
+mapfile -t ALL_PARTITIONS <<< "$LSBLK_OUTPUT"
 
-declare -A DEVICE_MAP
-DEVICE_COUNT=0
-OS_DEVICES=() # Array to hold names of devices identified as OS/Swap
+declare -A DEVICE_MAP # This map will store the /dev/name for each numbered selectable option
+OS_PARTITIONS=() # Array to hold names of partitions identified as OS/Swap
 
-# First pass: Identify OS/Swap devices to warn the user
-for DEVICE_INFO in "${ALL_DEVICES[@]}"; do
-    NAME=$(echo "$DEVICE_INFO" | awk '{print $1}')
-    MOUNTPOINTS_RAW=$(echo "$DEVICE_INFO" | awk '{print $3}')
-    FSTYPE=$(echo "$DEVICE_INFO" | awk '{print $4}')
+# First pass: Identify OS/Swap partitions
+for PARTITION_INFO in "${ALL_PARTITIONS[@]}"; do
+    NAME=$(echo "$PARTITION_INFO" | awk '{print $1}')
+    MOUNTPOINTS_RAW=$(echo "$PARTITION_INFO" | awk '{print $3}') # e.g., ["/"] or ["/boot/efi"] or ["/mnt/gaming_ssd"] or null
+    FSTYPE=$(echo "$PARTITION_INFO" | awk '{print $4}')
 
+    IS_CRITICAL_OS_PARTITION="false"
     if [ "$MOUNTPOINTS_RAW" != "null" ] && [ -n "$MOUNTPOINTS_RAW" ]; then
-        CLEAN_MOUNTPOINTS=$(echo "$MOUNTPOINTS_RAW" | sed 's/[\["\]]//g' | sed 's/, / /g' | sed 's/,//g')
-        if [[ "$CLEAN_MOUNTPOINTS" == *"/"* ]] || [[ "$CLEAN_MOUNTPOINTS" == *"/boot"* ]] || [[ "$FSTYPE" == "swap" ]]; then
-            OS_DEVICES+=("$NAME")
+        # Check for specific critical OS mount points
+        if [[ "$MOUNTPOINTS_RAW" == *"\"/\""* ]] || \
+           [[ "$MOUNTPOINTS_RAW" == *"\"/boot\""* ]] || \
+           [[ "$MOUNTPOINTS_RAW" == *"\"/boot/efi\""* ]]; then
+            IS_CRITICAL_OS_PARTITION="true"
         fi
+    fi
+    # Check if it's a swap partition
+    if [[ "$FSTYPE" == "swap" ]]; then
+        IS_CRITICAL_OS_PARTITION="true"
+    fi
+
+    if [ "$IS_CRITICAL_OS_PARTITION" == "true" ]; then
+        OS_PARTITIONS+=("$NAME")
     fi
 done
 
-# --- Build the list of selectable devices ---
-SELECTABLE_DEVICES=()
-SELECTABLE_DEVICE_MAP=()
+# --- Build the list of selectable devices for the user ---
+SELECTABLE_DEVICES_DISPLAY=() # Stores formatted strings for display
 SELECTABLE_DEVICE_COUNT=0
 
-for DEVICE_INFO in "${ALL_DEVICES[@]}"; do
-    NAME=$(echo "$DEVICE_INFO" | awk '{print $1}')
-    SIZE=$(echo "$DEVICE_INFO" | awk '{print $2}')
-    MOUNTPOINTS_RAW=$(echo "$DEVICE_INFO" | awk '{print $3}')
-    FSTYPE=$(echo "$DEVICE_INFO" | awk '{print $4}')
-    MODEL=$(echo "$DEVICE_INFO" | awk '{print $5}')
-    SERIAL=$(echo "$DEVICE_INFO" | awk '{print $6}')
-    UUID_VAL=$(echo "$DEVICE_INFO" | awk '{print $7}')
+for PARTITION_INFO in "${ALL_PARTITIONS[@]}"; do
+    NAME=$(echo "$PARTITION_INFO" | awk '{print $1}')
+    SIZE=$(echo "$PARTITION_INFO" | awk '{print $2}')
+    MOUNTPOINTS_RAW=$(echo "$PARTITION_INFO" | awk '{print $3}')
+    FSTYPE=$(echo "$PARTITION_INFO" | awk '{print $4}')
+    MODEL=$(echo "$PARTITION_INFO" | awk '{print $5}')
+    SERIAL=$(echo "$PARTITION_INFO" | awk '{print $6}')
+    UUID_VAL=$(echo "$PARTITION_INFO" | awk '{print $7}')
 
-    # Filter out loop/zram devices
+    # Filter out loop/zram devices (though jq already targets "part" type)
     if [[ "$NAME" =~ ^(loop|zram) ]]; then
         continue
     fi
 
-    # Determine if it's an OS drive (skip if it is)
-    IS_OS_DEVICE="false"
-    for os_dev in "${OS_DEVICES[@]}"; do
-        if [[ "$NAME" == "$os_dev" ]]; then
-            IS_OS_DEVICE="true"
+    # Determine if it's an OS/Swap partition (these are not selectable for gaming SSD)
+    IS_OS_PARTITION="false"
+    for os_part in "${OS_PARTITIONS[@]}"; do
+        if [[ "$NAME" == "$os_part" ]]; then
+            IS_OS_PARTITION="true"
             break
         fi
     done
 
-    if [ "$IS_OS_DEVICE" == "true" ]; then
-        continue # Skip OS/Swap devices from selectable list
+    if [ "$IS_OS_PARTITION" == "true" ]; then
+        continue # Skip OS/Swap partitions from the selectable list
     fi
 
-    # Now, check if it's a partition (or a non-partitioned disk).
-    # We want to present actual partitions, not whole disks if they have partitions.
-    # We get partitions from the `jq` output already (via `.children[]?`).
-    # If the `TYPE` from `lsblk -o TYPE` is `disk` AND it has children, skip the disk entry.
-    # If it's a `disk` and has NO children, it's a raw disk, which is selectable.
-    LSBLK_TYPE=$(lsblk -no TYPE "/dev/${NAME}" 2>/dev/null)
-    if [ "$LSBLK_TYPE" == "disk" ] && [ $(lsblk -lno NAME "/dev/${NAME}" | wc -l) -gt 1 ]; then
-        continue # Skip whole disk if it has partitions
-    fi
-
+    # This is a selectable partition
     SELECTABLE_DEVICE_COUNT=$((SELECTABLE_DEVICE_COUNT + 1))
-    SELECTABLE_DEVICE_MAP[$SELECTABLE_DEVICE_COUNT]="/dev/${NAME}"
-    SELECTABLE_DEVICES+=("${SELECTABLE_DEVICE_COUNT}: /dev/${NAME} - Size: ${SIZE} - FS: ${FSTYPE:-unknown} - Model: ${MODEL} - Serial: ${SERIAL} - UUID: ${UUID_VAL} - ${GREEN}Not Mounted / Data Drive${NC}")
+    DEVICE_MAP[$SELECTABLE_DEVICE_COUNT]="/dev/${NAME}"
+
+    DISPLAY_MOUNTPOINTS="Not Mounted"
+    if [ "$MOUNTPOINTS_RAW" != "null" ] && [ -n "$MOUNTPOINTS_RAW" ]; then
+        CLEAN_MOUNTPOINTS=$(echo "$MOUNTPOINTS_RAW" | sed 's/[\["\]]//g' | sed 's/, / /g' | sed 's/,//g')
+        if [ -n "$CLEAN_MOUNTPOINTS" ]; then # Make sure it's not just an empty string after cleaning
+            DISPLAY_MOUNTPOINTS="${GREEN}Mounted at: ${CLEAN_MOUNTPOINTS}${NC}"
+        fi
+    fi
+
+    SELECTABLE_DEVICES_DISPLAY+=("${SELECTABLE_DEVICE_COUNT}: /dev/${NAME} - Size: ${SIZE} - FS: ${FSTYPE:-unknown} - Model: ${MODEL} - Serial: ${SERIAL} - UUID: ${UUID_VAL} - ${DISPLAY_MOUNTPOINTS}")
 done
 
 if [ "$SELECTABLE_DEVICE_COUNT" -eq 0 ]; then
-    echo -e "${YELLOW}No suitable secondary partitions found for gaming SSD setup. Skipping.${NC}"
+    echo -e "${YELLOW}No suitable secondary partitions found for gaming SSD setup. Exiting SSD setup.${NC}"
     exit 0 # Exit successfully, no action needed
 fi
 
-# --- New safety check: If only one candidate partition is found after filtering, skip. ---
+# --- Safety check: If only one candidate partition is found after filtering, skip. ---
 # This prevents accidental formatting if the single candidate is ambiguous or critical.
 if [ "$SELECTABLE_DEVICE_COUNT" -eq 1 ]; then
     GAMING_SSD_DEVICE="${SELECTABLE_DEVICE_MAP[1]}" # Get the name of the single candidate
@@ -126,7 +135,7 @@ echo -e "${YELLOW}DO NOT select partitions marked as '${RED}OS Drive / Swap${YEL
 echo ""
 
 # Display selectable devices for user selection
-for DEVICE_DISPLAY_INFO in "${SELECTABLE_DEVICES[@]}"; do
+for DEVICE_DISPLAY_INFO in "${SELECTABLE_DEVICES_DISPLAY[@]}"; do
     echo -e "${BLUE}${DEVICE_DISPLAY_INFO}${NC}"
 done
 
@@ -134,7 +143,7 @@ SELECTED_NUM=""
 while true; do
     read -p "Enter the number of the partition you want to use for gaming, or 's' to skip SSD setup: " SELECTED_NUM
     if [[ "$SELECTED_NUM" =~ ^[0-9]+$ ]] && [ "$SELECTED_NUM" -ge 1 ] && [ "$SELECTED_NUM" -le "$SELECTABLE_DEVICE_COUNT" ]; then
-        GAMING_SSD_DEVICE="${SELECTABLE_DEVICE_MAP[$SELECTED_NUM]}"
+        GAMING_SSD_DEVICE="${DEVICE_MAP[$SELECTED_NUM]}"
         echo -e "${BLUE}You selected: ${GAMING_SSD_DEVICE}${NC}"
         break
     elif [[ "$SELECTED_NUM" == "s" || "$SELECTED_NUM" == "S" ]]; then
@@ -160,7 +169,22 @@ PROCEED_FORMAT="no" # Default to no formatting
 
 if [ "$CURRENT_FS_TYPE" = "ext4" ]; then
     echo -e "${GREEN}Filesystem is already ext4. Proceeding with mounting and fstab setup.${NC}"
-else
+elif [ "$CURRENT_FS_TYPE" = "crypto_LUKS" ]; then
+    echo -e "${RED}WARNING: The detected filesystem (${CURRENT_FS_TYPE}) is an encrypted LUKS volume.${NC}"
+    echo -e "${RED}Formatting ${GAMING_SSD_DEVICE} to ext4 will DESTROY the LUKS container and ERASE ALL DATA on it!${NC}"
+    echo -e "${RED}If you wish to keep the encryption and its data, DO NOT proceed with formatting.${NC}"
+    echo -e "${RED}This script is designed to set up a new, directly mountable ext4 partition specifically for gaming.${NC}"
+    read -p "Do you understand and still want to proceed with formatting ${GAMING_SSD_DEVICE} to ext4? (Type 'yes' to confirm, 'no' to skip): " CONFIRM_FORMAT
+
+    if [ "$CONFIRM_FORMAT" = "yes" ]; then
+        PROCEED_FORMAT="yes"
+        echo -e "${GREEN}Proceeding with formatting ${GAMING_SSD_DEVICE}...${NC}"
+    else
+        echo -e "${YELLOW}Formatting cancelled by user. Gaming SSD setup skipped (LUKS partition not reformatted).${NC}"
+        echo "No SSD will be mounted for gaming via this script. Please manually setup your gaming SSD."
+        exit 0 # Exit successfully if user declines formatting
+    fi
+else # For any other filesystem type that is not ext4 or crypto_LUKS
     echo -e "${RED}WARNING: The detected filesystem (${CURRENT_FS_TYPE}) is NOT ext4.${NC}"
     echo -e "${RED}Formatting ${GAMING_SSD_DEVICE} to ext4 will ERASE ALL DATA on it!${NC}"
     read -p "Do you want to proceed with formatting ${GAMING_SSD_DEVICE} to ext4? (Type 'yes' to confirm, 'no' to skip): " CONFIRM_FORMAT
@@ -169,8 +193,8 @@ else
         PROCEED_FORMAT="yes"
         echo -e "${GREEN}Proceeding with formatting ${GAMING_SSD_DEVICE}...${NC}"
     else
-        echo -e "${YELLOW}Formatting cancelled by user. Skipping gaming SSD formatting and mounting.${NC}"
-        echo "Because your gaming SSD is not an ext4 file system, automatic mounting via this script is not recommended. Please manually setup your gaming SSD."
+        echo -e "${YELLOW}Formatting cancelled by user. Gaming SSD setup skipped (partition not reformatted).${NC}"
+        echo "No SSD will be mounted for gaming via this script. Please manually setup your gaming SSD."
         exit 0 # Exit successfully if user declines formatting
     fi
 fi
