@@ -181,7 +181,7 @@ elif [ "$CURRENT_FS_TYPE" = "crypto_LUKS" ]; then
         echo -e "${GREEN}Proceeding with formatting ${GAMING_SSD_DEVICE}...${NC}"
     else
         echo -e "${YELLOW}Formatting cancelled by user. Gaming SSD setup skipped (LUKS partition not reformatted).${NC}"
-        echo "No SSD will be mounted for gaming via this script. Please manually setup your gaming SSD."
+        echo -e "${YELLOW}No SSD can be mounted for gaming. Exiting.${NC}"
         exit 0 # Exit successfully if user declines formatting
     fi
 else # For any other filesystem type that is not ext4 or crypto_LUKS
@@ -194,7 +194,7 @@ else # For any other filesystem type that is not ext4 or crypto_LUKS
         echo -e "${GREEN}Proceeding with formatting ${GAMING_SSD_DEVICE}...${NC}"
     else
         echo -e "${YELLOW}Formatting cancelled by user. Gaming SSD setup skipped (partition not reformatted).${NC}"
-        echo "No SSD will be mounted for gaming via this script. Please manually setup your gaming SSD."
+        echo -e "${YELLOW}No SSD can be mounted for gaming. Exiting.${NC}"
         exit 0 # Exit successfully if user declines formatting
     fi
 fi
