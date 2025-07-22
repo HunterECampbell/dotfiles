@@ -135,6 +135,7 @@ ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-day.timer ~/.
 ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-night.service ~/.config/systemd/user
 ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-night.timer ~/.config/systemd/user
 ln -s ~/Development/repos/dotfiles/.config/waybar ~/.config/waybar
+ln -s ~/Development/repos/dotfiles/.config/widgets ~/.config/widgets
 ln -s ~/Development/repos/dotfiles/.config/wofi ~/.config/wofi
 ln -s ~/Development/repos/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
 ln -s ~/Development/repos/dotfiles/Development/"Test Files" ~/Development/"Test Files"

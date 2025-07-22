@@ -132,6 +132,7 @@ declare -a PACMAN_PACKAGES=(
     "pipewire-pulse"
     "qt5-wayland"
     "qt6-wayland"
+    "sass" # For AGS Widgets
     "slurp" # For screen shots
     # "steam" # Setup in child script - Steam Setup
     "ttf-fira-code-nerd"
@@ -160,6 +161,7 @@ declare -a PACMAN_PACKAGES=(
 
 # AUR packages (install with yay)
 declare -a YAY_PACKAGES=(
+    "aylurs-gtk-shell-git"
     "cisco-secure-client"
     "discord"
     "google-chrome"
