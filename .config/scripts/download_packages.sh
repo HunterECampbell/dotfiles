@@ -96,6 +96,7 @@ declare -a PACMAN_PACKAGES=(
     "docker-compose"
     "ffmpeg" # For screen recording (video encoding)
     "flatpak"
+    "gamescope"
     "gimp"
     "github-cli"
     "gnome-calculator"
@@ -165,6 +166,7 @@ declare -a YAY_PACKAGES=(
     "aylurs-gtk-shell-git"
     "cisco-secure-client"
     "discord"
+    "gamescope-nvidia"
     "google-chrome"
     "grimblast-git" # For screen shots
     "minecraft-launcher"
