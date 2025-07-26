@@ -151,6 +151,7 @@ declare -a PACMAN_PACKAGES=(
     # "winetricks" # Setup in child script - Steam Setup
     "wireplumber" # For screen sharing
     "wl-clipboard" # For screen shots
+    "wtype" # For keyboard input simulation
     "xdg-desktop-portal" # For screen sharing
     "xdg-desktop-portal-hyprland" # For screen sharing
     # "xdg-utils" # Setup in a child script - Replace File Manager
