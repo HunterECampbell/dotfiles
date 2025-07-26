@@ -94,6 +94,7 @@ declare -a PACMAN_PACKAGES=(
     "bc" # Common utility tool for scripts
     "docker"
     "docker-compose"
+    "egl-wayland" # For graphics rendering
     "ffmpeg" # For screen recording (video encoding)
     "flatpak"
     "gamescope"
@@ -110,16 +111,21 @@ declare -a PACMAN_PACKAGES=(
     "jdk8-openjdk" # Minecraft 1.12.x - 1.16.5
     "jdk17-openjdk" # Minecraft 1.17.x - 1.20.5
     "jdk21-openjdk" # Minecraft 1.20.6 - 1.21.x
-    # "lib32-nvidia-utils" # Setup in child script - Steam Setup
-    # "lib32-vulkan-icd-loader" # Setup in child script - Steam Setup
+    "lib32-mesa" # For graphics rendering
+    "lib32-nvidia-utils" # Setup in child script - Steam Setup
+    "lib32-vulkan-icd-loader" # Setup in child script - Steam Setup
     # "lib32-vulkan-mesa-layers" # Setup in child script - Steam Setup
     "libnotify"
     "libva-nvidia-driver"
     "lxappearance"
+    "mesa" # For graphics rendering
     "mpv" # For vieweing mp4 files (For screen recordings)
     # "nautilus" # Setup in a child script - Replace File Manager
     "networkmanager"
     "networkmanager-openconnect"
+    "nvidia-dkms"
+    "nvidia-settings"
+    "nvidia-utils"
     "nodejs"
     "noto-fonts"
     "noto-fonts-cjk"
@@ -142,8 +148,10 @@ declare -a PACMAN_PACKAGES=(
     "ttf-nerd-fonts-symbols-mono"
     # "ufw" # Setup in a child script - UFW Setup
     "unzip"
-    # "vulkan-icd-loader" # Setup in child script - Steam Setup
+    "vulkan-headers"
+    "vulkan-icd-loader" # Setup in child script - Steam Setup
     # "vulkan-mesa-layers" # Setup in child script - Steam Setup
+    "vulkan-tools"
     "waybar"
     "webkit2gtk-4.1" # For VPN Usage
     "wev" # Keyboard Troubleshooter
@@ -166,7 +174,6 @@ declare -a YAY_PACKAGES=(
     "aylurs-gtk-shell-git"
     "cisco-secure-client"
     "discord"
-    "gamescope-nvidia"
     "google-chrome"
     "grimblast-git" # For screen shots
     "minecraft-launcher"
