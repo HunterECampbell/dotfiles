@@ -142,17 +142,33 @@ alias run='npm run'
 alias s='source ~/.zshrc'
 alias z='code ~/.zshrc'
 alias repo='f() {~/Development/repos/$1}; f'
+alias mediawriter='flatpak run org.fedoraproject.MediaWriter'
 
 
 ## Git Specific Aliases
 alias gch='git checkout'
 alias gchb='git checkout -b'
-alias gm='git merge'
-alias gmd='git merge develop'
 alias gp='git push'
 alias gpso='git push --set-upstream origin'
-alias grh='git reset --hard'
+alias ga='git add -A'
+alias gc='git commit -m'
+alias gac='f() { ga && gc $1 };f'
+alias gp='git push'
+alias gpo='git push --set-upstream origin $(git symbolic-ref --short HEAD)'
+alias gpyolo='gp --no-verify'
+alias gmagic='f() { ga && gc $1 && gp };f'
+alias gmagico='f() { ga && gc $1 && gpo };f'
+alias gmagicyolo='f() { ga && gc $1 --no-verify && gp --no-verify };f'
+alias gmagicoyolo='f() { ga && gc $1 --no-verify && gpo --no-verify };f'
+
+alias gchd='git checkout develop'
+alias gpl='git pull'
+alias fresh='f() { git checkout "${1:-develop}" && gpl; }; f' # Defaults to develop, but allows you to pass in a specific branch
+alias freshm='f() { git fetch origin "${1:-develop}" && git merge "origin/${1:-develop}"; }; f' # Defaults to develop, but allows you to pass in a specific branch
+
 alias rh='git reset --hard'
+alias gst='git stash'
+alias gstp='git stash pop'
 
 
 ## Docker Specific Aliases
@@ -163,27 +179,6 @@ alias dps='docker ps -a' # Lists all containers
 alias drestart='f() { docker compose restart $1 };f' # $1 is the container name to restart
 alias dprune='docker system prune --all --volumes'
 alias dlog='f() { docker logs -f $1 };f' # $1 is the container name
-
-
-alias gchd='git checkout develop'
-alias gpl='git pull'
-alias gpld="git pull origin develop"
-alias fresh='gchd && gpl'
-alias freshm='git fetch origin develop && git merge origin/develop'
-
-
-alias ga='git add -A'
-alias gc='git commit -m'
-alias gac='f() { ga && gc $1 };f'
-alias gp='git push'
-alias gpo='git push --set-upstream origin $(git symbolic-ref --short HEAD)'
-alias gpyolo='gp --no-verify'
-alias gst='git stash'
-alias gstp='git stash pop'
-alias gmagic='f() { ga && gc $1 && gp };f'
-alias gmagico='f() { ga && gc $1 && gpo };f'
-alias gmagicyolo='f() { ga && gc $1 --no-verify && gp --no-verify };f'
-alias gmagicoyolo='f() { ga && gc $1 --no-verify && gpo --no-verify };f'
 
 
 ## NPM Specific Aliases
