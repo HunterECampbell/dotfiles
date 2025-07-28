@@ -40,7 +40,3 @@ sleep 0.1
 # 5. Go to Workspace 10 and open Cisco Secure Client
 hyprctl_dispatch workspace 10
 hyprctl_dispatch exec "$CISCO_CMD"
-sleep 3
-
-# 6. Go back to Workspace 1
-hyprctl_dispatch workspace 1
