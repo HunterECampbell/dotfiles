@@ -133,6 +133,7 @@ source ~/.config/scripts/zsh_scripts/*
 #
 # Script Aliases
 alias mcserver='start_minecraft_server'
+alias foundry='~/FoundryVTT-12.331/foundryvtt'
 
 
 # Aliases
