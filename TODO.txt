@@ -1,0 +1,2 @@
+- Internet icon doesn't update when on the VPN
+- Blue light filter's timer doesn't automatically change the blue light filter
