@@ -47,12 +47,16 @@ TARGET_HOME="/home/$TARGET_USER" # Assuming /home/user for non-root user
 echo "Target user for script execution: $TARGET_USER (Home: $TARGET_HOME)"
 
 # Define the directory containing your setup scripts
-SCRIPTS_DIR="$TARGET_HOME/.config/scripts" # Pointing to the top-level scripts directory
+# This is the directory where the dotfiles repository is cloned
+DOTFILES_REPO_DIR="$TARGET_HOME/Development/repos/dotfiles"
+# This is the directory where the symlinks will be created
+SCRIPTS_DIR="$TARGET_HOME/.config/scripts"
 SETUP_SCRIPTS_DIR="$SCRIPTS_DIR/setup_scripts"
 # Define the path to the sibling scripts. The other scripts are now in SETUP_SCRIPTS_DIR
 DOWNLOAD_PACKAGES_SCRIPT="$SCRIPTS_DIR/download_packages.sh"
 POST_SETUP_SCRIPT="$SCRIPTS_DIR/post_setup.sh"
-
+# New foundational script for symlinking
+SETUP_SYMLINKS_SCRIPT="$SCRIPTS_DIR/setup_symlinks.sh"
 
 # Array to store failed scripts and their error messages/captured output
 # Each element will be formatted as: "Script Name (Exit Status: X)\n--- Output/Error ---\nCaptured Output"
@@ -164,15 +168,6 @@ should_execute_script() {
   return 0 # Should execute
 }
 
-# --- Set executable permissions recursively ---
-echo -e "${YELLOW}Ensuring all scripts in '$SCRIPTS_DIR' are executable recursively...${NC}"
-if sudo -u "$TARGET_USER" find "$SCRIPTS_DIR" -type f -print0 | xargs -0 chmod +x; then
-    echo -e "${GREEN}Permissions updated successfully.${NC}"
-else
-    echo -e "${RED}Error setting executable permissions. Subsequent scripts may fail.${NC}"
-fi
-echo "---------------------------------------------------"
-
 # Function to execute a foundational script and check its status
 execute_foundational_script() {
     local script_path="$1"
@@ -212,6 +207,47 @@ execute_foundational_script() {
     echo "---------------------------------------------------"
 }
 
+
+# --- NEW: Foundational Symlink Setup and Permissions ---
+# This block handles the critical first steps of making sure the scripts are accessible.
+echo -e "${YELLOW}Creating top-level symlink and ensuring symlink script is executable...${NC}"
+# 1. Create the .config directory if it doesn't exist
+sudo -u "$TARGET_USER" mkdir -p "$TARGET_HOME/.config"
+# 2. Create the symlink for the main scripts directory
+#    -f: force creation (remove existing destination file)
+#    -n: treat TARGET as a normal file if it's a symlink
+if sudo -u "$TARGET_USER" ln -sfn "$DOTFILES_REPO_DIR" "$SCRIPTS_DIR"; then
+    echo -e "${GREEN}Symlink created: $DOTFILES_REPO_DIR -> $SCRIPTS_DIR${NC}"
+else
+    echo -e "${RED}Error creating symlink for the scripts directory. Exiting.${NC}"
+    exit 1
+fi
+
+# 3. Make the foundational symlink script executable before we run it.
+if sudo -u "$TARGET_USER" chmod +x "$SETUP_SYMLINKS_SCRIPT"; then
+    echo -e "${GREEN}Foundational symlink script ($SETUP_SYMLINKS_SCRIPT) made executable.${NC}"
+else
+    echo -e "${RED}Error making foundational symlink script executable. Exiting.${NC}"
+    exit 1
+fi
+echo "---------------------------------------------------"
+
+# 4. Execute the symlink setup script to create other dotfile symlinks
+execute_foundational_script "$SETUP_SYMLINKS_SCRIPT" "symlink setup"
+
+
+# --- Set executable permissions recursively ---
+# This block is now moved to after the symlink script has run.
+echo -e "${YELLOW}Ensuring all scripts in '$SCRIPTS_DIR' are executable recursively...${NC}"
+if sudo -u "$TARGET_USER" find "$SCRIPTS_DIR" -type f -exec chmod +x {} +; then
+    echo -e "${GREEN}Permissions updated successfully.${NC}"
+else
+    echo -e "${RED}Error setting executable permissions. Subsequent scripts may fail.${NC}"
+    exit 1
+fi
+echo "---------------------------------------------------"
+
+
 # --- Execute Foundational Scripts in Order ---
 execute_foundational_script "$DOWNLOAD_PACKAGES_SCRIPT" "package installation" "$SETUP_TYPE" # Pass setup_type to the script
 
@@ -225,11 +261,14 @@ while read -r script_path; do
     if [[ "$script_name" == "run_setup_scripts.sh" ]]; then
         continue
     fi
-    # The download_packages.sh and post_setup.sh scripts are handled separately
+    # The foundational scripts are handled separately and skipped here
     if [[ "$script_name" == "download_packages.sh" ]]; then
         continue
     fi
     if [[ "$script_name" == "post_setup.sh" ]]; then
+        continue
+    fi
+    if [[ "$script_name" == "setup_symlinks.sh" ]]; then
         continue
     fi
 
@@ -237,7 +276,7 @@ while read -r script_path; do
     if should_execute_script "$script_name"; then
         echo -e "${YELLOW}Executing: $script_name...${NC}"
 
-        LOG_FILE="$LOG_DIR/$(basename "$script_name" .sh).log"
+        LOG_FILE="$LOG_DIR/$(basename "$script_path" .sh).log" # Use script_path to get the correct name
         echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
 
         # Execute the script as the TARGET_USER
