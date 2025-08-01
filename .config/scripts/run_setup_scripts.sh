@@ -48,15 +48,15 @@ echo "Target user for script execution: $TARGET_USER (Home: $TARGET_HOME)"
 
 # Define the directory containing your setup scripts
 # This is the directory where the dotfiles repository is cloned
-DOTFILES_REPO_DIR="$TARGET_HOME/Development/repos/dotfiles"
+DOTFILES_SCRIPT_REPO_DIR="$TARGET_HOME/Development/repos/dotfiles/.config/scripts"
 # This is the directory where the symlinks will be created
 SCRIPTS_DIR="$TARGET_HOME/.config/scripts"
 SETUP_SCRIPTS_DIR="$SCRIPTS_DIR/setup_scripts"
 # Define the path to the sibling scripts. The other scripts are now in SETUP_SCRIPTS_DIR
 DOWNLOAD_PACKAGES_SCRIPT="$SCRIPTS_DIR/download_packages.sh"
-POST_SETUP_SCRIPT="$SCRIPTS_DIR/post_setup.sh"
+POST_SETUP_SCRIPT="$SETUP_SCRIPTS_DIR/post_setup.sh"
 # New foundational script for symlinking
-SETUP_SYMLINKS_SCRIPT="$SCRIPTS_DIR/setup_symlinks.sh"
+SETUP_SYMLINKS_SCRIPT="$SETUP_SCRIPTS_DIR/setup_symlinks.sh"
 
 # Array to store failed scripts and their error messages/captured output
 # Each element will be formatted as: "Script Name (Exit Status: X)\n--- Output/Error ---\nCaptured Output"
@@ -216,8 +216,8 @@ sudo -u "$TARGET_USER" mkdir -p "$TARGET_HOME/.config"
 # 2. Create the symlink for the main scripts directory
 #    -f: force creation (remove existing destination file)
 #    -n: treat TARGET as a normal file if it's a symlink
-if sudo -u "$TARGET_USER" ln -sfn "$DOTFILES_REPO_DIR" "$SCRIPTS_DIR"; then
-    echo -e "${GREEN}Symlink created: $DOTFILES_REPO_DIR -> $SCRIPTS_DIR${NC}"
+if sudo -u "$TARGET_USER" ln -sfn "$DOTFILES_SCRIPT_REPO_DIR" "$SCRIPTS_DIR"; then
+    echo -e "${GREEN}Symlink created: $DOTFILES_SCRIPT_REPO_DIR -> $SCRIPTS_DIR${NC}"
 else
     echo -e "${RED}Error creating symlink for the scripts directory. Exiting.${NC}"
     exit 1

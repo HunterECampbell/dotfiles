@@ -48,8 +48,10 @@ declare -a FAILED_STEPS=()
 _create_initial_dirs() {
   echo -e "${BLUE}Creating initial directories...${NC}"
   local -a dirs_to_create=(
-    "$TARGET_HOME/.config/systemd"
+    "$TARGET_HOME/.config/systemd/user"
     "$TARGET_HOME/Development"
+    # Note: Other parent directories like ~/.config/hypr are created
+    # by the parent script before this script runs.
   )
 
   for dir in "${dirs_to_create[@]}"; do
@@ -66,30 +68,37 @@ _create_initial_dirs() {
 # 2. Commands for symlinks
 _create_dotfile_symlinks() {
   echo -e "${BLUE}Creating dotfile symlinks...${NC}"
-  # Define symlinks as "source_path::target_path" pairs
-  # Path names with spaces should be escaped with backslashes
-  local -a symlinks=(
-    ".config/hypr::.config/hypr"
-    ".config/mpv::.config/mpv"
-    ".config/scripts::.config/scripts"
-    ".config/systemd/user::.config/systemd/user"
-    ".config/waybar::.config/waybar"
-    ".config/widgets::.config/widgets"
-    ".config/wofi::.config/wofi"
-    ".config/zoomus.conf::.config/zoomus.conf"
-    "Development/\"Test Files\"::Development/\"Test Files\""
-    ".zshrc::.zshrc"
+  # Define symlinks in two separate, corresponding arrays to prevent parsing issues
+  local -a src_paths=(
+    "$DOTFILES_REPO_DIR/.config/hypr"
+    "$DOTFILES_REPO_DIR/.config/mpv"
+    "$DOTFILES_REPO_DIR/.config/scripts"
+    "$DOTFILES_REPO_DIR/.config/systemd/user"
+    "$DOTFILES_REPO_DIR/.config/waybar"
+    "$DOTFILES_REPO_DIR/.config/widgets"
+    "$DOTFILES_REPO_DIR/.config/wofi"
+    "$DOTFILES_REPO_DIR/.config/zoomus.conf"
+    "$DOTFILES_REPO_DIR/Development/Test Files"
+    "$DOTFILES_REPO_DIR/.zshrc"
   )
 
-  for link_pair in "${symlinks[@]}"; do
-    IFS='::' read -r src_raw_path dest_raw_path <<< "$link_pair"
+  local -a dest_paths=(
+    "$TARGET_HOME/.config/hypr"
+    "$TARGET_HOME/.config/mpv"
+    "$TARGET_HOME/.config/scripts"
+    "$TARGET_HOME/.config/systemd/user"
+    "$TARGET_HOME/.config/waybar"
+    "$TARGET_HOME/.config/widgets"
+    "$TARGET_HOME/.config/wofi"
+    "$TARGET_HOME/.config/zoomus.conf"
+    "$TARGET_HOME/Development/Test Files"
+    "$TARGET_HOME/.zshrc"
+  )
 
-    # Remove the backslash and quote characters from the path string
-    local src_path_clean="${src_raw_path//\\\"/}"
-    local dest_path_clean="${dest_raw_path//\\\"/}"
-
-    local source_path="$DOTFILES_REPO_DIR/$src_path_clean"
-    local target_path="$TARGET_HOME/$dest_path_clean"
+  # Loop through the arrays to create the symlinks
+  for i in "${!src_paths[@]}"; do
+    local source_path="${src_paths[$i]}"
+    local target_path="${dest_paths[$i]}"
 
     # Check if target already exists and is a correct symlink
     if [[ -L "$target_path" && "$(readlink "$target_path")" == "$source_path" ]]; then
@@ -100,7 +109,8 @@ _create_dotfile_symlinks() {
       FAILED_STEPS+=("Symlink Error (Exists: $target_path)")
     else
       echo -e "${YELLOW}  Creating symlink: $target_path -> $source_path${NC}"
-      if sudo -u "$TARGET_USER" ln -s "$source_path" "$target_path"; then
+      # Use `ln -sfn` to force overwrite existing files/symlinks
+      if sudo -u "$TARGET_USER" ln -sfn "$source_path" "$target_path"; then
         echo -e "${GREEN}  Successfully created symlink: $target_path${NC}"
       else
         echo -e "${RED}  Error creating symlink: $target_path -> $source_path${NC}"
