@@ -118,8 +118,7 @@ Before symlinking, some directors are required beforehand.
 #### 1. Directories to create before symlinking:
 
 ```
-mkdir ~/.config/systemd
-mkdir ~/.config/systemd/user
+mkdir -p ~/.config/systemd
 mkdir ~/Development
 ```
 
@@ -129,11 +128,7 @@ mkdir ~/Development
 ln -s ~/Development/repos/dotfiles/.config/hypr ~/.config/hypr
 ln -s ~/Development/repos/dotfiles/.config/mpv ~/.config/mpv
 ln -s ~/Development/repos/dotfiles/.config/scripts ~/.config/scripts
-ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset.service ~/.config/systemd/user
-ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-day.service ~/.config/systemd/user
-ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-day.timer ~/.config/systemd/user
-ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-night.service ~/.config/systemd/user
-ln -s ~/Development/repos/dotfiles/.config/systemd/user/hyprsunset-night.timer ~/.config/systemd/user
+ln -s ~/Development/repos/dotfiles/.config/systemd/user ~/.config/systemd/user
 ln -s ~/Development/repos/dotfiles/.config/waybar ~/.config/waybar
 ln -s ~/Development/repos/dotfiles/.config/widgets ~/.config/widgets
 ln -s ~/Development/repos/dotfiles/.config/wofi ~/.config/wofi
