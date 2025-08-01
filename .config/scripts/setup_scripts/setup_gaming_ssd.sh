@@ -1,3 +1,4 @@
+# INTERACTIVE_SCRIPT
 #!/bin/bash
 
 # Script to set up a dedicated gaming SSD partition on Arch Linux.
@@ -5,6 +6,9 @@
 # filesystem, and offers to format it to ext4 if needed (with data loss warning).
 # It then mounts the partition and adds an entry to /etc/fstab for
 # automatic mounting on boot.
+#
+# IMPORTANT: This script should be executed by a parent script that handles
+# sudo elevation. It is marked with `INTERACTIVE_SCRIPT` to ensure it runs correctly.
 
 # --- Color Definitions for better readability ---
 GREEN='\033[0;32m'
@@ -29,7 +33,7 @@ fi
 ORIG_USER="${SUDO_USER:-$(logname)}"
 
 MOUNT_POINT="/mnt/gaming_ssd"
-GAMING_SSD_DEVICE="" # This will be set by user selection
+GAMING_SSD_DEVICE="" # This will be set by user selection or command-line argument
 
 echo -e "${BLUE}Scanning for available block devices...${NC}"
 
@@ -119,40 +123,57 @@ if [ "$SELECTABLE_DEVICE_COUNT" -eq 0 ]; then
     exit 0 # Exit successfully, no action needed
 fi
 
-# --- Safety check: If only one candidate partition is found after filtering, skip. ---
-# This prevents accidental formatting if the single candidate is ambiguous or critical.
-if [ "$SELECTABLE_DEVICE_COUNT" -eq 1 ]; then
-    GAMING_SSD_DEVICE="${SELECTABLE_DEVICE_MAP[1]}" # Get the name of the single candidate
-    echo -e "${YELLOW}Only one non-OS/swap candidate partition found for gaming SSD: ${GAMING_SSD_DEVICE}.${NC}"
-    echo -e "${YELLOW}For safety, automatic setup is skipped when only one candidate partition is identified.${NC}"
-    echo -e "${YELLOW}If you wish to proceed with this partition, please set it up manually.${NC}"
-    echo -e "${YELLOW}Consider that this might be a critical data partition or a misidentified OS partition.${NC}"
-    exit 0 # Exit successfully, skipping setup
-fi
-
-echo -e "${BLUE}Please select the partition for your gaming SSD:${NC}"
-echo -e "${YELLOW}DO NOT select partitions marked as '${RED}OS Drive / Swap${YELLOW}' as this could render your system unbootable.${NC}"
-echo ""
-
-# Display selectable devices for user selection
-for DEVICE_DISPLAY_INFO in "${SELECTABLE_DEVICES_DISPLAY[@]}"; do
-    echo -e "${BLUE}${DEVICE_DISPLAY_INFO}${NC}"
-done
-
-SELECTED_NUM=""
-while true; do
-    read -p "Enter the number of the partition you want to use for gaming, or 's' to skip SSD setup: " SELECTED_NUM
-    if [[ "$SELECTED_NUM" =~ ^[0-9]+$ ]] && [ "$SELECTED_NUM" -ge 1 ] && [ "$SELECTED_NUM" -le "$SELECTABLE_DEVICE_COUNT" ]; then
-        GAMING_SSD_DEVICE="${DEVICE_MAP[$SELECTED_NUM]}"
-        echo -e "${BLUE}You selected: ${GAMING_SSD_DEVICE}${NC}"
-        break
-    elif [[ "$SELECTED_NUM" == "s" || "$SELECTED_NUM" == "S" ]]; then
-        echo -e "${YELLOW}Gaming SSD setup skipped by user.${NC}"
-        exit 0 # Exit successfully if user explicitly skips
-    else
-        echo -e "${RED}Invalid selection. Please enter a number between 1 and ${SELECTABLE_DEVICE_COUNT}, or 's' to skip.${NC}"
+# --- Check for command-line argument or start interactive mode ---
+if [ -n "$1" ]; then
+    GAMING_SSD_DEVICE="$1"
+    # Basic validation for the command-line argument
+    if ! [[ "$GAMING_SSD_DEVICE" =~ ^/dev/[a-zA-Z]+[0-9]+$ ]]; then
+        echo -e "${RED}Error: Invalid partition device specified: ${GAMING_SSD_DEVICE}. Please use the format /dev/sdXn.${NC}"
+        exit 1
     fi
-done
+    # Check if the partition actually exists
+    if ! [ -b "$GAMING_SSD_DEVICE" ]; then
+        echo -e "${RED}Error: The specified partition ${GAMING_SSD_DEVICE} does not exist or is not a block device.${NC}"
+        exit 1
+    fi
+    echo -e "${GREEN}Running in non-interactive mode. Partition selected: ${GAMING_SSD_DEVICE}${NC}"
+else
+    # --- Interactive execution with user prompts ---
+    echo -e "${BLUE}Please select the partition for your gaming SSD:${NC}"
+    echo -e "${YELLOW}DO NOT select partitions marked as '${RED}OS Drive / Swap${YELLOW}' as this could render your system unbootable.${NC}"
+    echo ""
+
+    # Display selectable devices for user selection
+    for DEVICE_DISPLAY_INFO in "${SELECTABLE_DEVICES_DISPLAY[@]}"; do
+        echo -e "${BLUE}${DEVICE_DISPLAY_INFO}${NC}"
+    done
+
+    # --- Refactored Selection Loop ---
+    SELECTED_NUM=""
+    while true; do
+      # Redirect input from /dev/tty to force interactive input from the user's keyboard
+      read -p "Enter the number of the partition you want to use for gaming, or 's' to skip: " SELECTED_NUM < /dev/tty
+
+      case "$SELECTED_NUM" in
+        s|S)
+          echo -e "${YELLOW}Gaming SSD setup skipped by user.${NC}"
+          exit 0 # Exit successfully if user explicitly skips
+          ;;
+        [0-9]*)
+          if [[ "$SELECTED_NUM" -ge 1 ]] && [[ "$SELECTED_NUM" -le "$SELECTABLE_DEVICE_COUNT" ]]; then
+            GAMING_SSD_DEVICE="${DEVICE_MAP[$SELECTED_NUM]}"
+            echo -e "${BLUE}You selected: ${GAMING_SSD_DEVICE}${NC}"
+            break
+          else
+            echo -e "${RED}Invalid selection. Please enter a number between 1 and ${SELECTABLE_DEVICE_COUNT}, or 's' to skip.${NC}"
+          fi
+          ;;
+        *)
+          echo -e "${RED}Invalid input. Please enter a number between 1 and ${SELECTABLE_DEVICE_COUNT}, or 's' to skip.${NC}"
+          ;;
+      esac
+    done
+fi
 
 # Get current filesystem type of the SELECTED device
 CURRENT_FS_TYPE=$(blkid -s TYPE -o value "$GAMING_SSD_DEVICE" 2>/dev/null)
@@ -174,7 +195,7 @@ elif [ "$CURRENT_FS_TYPE" = "crypto_LUKS" ]; then
     echo -e "${RED}Formatting ${GAMING_SSD_DEVICE} to ext4 will DESTROY the LUKS container and ERASE ALL DATA on it!${NC}"
     echo -e "${RED}If you wish to keep the encryption and its data, DO NOT proceed with formatting.${NC}"
     echo -e "${RED}This script is designed to set up a new, directly mountable ext4 partition specifically for gaming.${NC}"
-    read -p "Do you understand and still want to proceed with formatting ${GAMING_SSD_DEVICE} to ext4? (Type 'yes' to confirm, 'no' to skip): " CONFIRM_FORMAT
+    read -p "Do you understand and still want to proceed with formatting ${GAMING_SSD_DEVICE} to ext4? (Type 'yes' to confirm, 'no' to skip): " CONFIRM_FORMAT < /dev/tty
 
     if [ "$CONFIRM_FORMAT" = "yes" ]; then
         PROCEED_FORMAT="yes"
@@ -187,7 +208,7 @@ elif [ "$CURRENT_FS_TYPE" = "crypto_LUKS" ]; then
 else # For any other filesystem type that is not ext4 or crypto_LUKS
     echo -e "${RED}WARNING: The detected filesystem (${CURRENT_FS_TYPE}) is NOT ext4.${NC}"
     echo -e "${RED}Formatting ${GAMING_SSD_DEVICE} to ext4 will ERASE ALL DATA on it!${NC}"
-    read -p "Do you want to proceed with formatting ${GAMING_SSD_DEVICE} to ext4? (Type 'yes' to confirm, 'no' to skip): " CONFIRM_FORMAT
+    read -p "Do you want to proceed with formatting ${GAMING_SSD_DEVICE} to ext4? (Type 'yes' to confirm, 'no' to skip): " CONFIRM_FORMAT < /dev/tty
 
     if [ "$CONFIRM_FORMAT" = "yes" ]; then
         PROCEED_FORMAT="yes"
