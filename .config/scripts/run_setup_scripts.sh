@@ -1,28 +1,52 @@
 #!/bin/bash
 
-# This script executes all other executable scripts found in the
-# ~/.config/scripts/setup_scripts/ directory. It ensures these scripts
-# are executable, captures their exit status, and, if a script fails
-# (exits with a non-zero status), it logs the failure along with a
-# basic error message. At the end, it provides a summary of all scripts
-# that failed, including their captured output.
+# This script executes other executable setup scripts found in the
+# ~/.config/scripts/setup_scripts/ directory based on a specified
+# setup type (home, work, or all).
+# It ensures scripts are executable, captures their exit status, and logs failures.
+#
+# Usage: ~/.config/scripts/run_setup_scripts.sh [home|work|all]
+#   If no argument is provided, or an invalid argument is provided,
+#   the script will prompt the user to choose.
 #
 # IMPORTANT:
-# - This master script (run_all_scripts.sh) itself needs to be made executable
-#   manually once after creation: chmod +x ~/.config/scripts/run_all_scripts.sh
+# - This master script (run_setup_scripts.sh) itself needs to be made executable
+#   manually once after creation: chmod +x ~/.config/scripts/run_setup_scripts.sh
+# - This script now handles its own sudo elevation (see "Sudo Elevation Check" below).
 # - Any setup script executed by this master script that requires sudo privileges
-#   for its commands should handle sudo internally (e.g., by calling 'sudo'
-#   for specific commands within that setup script).
-# - This master script is designed to be run as a normal user. For scripts
-#   like setup_ufw.sh that perform system-wide changes, it's generally
-#   recommended to run them directly with 'sudo' (e.g., sudo ~/.config/scripts/setup_scripts/setup_ufw.sh)
-#   rather than relying on this script to elevate privileges for them.
+#   for its commands should *still* handle sudo internally (e.g., by calling 'sudo'
+#   for specific commands within that setup script), particularly for commands that
+#   need to run as the *target user* (e.g., yay, flatpak).
+
+# --- Sudo Elevation Check ---
+# Check if the script is running with root privileges (EUID 0).
+# If not, re-execute itself with sudo.
+if [[ "$EUID" -ne 0 ]]; then
+  echo "This script requires elevated privileges. Attempting to re-run with sudo..."
+  # Preserve arguments when re-running with sudo
+  exec sudo bash "$0" "$@"
+  # The 'exec' command replaces the current shell process with the new one.
+  # If sudo fails (e.g., user cancels password prompt), this script will exit.
+fi
+
+
+echo "Starting execution of setup scripts..."
+echo "---------------------------------------------------"
+
+# Determine the target user and their home directory.
+# SUDO_USER is set by 'sudo' to the original user who invoked sudo.
+# If not running via sudo, it defaults to the current user.
+# IMPORTANT: When the script re-runs itself with sudo, SUDO_USER will be set
+# to the user who initially ran the script (the one whose home directory we want).
+TARGET_USER="${SUDO_USER:-$(whoami)}"
+TARGET_HOME="/home/$TARGET_USER" # Assuming /home/user for non-root user
+
+echo "Target user for script execution: $TARGET_USER (Home: $TARGET_HOME)"
 
 # Define the directory containing your setup scripts
-SCRIPTS_DIR="$HOME/.config/scripts/setup_scripts"
-
+SCRIPTS_DIR="$TARGET_HOME/.config/scripts/setup_scripts" # Use TARGET_HOME
 # Define the path to the sibling download_packages.sh script
-DOWNLOAD_PACKAGES_SCRIPT="$(dirname "$0")/download_packages.sh"
+DOWNLOAD_PACKAGES_SCRIPT="$TARGET_HOME/.config/scripts/download_packages.sh" # Use TARGET_HOME
 
 # Array to store failed scripts and their error messages/captured output
 # Each element will be formatted as: "Script Name (Exit Status: X)\n--- Output/Error ---\nCaptured Output"
@@ -36,136 +60,198 @@ NC='\033[0m' # No Color
 
 # Create a temporary directory for script logs
 # The XXXX ensures a unique directory is created
-LOG_DIR=$(mktemp -d "/tmp/run_all_scripts_logs.XXXXXX")
-# Using echo -e here to interpret the color codes
+LOG_DIR=$(mktemp -d "/tmp/run_setup_scripts_logs.XXXXXX")
 echo -e "${YELLOW}Temporary logs for failed scripts will be stored in: ${LOG_DIR}${NC}"
 
 # Function to clean up temporary logs on exit
 cleanup_logs() {
-    # Using echo -e here to interpret the color codes
-    echo -e "${YELLOW}Cleaning up temporary logs from ${LOG_DIR}...${NC}"
-    rm -rf "$LOG_DIR"
+  echo -e "${YELLOW}Cleaning up temporary logs from ${LOG_DIR}...${NC}"
+  rm -rf "$LOG_DIR"
 }
 # Register the cleanup function to be called on script exit or interruption
 trap cleanup_logs EXIT
 
-# Using echo -e here to interpret the color codes
-echo -e "${GREEN}Starting execution of scripts in $SCRIPTS_DIR...${NC}"
 echo "---------------------------------------------------"
 
-# Check if the scripts directory exists
-if [ ! -d "$SCRIPTS_DIR" ]; then
-    # Using echo -e here to interpret the color codes
-    echo -e "${RED}Error: Script directory '$SCRIPTS_DIR' not found.${NC}"
-    echo "Please create the directory and place your scripts there."
-    exit 1
+# --- Setup Type Logic (reused from download_packages.sh) ---
+SETUP_TYPE="$1"
+
+# Function to prompt user for setup type
+prompt_for_setup_type() {
+  local choice=""
+  while true; do
+    echo "No setup type provided as argument. Please choose an option for script execution:"
+    echo "  1) Home"
+    echo "  2) Work"
+    echo "  3) All (Home + Work)"
+    echo "  4) EXIT (Do not run any setup scripts)"
+    read -p "Enter your choice (1, 2, 3, or 4): " choice
+
+    case "$choice" in
+      1) SETUP_TYPE="home"; break ;;
+      2) SETUP_TYPE="work"; break ;;
+      3) SETUP_TYPE="all"; break ;;
+      4) echo "Exiting script as requested."; exit 0 ;;
+      *) echo "Invalid choice. Please enter 1, 2, 3, or 4." ;;
+    esac
+  done
+}
+
+# Check if the initial SETUP_TYPE is valid. If not, prompt.
+if [[ -z "$SETUP_TYPE" ]] || [[ "$SETUP_TYPE" != "home" && "$SETUP_TYPE" != "work" && "$SETUP_TYPE" != "all" ]]; then
+  if [[ -n "$SETUP_TYPE" ]]; then # If an invalid argument was given (not just empty)
+    echo "Invalid setup type '$SETUP_TYPE' provided as argument. Falling back to interactive choice."
+  fi
+  prompt_for_setup_type
 fi
 
-# Make all files in the setup_scripts directory executable
-# Using echo -e here to interpret the color codes
+echo "Selected setup type: $(echo "$SETUP_TYPE" | tr '[:lower:]' '[:upper:]')"
+echo "---------------------------------------------------"
+
+# --- Script Categorization Arrays ---
+# These arrays list scripts that are EXCLUSIVE to a setup type.
+# Any script not listed here will be considered "common" and run for "home" or "work" if applicable.
+
+declare -a HOME_ONLY_SCRIPTS=(
+  "setup_gaming_ssd.sh"
+  "setup_steam.sh"
+)
+declare -a WORK_ONLY_SCRIPTS=()
+
+# Function to check if a script should be executed based on SETUP_TYPE
+should_execute_script() {
+  local script_name="$1"
+  local execute=true
+
+  # Check if it's a HOME-only script
+  for h_script in "${HOME_ONLY_SCRIPTS[@]}"; do
+    if [[ "$script_name" == "$h_script" ]]; then
+      if [[ "$SETUP_TYPE" != "home" && "$SETUP_TYPE" != "all" ]]; then
+        execute=false
+      fi
+      break # Found it, no need to check further
+    fi
+  done
+
+  # If already determined not to execute, or if it's a HOME-only script and should execute, no need to check WORK_ONLY
+  if [[ "$execute" == "false" ]]; then
+    echo -e "${YELLOW}  Skipping $script_name (specific to Home setup, not selected or applicable to 'All').${NC}"
+    return 1 # Should not execute
+  fi
+
+  # Check if it's a WORK-only script
+  for w_script in "${WORK_ONLY_SCRIPTS[@]}"; do
+    if [[ "$script_name" == "$w_script" ]]; then
+      if [[ "$SETUP_TYPE" != "work" && "$SETUP_TYPE" != "all" ]]; then
+        execute=false
+      fi
+      break # Found it, no need to check further
+    fi
+  done
+
+  if [[ "$execute" == "false" ]]; then
+    echo -e "${YELLOW}  Skipping $script_name (specific to Work setup, not selected or applicable to 'All').${NC}"
+    return 1 # Should not execute
+  fi
+
+  return 0 # Should execute
+}
+
+# Ensure all scripts in the setup_scripts directory are executable
 echo -e "${YELLOW}Ensuring all scripts in '$SCRIPTS_DIR' are executable...${NC}"
+# Use sudo to change permissions as this script is running elevated
 chmod +x "$SCRIPTS_DIR"/* 2>/dev/null || true # Ignore errors if there are no files or permissions issues
-# Using echo -e here to interpret the color codes
 echo -e "${GREEN}Permissions updated.${NC}"
 echo "---------------------------------------------------"
 
 # --- Execute download_packages.sh first ---
-# Using echo -e here to interpret the color codes
-echo -e "${YELLOW}Executing: $(basename "$DOWNLOAD_PACKAGES_SCRIPT")...${NC}"
+# This is always run, but its internal logic decides what to install based on SETUP_TYPE
+echo -e "${YELLOW}Executing: $(basename "$DOWNLOAD_PACKAGES_SCRIPT") with type '$SETUP_TYPE'...${NC}"
 
 # Ensure download_packages.sh is executable
-# Using echo -e here to interpret the color codes
 echo -e "${YELLOW}Ensuring '$DOWNLOAD_PACKAGES_SCRIPT' is executable...${NC}"
+# Use sudo to change permissions as this script is running elevated
 chmod +x "$DOWNLOAD_PACKAGES_SCRIPT" 2>/dev/null || true # Ignore errors if file doesn't exist yet or permissions issues
-# Using echo -e here to interpret the color codes
 echo -e "${GREEN}Permissions updated for '$DOWNLOAD_PACKAGES_SCRIPT'.${NC}"
 
 # Check if download_packages.sh exists and is executable
 if [ ! -f "$DOWNLOAD_PACKAGES_SCRIPT" ] || [ ! -x "$DOWNLOAD_PACKAGES_SCRIPT" ]; then
-    # Using echo -e here to interpret the color codes
     echo -e "${RED}  ERROR: '$DOWNLOAD_PACKAGES_SCRIPT' not found or not executable. Subsequent scripts will fail. Exiting.${NC}"
     FAILED_SCRIPTS+=("$(basename "$DOWNLOAD_PACKAGES_SCRIPT") (Error: Not found or not executable)")
     exit 1
 else
-    # Define a specific log file for this script's output
     LOG_FILE="$LOG_DIR/$(basename "$DOWNLOAD_PACKAGES_SCRIPT" .sh).log"
-    # Using echo -e here to interpret the color codes
     echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
 
-    # Execute the script, pipe its stdout and stderr to tee.
-    # tee will send it to both stdout (your console) and the LOG_FILE.
-    # PIPESTATUS[0] gets the exit status of the first command in the pipe (the script itself).
-    "$DOWNLOAD_PACKAGES_SCRIPT" 2>&1 | tee "$LOG_FILE"
+    # Pass the SETUP_TYPE to download_packages.sh
+    # We still use sudo -u $TARGET_USER because download_packages.sh handles its own sudo elevation
+    # so we're essentially running it as the original user, letting it prompt for sudo
+    # or rely on the cached sudo permissions from this parent script.
+    sudo -u "$TARGET_USER" "$DOWNLOAD_PACKAGES_SCRIPT" "$SETUP_TYPE" 2>&1 | tee "$LOG_FILE"
     exit_status=${PIPESTATUS[0]}
 
     if [ "$exit_status" -ne 0 ]; then
-        # Using echo -e here to interpret the color codes
         echo -e "${RED}  FAILURE: $(basename "$DOWNLOAD_PACKAGES_SCRIPT") exited with status $exit_status${NC}"
-        # Read the full content of the log file for the summary
         local_output=$(cat "$LOG_FILE")
         FAILED_SCRIPTS+=("$(basename "$DOWNLOAD_PACKAGES_SCRIPT") (Exit Status: $exit_status)\n${YELLOW}--- Output/Error ---${NC}\n$local_output")
-        # Using echo -e here to interpret the color codes
         echo -e "${RED}Critical Error: download_packages.sh failed. Subsequent scripts will likely fail. Exiting.${NC}"
         echo "---------------------------------------------------"
         exit 1 # Exit immediately if download_packages.sh fails
     else
-        # Using echo -e here to interpret the color codes
         echo -e "${GREEN}  SUCCESS: $(basename "$DOWNLOAD_PACKAGES_SCRIPT") completed successfully.${NC}"
     fi
 fi
 echo "---------------------------------------------------"
 
 # Loop through all other executable files in the setup_scripts directory
-while read -r script; do
+# Exclude the download_packages.sh script from this loop, as it was run separately
+while read -r script_path; do
+    script_name=$(basename "$script_path")
+
     # Skip this master script itself if it happens to be in the same directory
-    # (though it should be in a parent directory)
-    if [[ "$(basename "$script")" == "run_all_scripts.sh" ]]; then
+    if [[ "$script_name" == "run_setup_scripts.sh" ]]; then
+        continue
+    fi
+    # Skip download_packages.sh as it's handled separately
+    if [[ "$script_name" == "download_packages.sh" ]]; then
         continue
     fi
 
-    # Using echo -e here to interpret the color codes
-    echo -e "${YELLOW}Executing: $(basename "$script")...${NC}"
+    # Determine if the script should be executed based on the chosen setup type
+    if should_execute_script "$script_name"; then
+        echo -e "${YELLOW}Executing: $script_name...${NC}"
 
-    # Define a specific log file for this script's output
-    LOG_FILE="$LOG_DIR/$(basename "$script" .sh).log"
-    # Using echo -e here to interpret the color codes
-    echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
+        LOG_FILE="$LOG_DIR/$(basename "$script_name" .sh).log"
+        echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
 
-    # Execute the script, pipe its stdout and stderr to tee.
-    "$script" 2>&1 | tee "$LOG_FILE"
-    exit_status=${PIPESTATUS[0]} # Get exit status of the script, not tee
+        # Execute the script as the TARGET_USER
+        # Each child script (e.g., setup_steam.sh) is expected to handle its own sudo calls internally
+        sudo -u "$TARGET_USER" "$script_path" 2>&1 | tee "$LOG_FILE"
+        exit_status=${PIPESTATUS[0]} # Get exit status of the script, not tee
 
-    if [ "$exit_status" -ne 0 ]; then
-        # Using echo -e here to interpret the color codes
-        echo -e "${RED}  FAILURE: $(basename "$script") exited with status $exit_status${NC}"
-        # Read the full content of the log file for the summary
-        local_output=$(cat "$LOG_FILE")
-        FAILED_SCRIPTS+=("$(basename "$script") (Exit Status: $exit_status)\n${YELLOW}--- Output/Error ---${NC}\n$local_output")
-    else
-        # Using echo -e here to interpret the color codes
-        echo -e "${GREEN}  SUCCESS: $(basename "$script") completed successfully.${NC}"
+        if [ "$exit_status" -ne 0 ]; then
+            echo -e "${RED}  FAILURE: $script_name exited with status $exit_status${NC}"
+            local_output=$(cat "$LOG_FILE")
+            FAILED_SCRIPTS+=("$script_name (Exit Status: $exit_status)\n${YELLOW}--- Output/Error ---${NC}\n$local_output")
+        else
+            echo -e "${GREEN}  SUCCESS: $script_name completed successfully.${NC}"
+        fi
+        echo "---------------------------------------------------"
     fi
-    echo "---------------------------------------------------"
 done < <(find "$SCRIPTS_DIR" -maxdepth 1 -type f -executable | sort)
 
 # Summary of failed scripts
-# Using echo -e here to interpret the color codes
 echo -e "\n${GREEN}--- Script Execution Summary ---${NC}"
 if [ ${#FAILED_SCRIPTS[@]} -eq 0 ]; then
-    # Using echo -e here to interpret the color codes
-    echo -e "${GREEN}All scripts executed successfully!${NC}"
+    echo -e "${GREEN}All applicable scripts executed successfully!${NC}"
 else
-    # Using echo -e here to interpret the color codes
     echo -e "${RED}The following scripts failed:${NC}"
     for failed_script in "${FAILED_SCRIPTS[@]}"; do
-        # This line was already correct with echo -e for the array content
         echo -e "${RED}- $failed_script${NC}"
         echo "---------------------------------------------------" # Separator for each failed script's log
     done
-    # Using echo -e here to interpret the color codes
     echo -e "${RED}Please review the full output above for details on why they failed.${NC}"
     exit 1 # Exit with a non-zero status if any script failed
 fi
 
-# Using echo -e here to interpret the color codes
 echo -e "${GREEN}Script execution finished.${NC}"

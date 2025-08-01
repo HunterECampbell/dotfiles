@@ -112,7 +112,8 @@ fi
 
 # --- 3. Rebuild the initramfs ---
 echo -e "${BLUE}Rebuilding initramfs with mkinitcpio -P...${NC}"
-if mkinitcpio -P; then
+# Redirect standard input from /dev/null to ensure non-interactive operation
+if mkinitcpio -P < /dev/null; then # <--- ADDED '< /dev/null' HERE
     echo -e "${GREEN}Initramfs rebuild successful!${NC}"
     REBOOT_REQUIRED=true # Always suggest reboot after initramfs rebuild
 else
