@@ -2,7 +2,6 @@
 - Downgrade nvidia for gamescope
 - Add SteelSeries GG (might need Wine)
 - Zoom screen share breaks after first share
-- Separate setups for: Home/Work/Both
 - Theme manager (colors, wallpapers)
 - Task manager
 - Update calendar for header bar (google calendar)
