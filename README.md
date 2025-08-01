@@ -118,57 +118,23 @@ git clone https://github.com/HunterECampbell/dotfiles.git ~/dotfiles
 
 ### Symlinking Dotfiles
 
-This repository uses symbolic links to manage dotfiles. This means the configuration files you edit will live in `~/Development/repos/dotfiles/`, and symlinks point from the dotfiles to their traditional locations (e.g., `~/.config`).
-
-Before symlinking, some directors are required beforehand.
-
-#### 1. Directories to create before symlinking:
-
-```
-mkdir -p ~/.config/systemd
-```
-
-#### 2. Commands for the symlinks you need:
-
-```
-ln -s ~/Development/repos/dotfiles/.config/hypr ~/.config/hypr
-ln -s ~/Development/repos/dotfiles/.config/mpv ~/.config/mpv
-ln -s ~/Development/repos/dotfiles/.config/scripts ~/.config/scripts
-ln -s ~/Development/repos/dotfiles/.config/systemd/user ~/.config/systemd/user
-ln -s ~/Development/repos/dotfiles/.config/waybar ~/.config/waybar
-ln -s ~/Development/repos/dotfiles/.config/widgets ~/.config/widgets
-ln -s ~/Development/repos/dotfiles/.config/wofi ~/.config/wofi
-ln -s ~/Development/repos/dotfiles/.config/zoomus.conf ~/.config/zoomus.conf
-ln -s ~/Development/repos/dotfiles/Development/"Test Files" ~/Development/"Test Files"
-ln -s ~/Development/repos/dotfiles/.zshrc ~/.zshrc
-```
-
-#### 3. Commands needed to run the necessary scripts:
-
-```
-chmod +x ~/.config/scripts/run_setup_scripts.sh
-chmod +x ~/.config/scripts/record_screen.sh
-chmod +x ~/.config/scripts/notify_of_screenshot_to_clipboard.sh
-chmod +x ~/.config/scripts/autoclicker.sh
-chmod +x ~/.config/scripts/open_work_env.sh
-```
-
-#### 4. Other necessary commands for your symlinks:
-
-```
-systemctl --user daemon-reload
-systemctl --user enable hyprsunset-night.timer
-systemctl --user start hyprsunset-night.timer
-systemctl --user enable hyprsunset-day.timer
-systemctl --user start hyprsunset-day.timer
-systemctl --user start hyprsunset.service
-```
+This repository uses symbolic links to manage dotfiles. This means the configuration files you edit will live in `~/Development/repos/dotfiles/`, and symlinks point from the dotfiles to their traditional locations (e.g., `~/.config`). Symlinks are automatically setup in the below script (`~/Development/repos/dotfiles/.config/scripts/run_setup_scripts.sh`).
 
 ### Running Setup Scripts
 
+This setup script handles all setup tasks, from package installations to configuring systemd user services. **It must be run from its source location first.**
+
 #### 1. Run the master script:
 
-This script will execute the scripts symlinked from `~/Development/repos/dotfiles/.config/scripts/setup_scripts/`, which will handle package installations, Zsh setup, UFW configuration, etc. Setup scripts that require elevated privileges will prompt you for your sudo password.
+This command will run the master script, which in turn will set up all symlinks and execute the rest of your setup scripts (for package installations, Zsh setup, UFW configuration, etc.). Scripts that require elevated privileges will prompt you for your sudo password.
+
+```
+~/Development/repos/dotfiles/.config/scripts/run_setup_scripts.sh
+```
+
+#### 2. Using the symlinked script (after initial run):
+
+Once the setup script has been run once, the symlink will exist, and you can use the more convenient path for any future runs.
 
 ```
 ~/.config/scripts/run_setup_scripts.sh
@@ -192,7 +158,7 @@ flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flat
 curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 ```
 
-#### 4. Restart your computer
+#### 3. Restart your computer
 
 For all changes to take effect, it is best to restart your computer.
 

@@ -51,6 +51,8 @@ SCRIPTS_DIR="$TARGET_HOME/.config/scripts" # Pointing to the top-level scripts d
 SETUP_SCRIPTS_DIR="$SCRIPTS_DIR/setup_scripts"
 # Define the path to the sibling scripts. The other scripts are now in SETUP_SCRIPTS_DIR
 DOWNLOAD_PACKAGES_SCRIPT="$SCRIPTS_DIR/download_packages.sh"
+POST_SETUP_SCRIPT="$SCRIPTS_DIR/post_setup.sh"
+
 
 # Array to store failed scripts and their error messages/captured output
 # Each element will be formatted as: "Script Name (Exit Status: X)\n--- Output/Error ---\nCaptured Output"
@@ -176,6 +178,7 @@ execute_foundational_script() {
     local script_path="$1"
     local script_name=$(basename "$script_path")
     local script_type="$2" # E.g., "dotfile setup", "package installation"
+    local setup_type_arg="${3:-}" # Optional argument for setup type
 
     echo -e "${YELLOW}Executing foundational script: $script_name for $script_type...${NC}"
 
@@ -188,7 +191,11 @@ execute_foundational_script() {
         echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
 
         # Execute the script as the TARGET_USER. It will handle its own sudo calls.
-        sudo -u "$TARGET_USER" "$script_path" 2>&1 | tee "$LOG_FILE"
+        if [[ -n "$setup_type_arg" ]]; then
+          sudo -u "$TARGET_USER" "$script_path" "$setup_type_arg" 2>&1 | tee "$LOG_FILE"
+        else
+          sudo -u "$TARGET_USER" "$script_path" 2>&1 | tee "$LOG_FILE"
+        fi
         exit_status=${PIPESTATUS[0]}
 
         if [ "$exit_status" -ne 0 ]; then
@@ -218,8 +225,11 @@ while read -r script_path; do
     if [[ "$script_name" == "run_setup_scripts.sh" ]]; then
         continue
     fi
-    # The download_packages.sh script is handled separately as a foundational script.
+    # The download_packages.sh and post_setup.sh scripts are handled separately
     if [[ "$script_name" == "download_packages.sh" ]]; then
+        continue
+    fi
+    if [[ "$script_name" == "post_setup.sh" ]]; then
         continue
     fi
 
@@ -245,6 +255,12 @@ while read -r script_path; do
         echo "---------------------------------------------------"
     fi
 done < <(find "$SETUP_SCRIPTS_DIR" -type f -executable | sort)
+
+
+# --- Execute the new post-setup script as the final step ---
+# This is a critical final step, so we'll call it similarly to the foundational scripts.
+execute_foundational_script "$POST_SETUP_SCRIPT" "post-setup configuration" "$SETUP_TYPE"
+
 
 # Summary of failed scripts
 echo -e "\n${GREEN}--- Script Execution Summary ---${NC}"
