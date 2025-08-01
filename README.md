@@ -98,27 +98,27 @@ After a fresh Arch Linux install, follow the below steps.
 
 ### Cloning the Dotfiles Repository
 
-Open up a new terminal with $SUPER + Q (This is the default binding, it will change to $Super + T once you use this custom setup.) $SUPER is the Windows key on Windows.
+Open up a new terminal with $SUPER + Q (This is the default binding, it will change to $SUPER + T once you use this custom setup.) $SUPER is the Windows key on Windows.
 
 > [!IMPORTANT]
 > You will need an internet connection to continue. Run `nmcli` to check that you are connected to the internet.
 
-First, go to your repos directory:
+First, create and go to your repos directory:
 
 ```
 mkdir -p ~/Development/repos
 cd ~/Development/repos
 ```
 
-Then, clone this repository to your home directory:
+Then, clone this repository to your repos directory:
 
 ```
 git clone https://github.com/HunterECampbell/dotfiles.git ~/dotfiles
 ```
 
-### Symlinking Dotfiles
+### Symlinked Dotfiles
 
-This repository uses symbolic links to manage dotfiles. This means the configuration files you edit will live in `~/Development/repos/dotfiles/`, and symlinks point from the dotfiles to their traditional locations (e.g., `~/.config`). Symlinks are automatically setup in the below script (`~/Development/repos/dotfiles/.config/scripts/run_setup_scripts.sh`).
+This repository uses symbolic links to manage dotfiles. This means the configuration files you edit will live in `~/Development/repos/dotfiles/`, and the symlinks will point from these dotfiles to their traditional locations (e.g., `~/.config`). Symlinks are automatically setup in the below script (`~/Development/repos/dotfiles/.config/scripts/run_setup_scripts.sh`).
 
 ### Running Setup Scripts
 
@@ -142,21 +142,6 @@ Once the setup script has been run once, the symlink will exist, and you can use
 
 > [!NOTE]
 > Pay attention to the output. If any setup script fails, the master script will report it at the end.
-
-#### 2. Commands to run after the master script finishes:
-
-```
-sudo systemctl enable --now NetworkManager.service
-sudo systemctl enable --now vpnagentd.service
-sudo systemctl status vpnagentd.service
-sudo systemctl start docker.service
-sudo systemctl enable docker.service
-sudo usermod -aG docker $USER
-newgrp docker
-systemctl --user enable --now hyprsunset.service
-flatpak remote-add --if-not-exists flathub https://flathub.org/repo/flathub.flatpakrepo
-curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
-```
 
 #### 3. Restart your computer
 
