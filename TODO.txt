@@ -1,3 +1,12 @@
 - Internet icon doesn't update when on the VPN
 - Blue light filter's timer doesn't automatically change the blue light filter
 - Downgrade nvidia for gamescope
+- Add SteelSeries GG (might need Wine)
+- Zoom screen share breaks after first share
+- Separate setups for: Home/Work/Both
+- Theme manager (colors, wallpapers)
+- Task manager
+- Update calendar for header bar (google calendar)
+- Arch Version update status with auto updater with results of update
+- Header notifications for slack and discord
+- Audio picker
