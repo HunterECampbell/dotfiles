@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # This script executes all other executable scripts found in the
-# ~/.config/scripts/child_scripts/ directory. It ensures these scripts
+# ~/.config/scripts/setup_scripts/ directory. It ensures these scripts
 # are executable, captures their exit status, and, if a script fails
 # (exits with a non-zero status), it logs the failure along with a
 # basic error message. At the end, it provides a summary of all scripts
@@ -10,16 +10,16 @@
 # IMPORTANT:
 # - This master script (run_all_scripts.sh) itself needs to be made executable
 #   manually once after creation: chmod +x ~/.config/scripts/run_all_scripts.sh
-# - Any child script executed by this master script that requires sudo privileges
+# - Any setup script executed by this master script that requires sudo privileges
 #   for its commands should handle sudo internally (e.g., by calling 'sudo'
-#   for specific commands within that child script).
+#   for specific commands within that setup script).
 # - This master script is designed to be run as a normal user. For scripts
 #   like setup_ufw.sh that perform system-wide changes, it's generally
-#   recommended to run them directly with 'sudo' (e.g., sudo ~/.config/scripts/child_scripts/setup_ufw.sh)
+#   recommended to run them directly with 'sudo' (e.g., sudo ~/.config/scripts/setup_scripts/setup_ufw.sh)
 #   rather than relying on this script to elevate privileges for them.
 
-# Define the directory containing your child scripts
-SCRIPTS_DIR="$HOME/.config/scripts/child_scripts"
+# Define the directory containing your setup scripts
+SCRIPTS_DIR="$HOME/.config/scripts/setup_scripts"
 
 # Define the path to the sibling download_packages.sh script
 DOWNLOAD_PACKAGES_SCRIPT="$(dirname "$0")/download_packages.sh"
@@ -61,7 +61,7 @@ if [ ! -d "$SCRIPTS_DIR" ]; then
     exit 1
 fi
 
-# Make all files in the child_scripts directory executable
+# Make all files in the setup_scripts directory executable
 # Using echo -e here to interpret the color codes
 echo -e "${YELLOW}Ensuring all scripts in '$SCRIPTS_DIR' are executable...${NC}"
 chmod +x "$SCRIPTS_DIR"/* 2>/dev/null || true # Ignore errors if there are no files or permissions issues
@@ -115,7 +115,7 @@ else
 fi
 echo "---------------------------------------------------"
 
-# Loop through all other executable files in the child_scripts directory
+# Loop through all other executable files in the setup_scripts directory
 while read -r script; do
     # Skip this master script itself if it happens to be in the same directory
     # (though it should be in a parent directory)

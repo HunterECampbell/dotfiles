@@ -140,7 +140,7 @@ ln -s ~/Development/repos/dotfiles/.zshrc ~/.zshrc
 #### 3. Commands needed to run the necessary scripts:
 
 ```
-chmod +x ~/.config/scripts/run_all_scripts.sh
+chmod +x ~/.config/scripts/run_setup_scripts.sh
 chmod +x ~/.config/scripts/record_screen.sh
 chmod +x ~/.config/scripts/notify_of_screenshot_to_clipboard.sh
 chmod +x ~/.config/scripts/autoclicker.sh
@@ -162,14 +162,14 @@ systemctl --user start hyprsunset.service
 
 #### 1. Run the master script:
 
-This script will execute the scripts symlinked from `~/Development/repos/dotfiles/.config/scripts/child_scripts/`, which will handle package installations, Zsh setup, UFW configuration, etc. Child scripts that require elevated privileges will prompt you for your sudo password.
+This script will execute the scripts symlinked from `~/Development/repos/dotfiles/.config/scripts/setup_scripts/`, which will handle package installations, Zsh setup, UFW configuration, etc. Setup scripts that require elevated privileges will prompt you for your sudo password.
 
 ```
-~/.config/scripts/run_all_scripts.sh
+~/.config/scripts/run_setup_scripts.sh
 ```
 
 > [!NOTE]
-> Pay attention to the output. If any child script fails, the master script will report it at the end.
+> Pay attention to the output. If any setup script fails, the master script will report it at the end.
 
 #### 2. Commands to run after the master script finishes:
 
@@ -278,4 +278,4 @@ Zoom needs some settings turned on for screen sharing:
 
 - **Customization:** These dotfiles reflect my personal preferences. Feel free to modify them to suit your needs!
 
-- **Troubleshooting:** If you encounter issues, check the output of the `run_all_scripts.sh` script for error messages. Consult the Arch Wiki for specific components (Hyprland, Zsh, UFW, etc.) for detailed troubleshooting.
+- **Troubleshooting:** If you encounter issues, check the output of the `run_setup_scripts.sh` script for error messages. Consult the Arch Wiki for specific components (Hyprland, Zsh, UFW, etc.) for detailed troubleshooting.
