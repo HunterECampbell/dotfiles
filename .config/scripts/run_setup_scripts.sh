@@ -1,8 +1,11 @@
 #!/bin/bash
 
 # This script executes other executable setup scripts found in the
-# ~/.config/scripts/setup_scripts/ directory based on a specified
+# ~/.config/scripts/ directory based on a specified
 # setup type (home, work, or all).
+# It first sets up essential dotfile directories and symlinks,
+# then runs the package installation script, and finally executes
+# other specific setup scripts.
 # It ensures scripts are executable, captures their exit status, and logs failures.
 #
 # Usage: ~/.config/scripts/run_setup_scripts.sh [home|work|all]
@@ -44,9 +47,10 @@ TARGET_HOME="/home/$TARGET_USER" # Assuming /home/user for non-root user
 echo "Target user for script execution: $TARGET_USER (Home: $TARGET_HOME)"
 
 # Define the directory containing your setup scripts
-SCRIPTS_DIR="$TARGET_HOME/.config/scripts/setup_scripts" # Use TARGET_HOME
-# Define the path to the sibling download_packages.sh script
-DOWNLOAD_PACKAGES_SCRIPT="$TARGET_HOME/.config/scripts/download_packages.sh" # Use TARGET_HOME
+SCRIPTS_DIR="$TARGET_HOME/.config/scripts" # Pointing to the top-level scripts directory
+SETUP_SCRIPTS_DIR="$SCRIPTS_DIR/setup_scripts"
+# Define the path to the sibling scripts. The other scripts are now in SETUP_SCRIPTS_DIR
+DOWNLOAD_PACKAGES_SCRIPT="$SCRIPTS_DIR/download_packages.sh"
 
 # Array to store failed scripts and their error messages/captured output
 # Each element will be formatted as: "Script Name (Exit Status: X)\n--- Output/Error ---\nCaptured Output"
@@ -83,7 +87,7 @@ prompt_for_setup_type() {
     echo "No setup type provided as argument. Please choose an option for script execution:"
     echo "  1) Home"
     echo "  2) Work"
-    echo "  3) All (Home + Work)"
+    echo "3) All (Home + Work)"
     echo "  4) EXIT (Do not run any setup scripts)"
     read -p "Enter your choice (1, 2, 3, or 4): " choice
 
@@ -111,6 +115,7 @@ echo "---------------------------------------------------"
 # --- Script Categorization Arrays ---
 # These arrays list scripts that are EXCLUSIVE to a setup type.
 # Any script not listed here will be considered "common" and run for "home" or "work" if applicable.
+# Note: download_packages.sh is a foundational script that will be executed regardless of the selected setup type.
 
 declare -a HOME_ONLY_SCRIPTS=(
   "setup_gaming_ssd.sh"
@@ -157,54 +162,55 @@ should_execute_script() {
   return 0 # Should execute
 }
 
-# Ensure all scripts in the setup_scripts directory are executable
-echo -e "${YELLOW}Ensuring all scripts in '$SCRIPTS_DIR' are executable...${NC}"
-# Use sudo to change permissions as this script is running elevated
-chmod +x "$SCRIPTS_DIR"/* 2>/dev/null || true # Ignore errors if there are no files or permissions issues
-echo -e "${GREEN}Permissions updated.${NC}"
-echo "---------------------------------------------------"
-
-# --- Execute download_packages.sh first ---
-# This is always run, but its internal logic decides what to install based on SETUP_TYPE
-echo -e "${YELLOW}Executing: $(basename "$DOWNLOAD_PACKAGES_SCRIPT") with type '$SETUP_TYPE'...${NC}"
-
-# Ensure download_packages.sh is executable
-echo -e "${YELLOW}Ensuring '$DOWNLOAD_PACKAGES_SCRIPT' is executable...${NC}"
-# Use sudo to change permissions as this script is running elevated
-chmod +x "$DOWNLOAD_PACKAGES_SCRIPT" 2>/dev/null || true # Ignore errors if file doesn't exist yet or permissions issues
-echo -e "${GREEN}Permissions updated for '$DOWNLOAD_PACKAGES_SCRIPT'.${NC}"
-
-# Check if download_packages.sh exists and is executable
-if [ ! -f "$DOWNLOAD_PACKAGES_SCRIPT" ] || [ ! -x "$DOWNLOAD_PACKAGES_SCRIPT" ]; then
-    echo -e "${RED}  ERROR: '$DOWNLOAD_PACKAGES_SCRIPT' not found or not executable. Subsequent scripts will fail. Exiting.${NC}"
-    FAILED_SCRIPTS+=("$(basename "$DOWNLOAD_PACKAGES_SCRIPT") (Error: Not found or not executable)")
-    exit 1
+# --- Set executable permissions recursively ---
+echo -e "${YELLOW}Ensuring all scripts in '$SCRIPTS_DIR' are executable recursively...${NC}"
+if sudo -u "$TARGET_USER" find "$SCRIPTS_DIR" -type f -print0 | xargs -0 chmod +x; then
+    echo -e "${GREEN}Permissions updated successfully.${NC}"
 else
-    LOG_FILE="$LOG_DIR/$(basename "$DOWNLOAD_PACKAGES_SCRIPT" .sh).log"
-    echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
-
-    # Pass the SETUP_TYPE to download_packages.sh
-    # We still use sudo -u $TARGET_USER because download_packages.sh handles its own sudo elevation
-    # so we're essentially running it as the original user, letting it prompt for sudo
-    # or rely on the cached sudo permissions from this parent script.
-    sudo -u "$TARGET_USER" "$DOWNLOAD_PACKAGES_SCRIPT" "$SETUP_TYPE" 2>&1 | tee "$LOG_FILE"
-    exit_status=${PIPESTATUS[0]}
-
-    if [ "$exit_status" -ne 0 ]; then
-        echo -e "${RED}  FAILURE: $(basename "$DOWNLOAD_PACKAGES_SCRIPT") exited with status $exit_status${NC}"
-        local_output=$(cat "$LOG_FILE")
-        FAILED_SCRIPTS+=("$(basename "$DOWNLOAD_PACKAGES_SCRIPT") (Exit Status: $exit_status)\n${YELLOW}--- Output/Error ---${NC}\n$local_output")
-        echo -e "${RED}Critical Error: download_packages.sh failed. Subsequent scripts will likely fail. Exiting.${NC}"
-        echo "---------------------------------------------------"
-        exit 1 # Exit immediately if download_packages.sh fails
-    else
-        echo -e "${GREEN}  SUCCESS: $(basename "$DOWNLOAD_PACKAGES_SCRIPT") completed successfully.${NC}"
-    fi
+    echo -e "${RED}Error setting executable permissions. Subsequent scripts may fail.${NC}"
 fi
 echo "---------------------------------------------------"
 
-# Loop through all other executable files in the setup_scripts directory
-# Exclude the download_packages.sh script from this loop, as it was run separately
+# Function to execute a foundational script and check its status
+execute_foundational_script() {
+    local script_path="$1"
+    local script_name=$(basename "$script_path")
+    local script_type="$2" # E.g., "dotfile setup", "package installation"
+
+    echo -e "${YELLOW}Executing foundational script: $script_name for $script_type...${NC}"
+
+    if [ ! -f "$script_path" ] || [ ! -x "$script_path" ]; then
+        echo -e "${RED}  ERROR: '$script_path' not found or not executable. Exiting.${NC}"
+        FAILED_SCRIPTS+=("$script_name (Error: Not found or not executable)")
+        exit 1
+    else
+        LOG_FILE="$LOG_DIR/$(basename "$script_name" .sh).log"
+        echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
+
+        # Execute the script as the TARGET_USER. It will handle its own sudo calls.
+        sudo -u "$TARGET_USER" "$script_path" 2>&1 | tee "$LOG_FILE"
+        exit_status=${PIPESTATUS[0]}
+
+        if [ "$exit_status" -ne 0 ]; then
+            echo -e "${RED}  FAILURE: $script_name exited with status $exit_status${NC}"
+            local_output=$(cat "$LOG_FILE")
+            FAILED_SCRIPTS+=("$script_name (Exit Status: $exit_status)\n${YELLOW}--- Output/Error ---${NC}\n$local_output")
+            echo -e "${RED}Critical Error: $script_type failed. Exiting.${NC}"
+            echo "---------------------------------------------------"
+            exit 1
+        else
+            echo -e "${GREEN}  SUCCESS: $script_name completed successfully.${NC}"
+        fi
+    fi
+    echo "---------------------------------------------------"
+}
+
+# --- Execute Foundational Scripts in Order ---
+execute_foundational_script "$DOWNLOAD_PACKAGES_SCRIPT" "package installation" "$SETUP_TYPE" # Pass setup_type to the script
+
+
+# --- Loop through other setup scripts ---
+# The find command now looks in the SETUP_SCRIPTS_DIR and its subdirectories
 while read -r script_path; do
     script_name=$(basename "$script_path")
 
@@ -212,7 +218,7 @@ while read -r script_path; do
     if [[ "$script_name" == "run_setup_scripts.sh" ]]; then
         continue
     fi
-    # Skip download_packages.sh as it's handled separately
+    # The download_packages.sh script is handled separately as a foundational script.
     if [[ "$script_name" == "download_packages.sh" ]]; then
         continue
     fi
@@ -225,7 +231,7 @@ while read -r script_path; do
         echo -e "${YELLOW}  Real-time output and full log for this script: ${LOG_FILE}${NC}"
 
         # Execute the script as the TARGET_USER
-        # Each child script (e.g., setup_steam.sh) is expected to handle its own sudo calls internally
+        # Each child script is expected to handle its own sudo calls internally
         sudo -u "$TARGET_USER" "$script_path" 2>&1 | tee "$LOG_FILE"
         exit_status=${PIPESTATUS[0]} # Get exit status of the script, not tee
 
@@ -238,7 +244,7 @@ while read -r script_path; do
         fi
         echo "---------------------------------------------------"
     fi
-done < <(find "$SCRIPTS_DIR" -maxdepth 1 -type f -executable | sort)
+done < <(find "$SETUP_SCRIPTS_DIR" -type f -executable | sort)
 
 # Summary of failed scripts
 echo -e "\n${GREEN}--- Script Execution Summary ---${NC}"

@@ -103,7 +103,14 @@ Open up a new terminal with $SUPER + Q (This is the default binding, it will cha
 > [!IMPORTANT]
 > You will need an internet connection to continue. Run `nmcli` to check that you are connected to the internet.
 
-First, clone this repository to your home directory:
+First, go to your repos directory:
+
+```
+mkdir -p ~/Development/repos
+cd ~/Development/repos
+```
+
+Then, clone this repository to your home directory:
 
 ```
 git clone https://github.com/HunterECampbell/dotfiles.git ~/dotfiles
@@ -119,7 +126,6 @@ Before symlinking, some directors are required beforehand.
 
 ```
 mkdir -p ~/.config/systemd
-mkdir ~/Development
 ```
 
 #### 2. Commands for the symlinks you need:
