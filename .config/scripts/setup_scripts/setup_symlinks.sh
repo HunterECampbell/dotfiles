@@ -48,7 +48,7 @@ declare -a FAILED_STEPS=()
 _create_initial_dirs() {
   echo -e "${BLUE}Creating initial directories...${NC}"
   local -a dirs_to_create=(
-    "$TARGET_HOME/.config/systemd/user"
+    "$TARGET_HOME/.config/systemd"
     "$TARGET_HOME/Development"
     # Note: Other parent directories like ~/.config/hypr are created
     # by the parent script before this script runs.

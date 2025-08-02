@@ -54,11 +54,13 @@ Use the following settings for a smooth dotfiles setup:
 
 - Add whatever you like for a hostname
 
-### Root Password
+### Authentication
+
+#### Root Password
 
 - Add a root password
 
-### User Account
+#### User Account
 
 - Select **Account**
   - Select **Add a user**
@@ -81,6 +83,10 @@ Use the following settings for a smooth dotfiles setup:
 ### Network Configuration
 
 - Select **NetworkManager**
+
+### Timezone
+
+- Select a timezone (US/Mountain)
 
 ### Finalization
 
