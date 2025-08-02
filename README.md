@@ -223,10 +223,11 @@ To use a separate SSD for gaming, follow these steps:
 
 ## 8. VPN Setup
 
-1. Open **Advanced Network Configuration** via the menu ($Super + M)
-1. Click the **+** button
-1. Select a VPN Service
-1. Follow the steps at work to finish setup from here
+Follow the steps at work to finish setup from here
+
+1. For Cisco AnyConnect, make sure you have `openconnect`, `networkmanager-openconnect`, and `webkit2gtk` installed
+1. Go to Notion and search VPN Linux
+1. Follow the video guide
 
 ## 9. Zoom Settings
 

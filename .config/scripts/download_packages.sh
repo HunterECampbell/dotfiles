@@ -213,7 +213,7 @@ declare -a WORK_PACMAN_PACKAGES=(
   "networkmanager-openconnect" # For VPN Usage
   "openconnect" # For VPN Usage
   "pnpm"
-  "webkit2gtk-4.1" # For VPN Usage
+  "webkit2gtk-4.1" # For VPN UI Display
   "yarn"
 )
 
