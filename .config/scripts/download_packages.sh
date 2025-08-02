@@ -186,7 +186,6 @@ declare -a COMMON_PACMAN_PACKAGES=(
   # "vulkan-mesa-layers" # Setup in setup script - Steam Setup
   "vulkan-tools"
   "waybar"
-  "webkit2gtk-4.1" # For VPN Usage
   "wev" # Keyboard Troubleshooter
   "wf-recorder" # For screen recording
   # "wine-staging" # Setup in setup script - Steam Setup
@@ -211,9 +210,10 @@ declare -a HOME_PACMAN_PACKAGES=(
 declare -a WORK_PACMAN_PACKAGES=(
   "docker"
   "docker-compose"
-  "networkmanager-openconnect"
-  "openconnect"
+  "networkmanager-openconnect" # For VPN Usage
+  "openconnect" # For VPN Usage
   "pnpm"
+  "webkit2gtk-4.1" # For VPN Usage
   "yarn"
 )
 
