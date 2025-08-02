@@ -186,10 +186,15 @@ alias i='npm i'
 alias u='npm uninstall'
 alias rb='npm run build'
 alias rd='npm run dev'
-alias nd='next dev'
 alias lint='npm run lint'
-alias rs='npm run storybook'
-alias rls='npm ls'
+
+
+## PNPM Specific Aliases
+alias pi='pnpm i'
+alias pu='pnpm uninstall'
+alias prb='pnpm run build'
+alias prd='pnpm run dev'
+alias plint='pnpm run lint'
 
 
 # Vasion Specific Aliases

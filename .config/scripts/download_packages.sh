@@ -213,6 +213,8 @@ declare -a WORK_PACMAN_PACKAGES=(
   "docker-compose"
   "networkmanager-openconnect"
   "openconnect"
+  "pnpm"
+  "yarn"
 )
 
 # AUR packages (install with yay)
