@@ -209,6 +209,18 @@ For faster steam load times, make sure to follow these steps:
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
+To use a separate SSD for gaming, follow these steps:
+
+1. If you have a dedicated (separate) ssd and haven't already, run the `~/.config/scripts/setup_scripts/setup_gaming_ssd.sh
+1. Go to **Steam** (top-left corner) -> **Settings**
+1. Navigate to the **Storage** tab.
+1. Click "+ Add Drive"
+1. Select the SSD
+1. Open the dropdown for the drives
+1. Select the new drive
+1. Open the 3 dot menu
+1. Select "Make Default"
+
 ## 8. VPN Setup
 
 1. Open **Advanced Network Configuration** via the menu ($Super + M)
