@@ -133,7 +133,6 @@ source ~/.config/scripts/zsh_scripts/*
 #
 # Script Aliases
 alias mcserver='start_minecraft_server'
-alias foundry='setsid ~/FoundryVTT-12.331/foundryvtt' # `setsid` opens FoundryVTT without needing the terminal to stay open
 alias mediawriter='flatpak run org.fedoraproject.MediaWriter'
 
 
