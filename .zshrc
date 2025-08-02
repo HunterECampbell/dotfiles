@@ -133,7 +133,8 @@ source ~/.config/scripts/zsh_scripts/*
 #
 # Script Aliases
 alias mcserver='start_minecraft_server'
-alias foundry='~/FoundryVTT-12.331/foundryvtt'
+alias foundry='setsid ~/FoundryVTT-12.331/foundryvtt' # `setsid` opens FoundryVTT without needing the terminal to stay open
+alias mediawriter='flatpak run org.fedoraproject.MediaWriter'
 
 
 # Aliases
@@ -143,7 +144,6 @@ alias run='npm run'
 alias s='source ~/.zshrc'
 alias z='code ~/.zshrc'
 alias repo='f() {~/Development/repos/$1}; f'
-alias mediawriter='flatpak run org.fedoraproject.MediaWriter'
 
 
 ## Git Specific Aliases
