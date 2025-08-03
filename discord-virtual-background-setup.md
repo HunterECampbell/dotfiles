@@ -47,7 +47,7 @@ Launch OBS Studio (You can launch it via your menu with $SUPER + M)
 
 ## 4. Start the Virtual Camera
 
-Whenever you want to use your virtual camera in Discord, you need to start it in OBS Studio.
+Whenever you want to use your virtual background in Discord, you need to start the Virtual Camera in OBS Studio.
 
 - In the main view of OBS Studio, click **"Start Virtual Camera"**
 
