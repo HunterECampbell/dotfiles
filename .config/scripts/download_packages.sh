@@ -204,7 +204,10 @@ declare -a HOME_PACMAN_PACKAGES=(
   "jdk8-openjdk" # Minecraft 1.12.x - 1.16.5
   "jdk17-openjdk" # Minecraft 1.17.x - 1.20.5
   "jdk21-openjdk" # Minecraft 1.20.6 - 1.21.x
+  "linux-headers" # For building kernel modules (used with v4l2loopback-dkms)
+  "obs-studio" # For discord virtual background
   # "steam" # Setup in a setup script - Steam Setup
+  "v4l2loopback-dkms" # For virtual camera support
 )
 declare -a WORK_PACMAN_PACKAGES=(
   "docker"
@@ -228,6 +231,7 @@ declare -a COMMON_YAY_PACKAGES=(
 declare -a HOME_YAY_PACKAGES=(
   "discord"
   "minecraft-launcher"
+  "obs-backgroundremoval" # For discord virtual background (creates virtual background without a green screen)
   "prismlauncher"
   # "proton-ge-custom" # Setup in a setup script - Steam Setup
 )

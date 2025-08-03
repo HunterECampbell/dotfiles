@@ -179,6 +179,8 @@ You need to turn off Desktop Notifications:
 1. Click **Notifications**
 1. Uncheck **Enable Desktop Notifications**
 
+For a virtual background, follow this guide: [Discord Virtual Background Setup](./discord-virtual-background-setup.md)
+
 ## 5. FoundryVTT Setup
 
 > [!IMPORTANT]
