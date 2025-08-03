@@ -79,6 +79,7 @@ _create_dotfile_symlinks() {
     "$DOTFILES_REPO_DIR/.config/wofi"
     "$DOTFILES_REPO_DIR/.config/zoomus.conf"
     "$DOTFILES_REPO_DIR/Development/Test Files"
+    "$DOTFILES_REPO_DIR/Pictures/Wallpapers"
     "$DOTFILES_REPO_DIR/.zshrc"
   )
 
@@ -92,6 +93,7 @@ _create_dotfile_symlinks() {
     "$TARGET_HOME/.config/wofi"
     "$TARGET_HOME/.config/zoomus.conf"
     "$TARGET_HOME/Development/Test Files"
+    "$TARGET_HOME/Pictures/Wallpapers"
     "$TARGET_HOME/.zshrc"
   )
 
