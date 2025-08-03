@@ -16,7 +16,7 @@ yay -S yay -S obs-backgroundremoval # Uses AI to remove your background without 
 > [!NOTE]
 > Since this affects the `/etc/` directory, we will not use a script to setup the virtual camera. The necessary configs are included in this repo and need to be copied to the `/etc/` directory.
 
-After installing the necessary packages, run this command to load `v4l2loopback` so you can create a virtual camera:
+After installing the necessary packages, run these commands to load and setup `v4l2loopback` so you can create a virtual camera:
 
 ```
 sudo modprobe v4l2loopback devices=1 video_nr=20 card_label="OBS Virtual Camera" exclusive_caps=1
