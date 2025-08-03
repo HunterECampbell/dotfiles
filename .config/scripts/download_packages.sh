@@ -170,7 +170,6 @@ declare -a COMMON_PACMAN_PACKAGES=(
   # "nvm" # Downloaded via a bash command, to it works with the terminal
   "papirus-icon-theme"
   "pipewire" # For screen sharing
-  "pipewire-pulse"
   "qt5-wayland"
   "qt6-wayland"
   "sass" # For AGS Widgets
