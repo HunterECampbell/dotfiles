@@ -1,7 +1,5 @@
 CRITICAL!!!!!!!!!:
-- Better Yay setup: https://gemini.google.com/app/35d9b3c1fff81996
 - Include nerd-fonts in download script
-- Download script shouldn't require sudo password with every yay package
 - zsh setup should:
   - Delete existing ~/.zshrc
   - symlink

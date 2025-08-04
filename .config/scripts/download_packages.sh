@@ -25,9 +25,18 @@ if [[ "$EUID" -ne 0 ]]; then
   echo "This script requires elevated privileges. Attempting to re-run with sudo..."
   # Preserve arguments when re-running with sudo
   exec sudo bash "$0" "$@"
-  # The 'exec' command replaces the current shell process with the new one.
-  # If sudo fails (e.g., user cancels password prompt), this script will exit.
 fi
+
+# --- Set the target user for non-root commands ---
+# The SUDO_USER environment variable holds the name of the user who
+# originally invoked the script with sudo. This is the user we want to
+# perform git and makepkg commands as.
+TARGET_USER=${SUDO_USER}
+if [ -z "$TARGET_USER" ]; then
+    echo "Error: Could not determine the target user. Please run this script with 'sudo'."
+    exit 1
+fi
+echo "Running as root, but performing user-specific commands for: $TARGET_USER"
 
 echo "Starting package installation setup..."
 echo "---------------------------------------------------"
@@ -79,45 +88,41 @@ echo "---------------------------------------------------"
 declare -a FAILED_PACKAGES=()
 
 # --- Part 1: Setup Yay (AUR Helper) ---
-# Ensure git and base-devel are installed before attempting to setup yay.
-# These are included in COMMON_PACMAN_PACKAGES now.
-
 # Check if yay is installed
 if ! command -v yay &> /dev/null; then
   echo "yay (AUR helper) not found. Attempting to set up yay..."
   echo "  - First, ensuring 'git' and 'base-devel' are installed for building yay..."
-  # Install dependencies needed for yay
-  pacman -S git base-devel --noconfirm
+
+  # Install dependencies needed for yay. Using --noconfirm for automation.
+  pacman -S --noconfirm --needed git base-devel
   if [ $? -ne 0 ]; then
     echo "    Error: Failed to install yay dependencies (git, base-devel). Aborting yay setup."
-    FAILED_PACKAGES+=("yay (Dependencies)")
   else
     echo "    Dependencies installed successfully."
 
-    # Clone yay repository and build/install it
-    # Use a temporary directory to avoid cluttering home
+    # Use a temporary directory to clone and build yay
     TEMP_DIR=$(mktemp -d)
     echo "  - Cloning yay into $TEMP_DIR..."
-    # When running with sudo elevation for the whole script, we still need
-    # to drop privileges for git clone and makepkg, as they should be run
-    # as the TARGET_USER.
+
+    # Run git clone as the target user to ensure correct ownership
     sudo -u "$TARGET_USER" git clone https://aur.archlinux.org/yay.git "$TEMP_DIR/yay"
     if [ $? -ne 0 ]; then
       echo "    Error: Failed to clone yay repository."
-      FAILED_PACKAGES+=("yay (Clone)")
       rm -rf "$TEMP_DIR"
     else
       echo "  - Building and installing yay..."
-      # Change ownership of the temp directory to the target user for makepkg
-      # This chown can now run without sudo prefix, as the script itself is elevated
-      chown -R "$TARGET_USER":"$TARGET_USER" "$TEMP_DIR"
+
+      # Use a subshell to change directory and execute the build command
+      # makepkg should be run as the target user.
       sudo -u "$TARGET_USER" sh -c "cd '$TEMP_DIR/yay' && makepkg -si --noconfirm"
       if [ $? -ne 0 ]; then
           echo "    Error: Failed to build and install yay."
-          FAILED_PACKAGES+=("yay (Build/Install)")
       else
           echo "    yay installed successfully."
       fi
+
+      # Clean up the temporary directory
+      echo "  - Cleaning up temporary directory..."
       rm -rf "$TEMP_DIR"
     fi
   fi
