@@ -179,7 +179,7 @@ declare -a COMMON_PACMAN_PACKAGES=(
   "qt6-wayland"
   "sass" # For AGS Widgets
   "slurp" # For screen shots
-  "ttf-fira-code-nerd"
+  "ttf-firacode-nerd"
   "ttf-liberation"
   "ttf-nerd-fonts-symbols"
   "ttf-nerd-fonts-symbols-mono"
