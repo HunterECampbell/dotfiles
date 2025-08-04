@@ -255,6 +255,15 @@ Zoom needs some settings turned on for screen sharing:
 
 **Add a virtual background**
 
+Additional Settings:
+
+- General -> Turn Off **"Change status to 'Away' when inactive for:"**
+- Audio -> Audio Profile -> Select **"Personalized audio isolation"**
+- Meetings & webinars -> Join Experience -> Select **"Show video preview first"**
+- Meetings & webinars -> Join Experience -> Select **"Keep my camera off"**
+- Meetings & webinars -> My Video -> Select **"Show me as an active speaker when I talk"**
+- Meetings & webinars -> Controls -> Select **"Keep meeting controls visible**
+
 ## 11. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
