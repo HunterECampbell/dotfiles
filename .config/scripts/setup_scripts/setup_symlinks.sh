@@ -80,7 +80,7 @@ _create_dotfile_symlinks() {
     "$DOTFILES_REPO_DIR/.config/zoomus.conf"
     "$DOTFILES_REPO_DIR/Development/Test Files"
     "$DOTFILES_REPO_DIR/Pictures/Wallpapers"
-    "$DOTFILES_REPO_DIR/.zshrc"
+    # "$DOTFILES_REPO_DIR/.zshrc" # Handled in setup_zsh.sh
   )
 
   local -a dest_paths=(
@@ -94,7 +94,7 @@ _create_dotfile_symlinks() {
     "$TARGET_HOME/.config/zoomus.conf"
     "$TARGET_HOME/Development/Test Files"
     "$TARGET_HOME/Pictures/Wallpapers"
-    "$TARGET_HOME/.zshrc"
+    # "$TARGET_HOME/.zshrc" # Handled in setup_zsh.sh
   )
 
   # Loop through the arrays to create the symlinks

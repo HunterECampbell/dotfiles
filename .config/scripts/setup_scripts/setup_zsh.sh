@@ -1,16 +1,14 @@
 #!/bin/bash
 
-# This script sets up Zsh, Oh My Zsh, and the zsh-autosuggestions plugin.
-# It is designed to be run as a child script by a master script.
+# This script sets up Zsh, Oh My Zsh, and the zsh-autosuggestions plugin,
+# and symlinks the .zshrc from the user's dotfiles repository.
 #
 # IMPORTANT:
-# - This script expects to be run with sufficient permissions for package installation
-#   and shell modification (e.g., via 'sudo' for pacman and chsh, or by a master
-#   script that itself is run with sudo and doesn't drop privileges).
-# - The current version of this script includes 'sudo' prefixes for commands
-#   requiring elevated privileges, assuming it will be run by a normal user
-#   or by a master script that doesn't pass root privileges directly.
-#   Each 'sudo' command will prompt for a password if needed.
+# - This script expects to be run as a child script by a master script,
+#   or run with sufficient permissions for package installation and shell modification.
+# - This script assumes the user's dotfiles repository is located at
+#   '~/Development/repos/dotfiles'. Please update the DOTFILES_SOURCE
+#   variable if this path is incorrect.
 
 echo "Starting Zsh setup..."
 echo "---------------------------------------------------"
@@ -36,15 +34,12 @@ else
 fi
 
 # 2. Install Oh My Zsh
-# Oh My Zsh installer typically creates a default .zshrc if one doesn't exist,
-# or backs up an existing one to .zshrc.pre-oh-my-zsh.
-# Your dotfiles process should then place your desired .zshrc at $TARGET_HOME/.zshrc.
-# This script will then modify that .zshrc in a later step.
+# Oh My Zsh installer typically creates a default .zshrc if one doesn't exist.
+# The following steps will replace this with the user's dotfile.
 if [ ! -d "$TARGET_HOME/.oh-my-zsh" ]; then
     echo "Oh My Zsh not found. Installing Oh My Zsh for user '$TARGET_USER'..."
-    # The --unattended flag avoids interactive prompts and attempts to set zsh as default shell (which we'll do explicitly later).
-    # It will also backup an existing .zshrc if one exists.
-    # We use 'sudo -u "$TARGET_USER"' to ensure Oh My Zsh is installed and owned by the regular user.
+    # The --unattended flag avoids interactive prompts. We use 'sudo -u "$TARGET_USER"'
+    # to ensure Oh My Zsh is installed and owned by the regular user.
     sudo -u "$TARGET_USER" sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
     if [ $? -ne 0 ]; then
         echo "Error: Failed to install Oh My Zsh. Exiting."
@@ -54,7 +49,37 @@ else
     echo "Oh My Zsh is already installed."
 fi
 
-# 3. Install zsh-autosuggestions plugin
+# 3. Configure .zshrc from dotfiles
+# This step deletes the default .zshrc created by Oh My Zsh and
+# symlinks the user's dotfile into place.
+DOTFILES_SOURCE="$TARGET_HOME/Development/repos/dotfiles/.zshrc"
+ZSHRC_DESTINATION="$TARGET_HOME/.zshrc"
+
+echo "Configuring .zshrc from dotfiles..."
+
+# Check if the dotfile source exists
+if [ ! -f "$DOTFILES_SOURCE" ]; then
+    echo "  - Warning: Dotfile not found at '$DOTFILES_SOURCE'. Skipping .zshrc setup."
+    echo "    Please ensure your dotfiles repository is cloned and contains the .zshrc file."
+else
+    # Delete the existing ~/.zshrc (e.g., the one created by Oh My Zsh)
+    if [ -f "$ZSHRC_DESTINATION" ]; then
+        echo "  - Deleting existing ~/.zshrc file..."
+        sudo -u "$TARGET_USER" rm "$ZSHRC_DESTINATION"
+    fi
+
+    # Create the symbolic link
+    echo "  - Creating symlink from '$DOTFILES_SOURCE' to '$ZSHRC_DESTINATION'..."
+    sudo -u "$TARGET_USER" ln -sf "$DOTFILES_SOURCE" "$ZSHRC_DESTINATION"
+    if [ $? -ne 0 ]; then
+        echo "    Error: Failed to create symlink. Exiting."
+        exit 1
+    fi
+    echo "    Symlink created successfully."
+fi
+
+
+# 4. Install zsh-autosuggestions plugin
 ZSH_CUSTOM_DIR="${TARGET_HOME}/.oh-my-zsh/custom"
 ZSH_PLUGINS_DIR="${ZSH_CUSTOM_DIR}/plugins"
 AUTOSUGGESTIONS_REPO="https://github.com/zsh-users/zsh-autosuggestions"
@@ -72,34 +97,10 @@ if [ ! -d "$AUTOSUGGESTIONS_DIR" ]; then
 else
     echo "zsh-autosuggestions plugin is already installed."
 fi
+# NOTE: The script previously attempted to modify .zshrc to enable this plugin.
+# With the new symlinking approach, you should manage plugins directly in your
+# dotfile located at '$DOTFILES_SOURCE'.
 
-# 4. Update .zshrc to enable zsh-autosuggestions plugin
-# This assumes your desired .zshrc (from your dotfiles) is already in place
-# at $TARGET_HOME/.zshrc.
-ZSHRC_PATH="$TARGET_HOME/.zshrc"
-if [ -f "$ZSHRC_PATH" ]; then
-    if ! sudo -u "$TARGET_USER" grep -q "zsh-autosuggestions" "$ZSHRC_PATH"; then
-        echo "Adding zsh-autosuggestions to plugins in $ZSHRC_PATH..."
-        # Use sed to add the plugin. Need to be careful with sudo and user permissions.
-        # sed -i requires a backup file on macOS, so using a temp file for cross-platform compatibility.
-        # We use 'sudo -u "$TARGET_USER"' to ensure the file is modified by the correct user.
-        sudo -u "$TARGET_USER" sed -i.bak '/^plugins=(/ s/)$/ zsh-autosuggestions)/' "$ZSHRC_PATH"
-        if [ $? -ne 0 ]; then
-            echo "Error: Failed to update .zshrc for zsh-autosuggestions."
-            # Restore backup if sed failed, silently
-            sudo -u "$TARGET_USER" mv "${ZSHRC_PATH}.bak" "$ZSHRC_PATH" 2>/dev/null || true
-            exit 1
-        else
-            echo "Successfully added zsh-autosuggestions to plugins."
-            # Remove backup file, silently
-            sudo -u "$TARGET_USER" rm "${ZSHRC_PATH}.bak" 2>/dev/null || true
-        fi
-    else
-        echo "zsh-autosuggestions already enabled in $ZSHRC_PATH."
-    fi
-else
-    echo "Warning: .zshrc not found at $ZSHRC_PATH. Cannot configure plugins. Please ensure your .zshrc is in place."
-fi
 
 # 5. Set default shell to Zsh for the target user
 # This command requires sudo as it modifies /etc/passwd.
@@ -115,10 +116,13 @@ else
     echo "Default shell for $TARGET_USER is already Zsh."
 fi
 
+#6 6. Source ~/.zshrc to apply changes immediately
+sleep 3
+hyprctl_dispatch exec "wtype $'repo vac && c\n'"
+sleep 3
+
 echo "---------------------------------------------------"
 echo "Zsh setup complete!"
-echo "IMPORTANT: For these changes to take full effect, you MUST close your current"
-echo "terminal window(s) and open a new one. This will load Zsh as your default shell"
-echo "and apply the updated .zshrc configuration."
-echo "Running 'source $TARGET_HOME/.zshrc' in your *current* Zsh session (if already Zsh)"
-echo "will apply the .zshrc changes, but the default shell change requires a new login."
+echo "If these changes weren't applied automatically,"
+echo "you can manually run 'source $ZSHRC_DESTINATION' in your *current*"
+echo "terminal to apply the .zshrc changes for this session."

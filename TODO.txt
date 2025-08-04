@@ -1,9 +1,5 @@
 CRITICAL!!!!!!!!!:
 - Include nerd-fonts in download script
-- zsh setup should:
-  - Delete existing ~/.zshrc
-  - symlink
-  - `source ~/.zshrc`
 
 
 
