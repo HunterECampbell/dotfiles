@@ -13,10 +13,11 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [Discord Settings](#4-discord-settings)
 1. [FoundryVTT Setup](#5-foundryvtt-setup)
 1. [GitHub CLI Setup](#6-github-cli-setup)
-1. [Steam Settings](#7-steam-settings)
-1. [VPN Setup](#8-vpn-setup)
-1. [Zoom Settings](#9-zoom-settings)
-1. [Important Notes](#10-important-notes)
+1. [Google Messages Setup](#7-google-messages-setup)
+1. [Steam Settings](#8-steam-settings)
+1. [VPN Setup](#9-vpn-setup)
+1. [Zoom Settings](#10-zoom-settings)
+1. [Important Notes](#11-important-notes)
 
 ## 1. Initial Arch Linux Installation
 
@@ -201,7 +202,11 @@ For seamless interaction with GitHub from your terminal (e.g., `git push`, `git 
 
 Refer to the dedicated guide: [github-cli-setup.md](./github-cli-setup.md)
 
-## 7. Steam Settings
+## 7. Google Messages Setup
+
+To use the phone keybind ($SUPER + P), setup browser texting at: [Google Messages Web](https://messages.google.com/web)
+
+## 8. Steam Settings
 
 For faster steam load times, make sure to follow these steps:
 
@@ -223,7 +228,7 @@ To use a separate SSD for gaming, follow these steps:
 1. Open the 3 dot menu
 1. Select "Make Default"
 
-## 8. VPN Setup
+## 9. VPN Setup
 
 Follow the steps at work to finish setup from here
 
@@ -231,7 +236,7 @@ Follow the steps at work to finish setup from here
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
-## 9. Zoom Settings
+## 10. Zoom Settings
 
 Zoom needs some settings turned on for screen sharing:
 
@@ -250,7 +255,7 @@ Zoom needs some settings turned on for screen sharing:
 
 **Add a virtual background**
 
-## 10. Important Notes
+## 11. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
 
