@@ -14,10 +14,11 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [FoundryVTT Setup](#5-foundryvtt-setup)
 1. [GitHub CLI Setup](#6-github-cli-setup)
 1. [Google Messages Setup](#7-google-messages-setup)
-1. [Steam Settings](#8-steam-settings)
-1. [VPN Setup](#9-vpn-setup)
-1. [Zoom Settings](#10-zoom-settings)
-1. [Important Notes](#11-important-notes)
+1. [Nvidia Setup](#8-nvidia-setup)
+1. [Steam Settings](#9-steam-settings)
+1. [VPN Setup](#10-vpn-setup)
+1. [Zoom Settings](#11-zoom-settings)
+1. [Important Notes](#12-important-notes)
 
 ## 1. Initial Arch Linux Installation
 
@@ -206,7 +207,22 @@ Refer to the dedicated guide: [github-cli-setup.md](./github-cli-setup.md)
 
 To use the phone keybind ($SUPER + P), setup browser texting at: [Google Messages Web](https://messages.google.com/web)
 
-## 8. Steam Settings
+## 8. Nvidia Setup
+
+We need to copy the mkinitcpio configs, build the new config, and reboot.
+
+> [!IMPORTANT]
+> We do not do this in a script because it edits the `/etc/` directory
+
+Run these commands:
+
+```
+cp ~/Development/repos/dotfiles/etc/mkinitcpio.conf /etc/mkinitcpio.conf
+sudo mkinitcpio -P
+hyprctl reboot
+```
+
+## 9. Steam Settings
 
 For faster steam load times, make sure to follow these steps:
 
@@ -228,7 +244,7 @@ To use a separate SSD for gaming, follow these steps:
 1. Open the 3 dot menu
 1. Select "Make Default"
 
-## 9. VPN Setup
+## 10. VPN Setup
 
 Follow the steps at work to finish setup from here
 
@@ -236,7 +252,7 @@ Follow the steps at work to finish setup from here
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
-## 10. Zoom Settings
+## 11. Zoom Settings
 
 Zoom needs some settings turned on for screen sharing:
 
@@ -264,7 +280,7 @@ Additional Settings:
 - Meetings & webinars -> My Video -> Select **"Show me as an active speaker when I talk"**
 - Meetings & webinars -> Controls -> Select **"Keep meeting controls visible**
 
-## 11. Important Notes
+## 12. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
 
