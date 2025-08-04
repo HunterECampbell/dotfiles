@@ -141,7 +141,7 @@ alias c='f() { if [[ -z "$1" ]]; then code .; else code "$@"; fi }; f'
 alias cl='clear'
 alias run='npm run'
 alias s='source ~/.zshrc'
-alias z='code ~/.zshrc'
+alias z='code ~/Development/repos/dotfiles/.zshrc'
 alias repo='f() {~/Development/repos/$1}; f'
 
 
@@ -204,13 +204,12 @@ alias mdu='md && mu'
 alias start-gw='gst && fresh && gstp && mu'
 alias restart-gw='md && start-gw'
 alias nuke='npm run nuke'
-alias rbw='rb -w @vasion/workflow'
-alias rsw='rs -w @vac/workflow'
-alias rt='npm run test'
-alias rtw='npm run test:watch -w apps/workflow'
-alias rtwu='npm run test:watch -w @vac/workflow'
-alias rtc='npm run test:watch -w @vac/capture'
-alias ru='npm run unleash -w @vac/unleash'
+alias rbw='prb -w @vasion/workflow'
+alias rt='pnpm run test'
+alias rtw='pnpm run test:watch -w apps/workflow'
+alias rtwu='pnpm run test:watch -w @vac/workflow'
+alias rtc='pnpm run test:watch -w @vac/capture'
+alias ru='pnpm run unleash -w @vac/unleash'
 
 
 # Go Setup
