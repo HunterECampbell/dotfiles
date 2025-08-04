@@ -34,7 +34,7 @@ sleep 3
 hyprctl_dispatch workspace 3
 hyprctl_dispatch exec "kitty"
 sleep 3
-hyprctl_dispatch exec "wtype $'repo vac && rd\n'"
+hyprctl_dispatch exec "wtype $'repo vac && prd\n'"
 sleep 0.25
 
 # 5. Go to Workspace 10 and open Cisco Secure Client
