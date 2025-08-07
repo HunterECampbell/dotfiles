@@ -1,4 +1,6 @@
 FEATURES:
+- Add ClamAV (Antivirus)
+- Add Drata to work setup
 - Add SteelSeries GG (might need Wine)
 - Theme manager (colors, wallpapers)
   - https://gemini.google.com/app/8afe8126532e79d7
