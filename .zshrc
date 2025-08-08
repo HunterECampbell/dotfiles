@@ -134,6 +134,7 @@ source ~/.config/scripts/zsh_scripts/*
 # Script Aliases
 alias mcserver='start_minecraft_server'
 alias mediawriter='flatpak run org.fedoraproject.MediaWriter'
+alias temp='f() { hyprctl hyprsunset temperature $1 }; f'
 
 
 # Aliases
@@ -142,7 +143,7 @@ alias cl='clear'
 alias run='npm run'
 alias s='source ~/.zshrc'
 alias z='code ~/Development/repos/dotfiles/.zshrc'
-alias repo='f() {~/Development/repos/$1}; f'
+alias repo='f() { ~/Development/repos/$1 }; f'
 
 
 ## Git Specific Aliases
