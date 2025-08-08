@@ -15,10 +15,10 @@ ERROR_MSG="Failed to take screenshot."
 # We'll check its exit status to determine success or failure.
 if grimblast copy area; then
     # If grimblast command was successful (exit status 0)
-    notify-send "$NOTIFY_TITLE" "$SUCCESS_MSG"
+    notify-send --expire-time=5000 "$NOTIFY_TITLE" "$SUCCESS_MSG"
 else
-    # If grimblast command failed (non-zero exit status, e.g., user cancelled selection)
-    notify-send --urgency=critical "$NOTIFY_TITLE" "$ERROR_MSG"
+  # If grimblast command failed (non-zero exit status, e.g., user cancelled selection)
+  notify-send --urgency=critical --expire-time=5000 "$NOTIFY_TITLE" "$ERROR_MSG"
 fi
 
 exit 0
