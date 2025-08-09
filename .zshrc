@@ -144,6 +144,7 @@ alias run='npm run'
 alias s='source ~/.zshrc'
 alias z='code ~/Development/repos/dotfiles/.zshrc'
 alias repo='f() { ~/Development/repos/$1 }; f'
+alias repoc='f() { ~/Development/repos/$1 && c }; f'
 
 
 ## Git Specific Aliases

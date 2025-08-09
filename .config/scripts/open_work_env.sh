@@ -21,11 +21,11 @@ sleep 3
 hyprctl_dispatch exec "$SLACK_CMD"
 sleep 3
 
-# 3. Go to Workspace 3, open terminal, run 'repo vac && c', go to Workspace 2
+# 3. Go to Workspace 3, open terminal, run 'repoc vac', go to Workspace 2
 hyprctl_dispatch workspace 3
 hyprctl_dispatch exec "kitty"
 sleep 3
-hyprctl_dispatch exec "wtype $'repo vac && c\n'"
+hyprctl_dispatch exec "wtype $'repoc vac\n'"
 sleep 0.25
 hyprctl_dispatch workspace 2
 sleep 3
