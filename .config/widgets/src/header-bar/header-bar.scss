@@ -1,0 +1,7 @@
+@use "sass:color";
+@use "../../global-styles/theme.scss" as *;
+
+#header-bar {
+  background: color.adjust($primary, $alpha: -0.5);
+  min-height: 3rem;
+}

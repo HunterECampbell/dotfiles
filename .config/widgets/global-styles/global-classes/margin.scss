@@ -1,0 +1,30 @@
+@for $i from 1 through 16 {
+  $spacing-unit: 4px;
+  $spacing-value: $i * $spacing-unit;
+
+  // POSITIVE MARGINS
+  .ma-#{$i} {
+    margin: $spacing-value;
+  }
+  .my-#{$i} {
+    margin-top: $spacing-value;
+    margin-bottom: $spacing-value;
+  }
+  .mx-#{$i} {
+    margin-left: $spacing-value;
+    margin-right: $spacing-value;
+  }
+  .mt-#{$i} {
+    margin-top: $spacing-value;
+  }
+  .mb-#{$i} {
+    margin-bottom: $spacing-value;
+  }
+  .ml-#{$i} {
+    margin-left: $spacing-value;
+  }
+  .mr-#{$i} {
+    margin-right: $spacing-value;
+  }
+  // Negative values are not supported in GTK, so they are not included.
+}

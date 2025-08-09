@@ -1,12 +1,13 @@
 FEATURES:
 - Add ClamAV (Antivirus)
-- Add Drata to work setup
 - Add SteelSeries GG (might need Wine)
 - Theme manager (colors, wallpapers)
   - https://gemini.google.com/app/8afe8126532e79d7
 - Task manager
 - Update calendar for header bar (google calendar)
 - Arch Version update status with auto updater with results of update
+- AGS Header
+- AGS Menu ($SUPER + M)
 - Header notifications for slack and discord
 - Audio picker
 
