@@ -217,7 +217,8 @@ We need to copy the mkinitcpio configs, build the new config, and reboot.
 Run these commands:
 
 ```
-cp ~/Development/repos/dotfiles/etc/mkinitcpio.conf /etc/mkinitcpio.conf
+sudo cp ~/Development/repos/dotfiles/etc/modprobe.d/nvidia.conf /etc/modprobe.d/nvidia.conf
+sudo cp ~/Development/repos/dotfiles/etc/mkinitcpio.conf /etc/mkinitcpio.conf
 sudo mkinitcpio -P
 hyprctl reboot
 ```
