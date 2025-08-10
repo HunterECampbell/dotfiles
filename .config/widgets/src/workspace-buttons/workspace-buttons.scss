@@ -9,6 +9,7 @@
   font-size: rem(20);
   min-height: 0;
   min-width: 0;
+  cursor: pointer;
 
   &:not(:hover) {
     background: transparent;
