@@ -1,40 +1,25 @@
 import app from "ags/gtk4/app";
-import { Astal, Gdk } from "ags/gtk4";
-// import { execAsync } from "ags/process";
-// import { createPoll } from "ags/time";
+import { Astal, Gdk, Gtk } from "ags/gtk4";
 
-export default function Bar(gdkmonitor: Gdk.Monitor) {
-  // const time = createPoll("", 1000, "date");
+import WorkspaceButtons from "../workspace-buttons/WorkspaceButtons";
+
+export default function HeaderBar(gdkmonitor: Gdk.Monitor) {
   const { TOP, LEFT, RIGHT } = Astal.WindowAnchor;
-  console.log("here", gdkmonitor.get_connector());
+  const monitorName: string = gdkmonitor.get_connector();
 
   return (
     <window
       visible
       name="header-bar"
-      class="rounded mx-2 mt-2"
+      class="rounded mx-2 mt-2 py-1"
       gdkmonitor={gdkmonitor}
       exclusivity={Astal.Exclusivity.EXCLUSIVE}
       anchor={TOP | LEFT | RIGHT}
       application={app}
     >
-      {/* <centerbox cssName="centerbox">
-      <button
-        $type="start"
-        onClicked={() => execAsync("echo hello").then(console.log)}
-        hexpand
-        halign={Gtk.Align.CENTER}
-      >
-        <label label="Welcome to AGS!" />
-      </button>
-      <box $type="center" />
-      <menubutton $type="end" hexpand halign={Gtk.Align.CENTER}>
-        <label label={time} />
-        <popover>
-        <Gtk.Calendar />
-        </popover>
-      </menubutton>
-      </centerbox> */}
+      <box halign={Gtk.Align.LEFT} hexpand>
+        <WorkspaceButtons monitorName={monitorName} />
+      </box>
     </window>
   );
 }
