@@ -177,7 +177,6 @@ declare -a COMMON_PACMAN_PACKAGES=(
   "pipewire" # For screen sharing
   "qt5-wayland"
   "qt6-wayland"
-  "sass" # For AGS Widgets
   "slurp" # For screen shots
   "ttf-firacode-nerd"
   "ttf-liberation"
@@ -226,7 +225,6 @@ declare -a WORK_PACMAN_PACKAGES=(
 
 # AUR packages (install with yay)
 declare -a COMMON_YAY_PACKAGES=(
-  "aylurs-gtk-shell-git" # AGS Widgets
   "google-chrome"
   "grimblast-git" # For screen shots
   "ttf-ms-fonts"
