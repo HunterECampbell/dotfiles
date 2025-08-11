@@ -20,6 +20,7 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [VPN Setup](#11-vpn-setup)
 1. [Zoom Settings](#12-zoom-settings)
 1. [Important Notes](#13-important-notes)
+1. [Troubleshooting](#14-troubleshooting)
 
 ## 1. Initial Arch Linux Installation
 
@@ -313,3 +314,15 @@ Additional Settings:
 - **Customization:** These dotfiles reflect my personal preferences. Feel free to modify them to suit your needs!
 
 - **Troubleshooting:** If you encounter issues, check the output of the `run_setup_scripts.sh` script for error messages. Consult the Arch Wiki for specific components (Hyprland, Zsh, UFW, etc.) for detailed troubleshooting.
+
+## 14. Troubleshooting
+
+### Icons Not Displaying Correctly
+
+If your icons aren't displaying correctly, it likely means `ttf-firacode-nerd` didn't install correctly. If this is the case, try installing it via `nerd-fonts`:
+
+```
+sudo pacman -S nerd-fonts
+```
+
+It will ask you for a number code to select your nerd font. **It's likely `28`.**
