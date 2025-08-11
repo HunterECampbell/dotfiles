@@ -10,15 +10,16 @@ This repository contains my personal configuration files (dotfiles) and setup sc
    - [Symlinking Dotfiles](#symlinking-dotfiles)
    - [Running Setup Scripts](#running-setup-scripts)
 1. [Chrome Setup](#3-chrome-setup)
-1. [Discord Settings](#4-discord-settings)
-1. [FoundryVTT Setup](#5-foundryvtt-setup)
-1. [GitHub CLI Setup](#6-github-cli-setup)
-1. [Google Messages Setup](#7-google-messages-setup)
-1. [Nvidia Setup](#8-nvidia-setup)
-1. [Steam Settings](#9-steam-settings)
-1. [VPN Setup](#10-vpn-setup)
-1. [Zoom Settings](#11-zoom-settings)
-1. [Important Notes](#12-important-notes)
+1. [ClamAV Setup](#4-setup-clamav-antivirus)
+1. [Discord Settings](#5-discord-settings)
+1. [FoundryVTT Setup](#6-foundryvtt-setup)
+1. [GitHub CLI Setup](#7-github-cli-setup)
+1. [Google Messages Setup](#8-google-messages-setup)
+1. [Nvidia Setup](#9-nvidia-setup)
+1. [Steam Settings](#10-steam-settings)
+1. [VPN Setup](#11-vpn-setup)
+1. [Zoom Settings](#12-zoom-settings)
+1. [Important Notes](#13-important-notes)
 
 ## 1. Initial Arch Linux Installation
 
@@ -172,7 +173,31 @@ To help apps to use Wayland:
 1. Search for **ozone**
 1. Select **Wayland**
 
-## 4. Discord Settings
+## 4. ClamAV Setup (Antivirus)
+
+We need to copy the custom ClamAV configs, reload the daemon, and restart the services.
+
+> [!IMPORTANT]
+> We do not do this in a script because it edits the `/etc/` directory
+
+Run these commands:
+
+```
+sudo cp -r ~/Development/repos/dotfiles/etc/clamav /etc/
+sudo cp -r ~/Development/repos/dotfiles/etc/sudoers.d /etc/
+sudo cp -r ~/Development/repos/dotfiles/etc/systemd/system/clamav-clamonacc.service.d /etc/systemd/system/
+sudo chmod +x /etc/clamav/virus-event.bash
+sudo mkdir /root/quarantine
+sudo chown root:clamav /root/quarantine
+sudo chmod 770 /root/quarantine
+sudo systemctl daemon-reload
+sudo systemctl enable --now clamav-daemon.service
+sudo systemctl restart clamav-daemon.service
+sudo systemctl restart clamav-clamonacc.service
+sudo freshclam
+```
+
+## 5. Discord Settings
 
 You need to turn off Desktop Notifications:
 
@@ -183,7 +208,7 @@ You need to turn off Desktop Notifications:
 
 For a virtual background, follow this guide: [Discord Virtual Background Setup](./discord-virtual-background-setup.md)
 
-## 5. FoundryVTT Setup
+## 6. FoundryVTT Setup
 
 > [!IMPORTANT]
 > FoundryVTT should not be automatically downloaded/setup, because it uses a **Purchased License** to validate ownership. Adding an automatic download/setup will make the license public, which is not what we want.
@@ -197,17 +222,17 @@ For a virtual background, follow this guide: [Discord Virtual Background Setup](
 
 When setting up a live server, it uses your machine's IP Address as the Browser's URL. We want to hide this IP so players don't access your IP directly. You can setup a hidden IP via [No IP](https://www.noip.com/login). No IP essentially creates a different browser URL that will point to your IP (e.g. my-random-name.ddns.net:30000 - 30000 is the default FoundryVTT port).
 
-## 6. GitHub CLI Setup
+## 7. GitHub CLI Setup
 
 For seamless interaction with GitHub from your terminal (e.g., `git push`, `git pull` without password prompts), it's highly recommended to set up `github-cli` (`gh`).
 
 Refer to the dedicated guide: [github-cli-setup.md](./github-cli-setup.md)
 
-## 7. Google Messages Setup
+## 8. Google Messages Setup
 
 To use the phone keybind ($SUPER + P), setup browser texting at: [Google Messages Web](https://messages.google.com/web)
 
-## 8. Nvidia Setup
+## 9. Nvidia Setup
 
 We need to copy the mkinitcpio configs, build the new config, and reboot.
 
@@ -223,7 +248,7 @@ sudo mkinitcpio -P
 hyprctl reboot
 ```
 
-## 9. Steam Settings
+## 10. Steam Settings
 
 For faster steam load times, make sure to follow these steps:
 
@@ -245,7 +270,7 @@ To use a separate SSD for gaming, follow these steps:
 1. Open the 3 dot menu
 1. Select "Make Default"
 
-## 10. VPN Setup
+## 11. VPN Setup
 
 Follow the steps at work to finish setup from here
 
@@ -253,7 +278,7 @@ Follow the steps at work to finish setup from here
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
-## 11. Zoom Settings
+## 12. Zoom Settings
 
 Zoom needs some settings turned on for screen sharing:
 
@@ -281,7 +306,7 @@ Additional Settings:
 - Meetings & webinars -> My Video -> Select **"Show me as an active speaker when I talk"**
 - Meetings & webinars -> Controls -> Select **"Keep meeting controls visible**
 
-## 12. Important Notes
+## 13. Important Notes
 
 - **Reboot/Relogin:** After running the setup scripts, it's often necessary to reboot your system or log out and log back in for all changes (especially shell changes and display manager configurations) to take full effect.
 

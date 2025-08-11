@@ -138,6 +138,7 @@ echo "---------------------------------------------------"
 declare -a COMMON_PACMAN_PACKAGES=(
   "base-devel" # Essential for building AUR/YAY packages
   "bc"
+  "clamav" # Antivirus
   "curl" # Needed by ZSH
   "egl-wayland" # For graphics rendering
   "ffmpeg" # For screen recording (video encoding)
