@@ -174,7 +174,6 @@ declare -a COMMON_PACMAN_PACKAGES=(
   "npm"
   # "nvidia-utils" # Setup in a setup script - Steam Setup
   # "nvm" # Downloaded via a bash command, to it works with the terminal
-  "papirus-icon-theme"
   "pipewire" # For screen sharing
   "qt5-wayland"
   "qt6-wayland"
