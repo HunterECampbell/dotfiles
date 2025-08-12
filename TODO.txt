@@ -1,5 +1,5 @@
 FEATURES:
-- Add ClamAV (Antivirus)
+- Add icons to notify-send usages (similar to how cisco does)
 - Add Drata to work setup
 - Add SteelSeries GG (might need Wine)
 - Theme manager (colors, wallpapers)
@@ -12,5 +12,4 @@ FEATURES:
 
 BUGS:
 - Internet icon doesn't update when on the VPN
-- Downgrade nvidia for gamescope
 - Zoom screen share breaks after first share
