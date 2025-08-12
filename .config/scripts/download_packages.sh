@@ -232,6 +232,7 @@ declare -a COMMON_YAY_PACKAGES=(
   "xdg-desktop-portal-hyprland-git" # For screen sharing
 )
 declare -a HOME_YAY_PACKAGES=(
+  "gamescope-git"
   "discord"
   "minecraft-launcher"
   "obs-backgroundremoval" # For discord virtual background (creates virtual background without a green screen)

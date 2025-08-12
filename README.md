@@ -251,7 +251,7 @@ hyprctl reboot
 
 ## 10. Steam Settings
 
-For faster steam load times, make sure to follow these steps:
+### For faster steam load times, make sure to follow these steps:
 
 1. Open **Steam** (This will usually take a second if it's loading for the first time during a login session).
 1. Go to **Steam** (top-left corner) -> **Settings**
@@ -259,7 +259,7 @@ For faster steam load times, make sure to follow these steps:
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
-To use a separate SSD for gaming, follow these steps:
+### To use a separate SSD for gaming, follow these steps:
 
 1. If you have a dedicated (separate) ssd and haven't already, run the `~/.config/scripts/setup_scripts/setup_gaming_ssd.sh
 1. Go to **Steam** (top-left corner) -> **Settings**
@@ -270,6 +270,28 @@ To use a separate SSD for gaming, follow these steps:
 1. Select the new drive
 1. Open the 3 dot menu
 1. Select "Make Default"
+
+### To play pointer/shooter games
+
+Having 2 monitors can cause an issue with mouse restriction. I haven't had success with locking the mouse to the game window with `gamescope`, so I came up with my own idea using a custom script. This script will move the second monitor out of the range of the first monitor, so the mouse can't reach it. Then, when the game ends it will revert back to it's original location.
+
+First, enable the script:
+
+```
+chmod +x ~/.config/scripts/toggle_second_monitor_for_gaming.sh
+```
+
+To automatically use this script when launching a steam game, follow these steps:
+
+1. Right click the steam game
+1. Select **"Properties..."**
+1. In the **"Launch Options"**, paste the below value:
+
+```
+~/.config/scripts/toggle_second_monitor_for_gaming.sh %command%
+```
+
+Now you can play your game with your mouse locked to the monitor you're playing on!
 
 ## 11. VPN Setup
 
