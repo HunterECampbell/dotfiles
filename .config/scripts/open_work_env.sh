@@ -37,6 +37,11 @@ sleep 3
 hyprctl_dispatch exec "wtype $'repo vac && prd\n'"
 sleep 0.25
 
-# 5. Go to Workspace 10 and open Cisco Secure Client
+# 5. Go to Workspace 5 and open Zoom
+hyprctl_dispatch workspace 5
+hyprctl_dispatch exec "zoom"
+sleep 3
+
+# 6. Go to Workspace 10 and open Cisco Secure Client
 hyprctl_dispatch workspace 10
 hyprctl_dispatch exec "$CISCO_CMD"
