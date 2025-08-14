@@ -178,7 +178,8 @@ alias dcu='docker compose up -d'
 alias dcd='docker compose down'
 alias dcdu='dcd && dcu'
 alias dps='docker ps -a' # Lists all containers
-alias drestart='f() { docker compose restart $1 };f' # $1 is the container name to restart
+alias dstart='f() { docker compose start $1 };f' # $1 is the container name to start -> Turns the container on
+alias drestart='f() { docker compose restart $1 };f' # $1 is the container name to restart -> Turns the container off and then on
 alias dprune='docker system prune --all --volumes'
 alias dlog='f() { docker logs -f $1 };f' # $1 is the container name
 
