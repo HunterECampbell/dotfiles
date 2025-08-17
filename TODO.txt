@@ -1,4 +1,6 @@
 FEATURES:
+- Setup ClamAV in pop os
+- Separate dotfiles by arch and pop os
 - Add icons to notify-send usages (similar to how cisco does)
 - Add Drata to work setup
 - Add SteelSeries GG (might need Wine)
