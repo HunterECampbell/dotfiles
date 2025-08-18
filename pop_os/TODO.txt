@@ -1,0 +1,5 @@
+FEATURES:
+- Setup ClamAV in pop os
+- Add Drata to work setup
+
+BUGS:
