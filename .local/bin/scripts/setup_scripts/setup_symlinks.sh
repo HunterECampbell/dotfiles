@@ -39,7 +39,7 @@ echo "Target home directory: $TARGET_HOME"
 echo "---------------------------------------------------"
 
 # Define paths relative to TARGET_HOME
-DOTFILES_REPO_DIR="$TARGET_HOME/Development/repos/dotfiles/pop_os"
+DOTFILES_REPO_DIR="$TARGET_HOME/Development/repos/dotfiles"
 
 # Array to store failed steps
 declare -a FAILED_STEPS=()

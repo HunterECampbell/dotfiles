@@ -132,9 +132,7 @@ source ~/.local/bin/scripts/zsh_scripts/*
 # For a full list of active aliases, run `alias`.
 #
 # Script Aliases
-# alias mcserver='start_minecraft_server'
-# alias mediawriter='flatpak run org.fedoraproject.MediaWriter'
-# alias temp='f() { hyprctl hyprsunset temperature $1 }; f'
+alias mcserver='start_minecraft_server'
 
 
 # Aliases
@@ -145,7 +143,7 @@ alias s='source ~/.zshrc'
 alias z='code ~/.zshrc'
 alias repo='f() { ~/Development/repos/$1 }; f'
 alias repoc='f() { ~/Development/repos/$1 && c }; f'
-alias update-pop='sudo apt update -y && sudo apt upgrade'
+alias update-pop='sudo apt update -y && sudo apt upgrade -y'
 
 
 ## Git Specific Aliases
@@ -220,10 +218,6 @@ alias ru='pnpm run unleash -w @vac/unleash'
 # export GOROOT=/usr/local/go-1.21.3
 # export GOPATH=$HOME/go
 # export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
-
-
-# Workflow GW Setup
-# export GITHUB_TOKEN=
 
 
 # NVM auto-use for directories with .nvmrc - Recommended by nvm
