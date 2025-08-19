@@ -91,7 +91,7 @@ _create_dotfile_symlinks() {
     else
       echo -e "${YELLOW}  Creating symlink: $target_path -> $source_path${NC}"
       # Use `ln -sfn` to force overwrite existing files/symlinks
-      if sudo -u "$TARGET_USER" ln -sfn "$source_path" "$target_path"; then
+      if sudo -u "$TARGET_USER" ln -s "$source_path" "$target_path"; then
         echo -e "${GREEN}  Successfully created symlink: $target_path${NC}"
       else
         echo -e "${RED}  Error creating symlink: $target_path -> $source_path${NC}"
