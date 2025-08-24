@@ -1,5 +1,5 @@
 FEATURES:
-- Setup ClamAV in pop os
+- Setup ClamAV in pop os - https://gemini.google.com/app/dedc796997b05381
 - Add Drata to work setup
 
 BUGS:
