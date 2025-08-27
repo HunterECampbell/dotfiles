@@ -17,11 +17,18 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 
 ## 1. Post-Installation Setup
 
-After a fresh Pop!\_OS Linux install, follow the below steps.
+After a fresh Pop!\_OS Linux install, your entire system can be automatically configured by running a single command. The `bootstrap.sh` script serves as the sole entry point to your self-contained automation. This script will handle all necessary steps, including installing Ansible and its dependencies in a dedicated virtual environment, and then executing the main Ansible playbook to set up your applications, system settings, and dotfiles.
 
-#### 1. Restart your computer
+Follow these steps to get started:
 
-For all changes to take effect, it is best to restart your computer.
+### 1. Run `bootstrap.sh`
+
+Execute the `bootstrap.sh` script to begin the automated setup. This command will prompt you for your `sudo` password to perform system-level tasks.
+
+```
+chmod +x ~/path-to-repo/scripts/bootstrap.sh
+~/path-to-repo/scripts/bootstrap.sh
+```
 
 ## 2. Chrome Setup
 

@@ -121,7 +121,7 @@ source $ZSH/oh-my-zsh.sh
 
 
 # Scripts
-source ~/.local/bin/scripts/zsh_scripts/*
+source ~/Development/repos/dotfiles/scripts/zsh_scripts/*
 # This source includes:
 # start_minecraft_server.zsh
 
