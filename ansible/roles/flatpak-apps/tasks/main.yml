@@ -1,0 +1,15 @@
+---
+- name: Install Flatpak applications (user-level)
+  community.general.flatpak:
+    name:
+      - com.discordapp.Discord
+      - com.github.tchx84.Flatseal
+      - com.google.Chrome
+      - com.mattjakeman.ExtensionManager
+      - com.valvesoftware.Steam
+      - org.prismlauncher.prismlauncher
+      - org.vinegarhq.Sober
+      - org.zoom.Zoom
+    method: user
+    state: present
+    remote: flathub

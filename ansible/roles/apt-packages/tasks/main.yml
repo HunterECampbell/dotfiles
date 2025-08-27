@@ -1,0 +1,12 @@
+---
+- name: Install common APT packages
+  ansible.builtin.apt:
+    name:
+      - anacron
+      - clamav-daemon
+      - clamav
+      - code
+      - cron
+      - slack-desktop
+    state: present
+    update_cache: yes
