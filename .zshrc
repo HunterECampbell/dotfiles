@@ -144,7 +144,9 @@ alias z='code ~/.zshrc'
 alias repo='f() { ~/Development/repos/$1 };f'
 alias repoc='f() { ~/Development/repos/$1 && c };f'
 alias update-pop='sudo apt update -y && sudo apt upgrade -y'
-alias remove-virus='f() {sudo /usr/local/bin/clamscan --move=/var/quarantine $1};f'
+alias virus-scan='sudo /usr/local/bin/clamscan_notify.sh'
+alias quarantine-virus='f() { sudo /usr/local/bin/clamscan --move=/var/quarantine $1 };f'
+alias remove-virus='f() { sudo /usr/local/bin/clamscan --remove $1 };f'
 
 
 ## Git Specific Aliases
@@ -212,7 +214,6 @@ alias rt='npm run test'
 alias rtw='npm run test:watch -w apps/workflow'
 alias rtwu='npm run test:watch -w @vac/workflow'
 alias rtc='npm run test:watch -w @vac/capture'
-alias ru='pnpm run unleash -w @vac/unleash'
 
 
 # Go Setup
