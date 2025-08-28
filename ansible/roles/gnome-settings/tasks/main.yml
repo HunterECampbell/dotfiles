@@ -302,7 +302,7 @@
     # [org/gnome/settings-daemon/plugins/media-keys]
     - {
         key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings",
-        value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/']",
+        value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']",
       }
     - { key: "/org/gnome/settings-daemon/plugins/media-keys/logout", value: "" }
     - {
@@ -348,8 +348,16 @@
         value: "'Open Notes'",
       }
     - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding",
+        value: "'<Super>w'",
+      }
+    - {
         key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command",
         value: "'sh /home/hcnureth/Development/start_work_env.sh &'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name",
+        value: "'Open Work'",
       }
     - {
         key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding",
@@ -398,6 +406,18 @@
     - {
         key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/name",
         value: "'Open Phone'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/binding",
+        value: "'<Super>bracketright'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/command",
+        value: "'simplescreenrecorder'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name",
+        value: "'Record Screen'",
       }
 
     # [org/gnome/settings-daemon/plugins/power]
