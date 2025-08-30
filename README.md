@@ -26,8 +26,8 @@ Follow these steps to get started:
 Execute the `bootstrap.sh` script to begin the automated setup. This command will prompt you for your `sudo` password to perform system-level tasks.
 
 ```
-chmod +x ~/path-to-repo/scripts/bootstrap.sh
-~/path-to-repo/scripts/bootstrap.sh
+chmod +x ~/Development/repos/dotfiles/scripts/bootstrap.sh
+~/Development/repos/dotfiles/scripts/bootstrap.sh
 ```
 
 ## 2. Chrome Setup

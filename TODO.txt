@@ -4,6 +4,7 @@ FEATURES:
   - cron.weekly
   - /usr/local/bin/clamscan
   - /usr/local/bin/clamscan_notify.sh
+- Make sure firewall is setup in the auto setup stuff
 - Add Drata to work setup
 
 BUGS:

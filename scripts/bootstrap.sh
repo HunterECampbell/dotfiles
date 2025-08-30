@@ -16,33 +16,38 @@
 set -e
 
 # Define the root directory of the repository
-REPO_ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE}")" && pwd)"
+# This will go up one level from the 'scripts' directory to the 'DOTFILES' directory
+REPO_ROOT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 
 echo "Starting automated Pop!_OS setup..."
 
 # Step 1: Update and upgrade the system packages
 echo "Updating and upgrading system packages..."
-sudo apt update && sudo apt upgrade -y [1]
+sudo apt update && sudo apt upgrade -y
 
 # Step 2: Install Python dependencies
 echo "Installing Python3 and pip for Ansible..."
-sudo apt install -y python3-pip python3-venv [1, 2]
+sudo apt install -y python3-pip python3-venv
 
 # Step 3: Create a Python virtual environment inside the repository
 echo "Creating a Python virtual environment to contain Ansible..."
-python3 -m venv "${REPO_ROOT_DIR}/.venv" [3, 2]
+python3 -m venv "${REPO_ROOT_DIR}/.venv"
 
 # Step 4: Activate the virtual environment
 echo "Activating the virtual environment..."
-source "${REPO_ROOT_DIR}/.venv/bin/activate" [3]
+source "${REPO_ROOT_DIR}/.venv/bin/activate"
 
-# Step 5: Install Ansible and required collections
+# Step 5: Install Ansible and required collections and Python libraries
 echo "Installing Ansible and community collections..."
-pip install ansible [4]
-ansible-galaxy collection install community.general [5, 6]
+pip install ansible
+ansible-galaxy collection install community.general
 
-# Step 6: Execute the main Ansible playbook
+echo "Installing required Python libraries for Ansible modules..."
+pip install github3.py requests
+
+# Step 6: Execute the main Ansible playbook with a change of directory
 echo "Running the main Ansible playbook..."
-ansible-playbook -i "${REPO_ROOT_DIR}/ansible/inventory.ini" "${REPO_ROOT_DIR}/ansible/playbook.yml" --ask-become-pass [7]
+cd "${REPO_ROOT_DIR}/ansible"
+ansible-playbook playbook.yml --inventory inventory.ini --ask-become-pass
 
 echo "Setup script finished successfully. Your system should now be fully configured."

@@ -3,11 +3,13 @@
   ansible.builtin.apt:
     name:
       - anacron
-      - clamav-daemon
       - clamav
+      - clamav-daemon
       - code
       - cron
-      - slack-desktop
+      - python3-psutil
       - simplescreenrecorder
+      - slack-desktop
     state: present
     update_cache: yes
+  become: yes

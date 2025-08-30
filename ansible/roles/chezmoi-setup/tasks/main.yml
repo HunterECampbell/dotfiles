@@ -1,13 +1,124 @@
 ---
-- name: Ensure chezmoi is installed
-  ansible.builtin.apt:
-    name: chezmoi
-    state: present
+- name: Ensure .local/bin directory exists for the user
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.local/bin"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
   become: yes
+  become_user: "{{ ansible_user }}"
+
+- name: Get latest Chezmoi release info via GitHub API
+  ansible.builtin.uri:
+    url: "https://api.github.com/repos/twpayne/chezmoi/releases/latest"
+    return_content: true
+  register: chezmoi_api_response
+  become: no
+
+- name: Check if chezmoi already installed in ~/.local/bin
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.local/bin/chezmoi"
+  register: chezmoi_stat
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+- name: Determine chezmoi asset URLs for current architecture
+  ansible.builtin.set_fact:
+    chezmoi_arch: >-
+      {{ 'amd64' if ansible_architecture in ['x86_64','amd64'] else
+         'arm64' if ansible_architecture in ['aarch64','arm64'] else ansible_architecture }}
+    chezmoi_tar_url: >-
+      {{ (chezmoi_api_response.json.assets | default([]) |
+          selectattr('name','search','linux_' ~
+                     ('amd64' if ansible_architecture in ['x86_64','amd64'] else
+                      'arm64' if ansible_architecture in ['aarch64','arm64'] else ansible_architecture)
+                     ~ '.tar.gz') |
+          map(attribute='browser_download_url') | list | default([''], true) | first) }}
+    chezmoi_deb_url: >-
+      {{ (chezmoi_api_response.json.assets | default([]) |
+          selectattr('name','search','linux_' ~
+                     ('amd64' if ansible_architecture in ['x86_64','amd64'] else
+                      'arm64' if ansible_architecture in ['aarch64','arm64'] else ansible_architecture)
+                     ~ '.deb') |
+          map(attribute='browser_download_url') | list | default([''], true) | first) }}
+  when: not chezmoi_stat.stat.exists
+
+- name: Download chezmoi tarball
+  ansible.builtin.get_url:
+    url: "{{ chezmoi_tar_url }}"
+    dest: "/tmp/chezmoi.tar.gz"
+    mode: "0644"
+  when:
+    - not chezmoi_stat.stat.exists
+    - chezmoi_tar_url != ''
+
+- name: Ensure chezmoi unpack dir exists
+  ansible.builtin.file:
+    path: "/tmp/chezmoi-unpack"
+    state: directory
+    mode: "0755"
+  when:
+    - not chezmoi_stat.stat.exists
+    - chezmoi_tar_url != ''
+
+- name: Unpack chezmoi tarball
+  ansible.builtin.unarchive:
+    src: "/tmp/chezmoi.tar.gz"
+    dest: "/tmp/chezmoi-unpack"
+    remote_src: yes
+  when:
+    - not chezmoi_stat.stat.exists
+    - chezmoi_tar_url != ''
+
+- name: Install chezmoi binary from tarball
+  ansible.builtin.copy:
+    src: "/tmp/chezmoi-unpack/chezmoi"
+    dest: "{{ ansible_user_dir }}/.local/bin/chezmoi"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+  become: yes
+  become_user: "{{ ansible_user }}"
+  when:
+    - not chezmoi_stat.stat.exists
+    - chezmoi_tar_url != ''
+
+- name: Download chezmoi .deb
+  ansible.builtin.get_url:
+    url: "{{ chezmoi_deb_url }}"
+    dest: "/tmp/chezmoi.deb"
+    mode: "0644"
+  when:
+    - not chezmoi_stat.stat.exists
+    - chezmoi_tar_url == ''
+    - chezmoi_deb_url != ''
+
+- name: Install chezmoi from .deb
+  ansible.builtin.apt:
+    deb: "/tmp/chezmoi.deb"
+    update_cache: yes
+  become: yes
+  when:
+    - not chezmoi_stat.stat.exists
+    - chezmoi_tar_url == ''
+    - chezmoi_deb_url != ''
+
+- name: Fallback to install vendored chezmoi binary
+  ansible.builtin.copy:
+    src: "{{ playbook_dir }}/bin/chezmoi"
+    dest: "{{ ansible_user_dir }}/.local/bin/chezmoi"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+  become: yes
+  become_user: "{{ ansible_user }}"
+  when:
+    - not chezmoi_stat.stat.exists
+    - chezmoi_tar_url == ''
+    - chezmoi_deb_url == ''
 
 - name: Initialize and apply dotfiles with Chezmoi
-  ansible.builtin.command: "{{ ansible_user_dir }}/.local/bin/chezmoi init --apply https://github.com/your-username/dotfiles.git"
-  args:
-    creates: "{{ ansible_user_dir }}/.local/share/chezmoi" # Prevent re-running if already initialized
-    chdir: "{{ ansible_user_dir }}"
-  become: no
+  ansible.builtin.command: "{{ ansible_user_dir }}/.local/bin/chezmoi init --apply https://github.com/HunterECampbell/dotfiles.git"
+  become: yes
+  become_user: "{{ ansible_user }}"

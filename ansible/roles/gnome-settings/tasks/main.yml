@@ -1,500 +1,25 @@
 ---
 # ansible/roles/gnome-settings/tasks/main.yml
-- name: Apply generic GNOME and application-specific dconf settings
+# Managed policy: only enforce opinionated settings we explicitly care about.
+# All other GNOME settings are left to system defaults to reduce noise and churn.
+
+- name: Apply curated GNOME dconf settings (minimal, opinionated)
   community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
     state: present
   loop:
-    # [apps/psensor]
-    - { key: "/apps/psensor/graph-alpha-channel-enabled", value: "false" }
-    - { key: "/apps/psensor/graph-background-alpha", value: "1.0" }
-    - { key: "/apps/psensor/graph-background-color", value: "'#e8f4e8f4a8f5'" }
-    - { key: "/apps/psensor/graph-foreground-color", value: "'#000000000000'" }
-    - { key: "/apps/psensor/graph-monitoring-duration", value: "20" }
-    - { key: "/apps/psensor/graph-update-interval", value: "2" }
-    - { key: "/apps/psensor/interface-hide-on-startup", value: "false" }
-    - { key: "/apps/psensor/interface-menu-bar-disabled", value: "false" }
-    - { key: "/apps/psensor/interface-sensorlist-position", value: "0" }
-    - { key: "/apps/psensor/interface-temperature-unit", value: "0" }
-    - {
-        key: "/apps/psensor/interface-unity-launcher-count-disabled",
-        value: "false",
-      }
-    - {
-        key: "/apps/psensor/interface-window-decoration-disabled",
-        value: "false",
-      }
-    - { key: "/apps/psensor/interface-window-divider-pos", value: "0" }
-    - {
-        key: "/apps/psensor/interface-window-keep-below-enabled",
-        value: "false",
-      }
-    - { key: "/apps/psensor/interface-window-restore-enabled", value: "true" }
-    - { key: "/apps/psensor/sensor-update-interval", value: "2" }
-    - { key: "/apps/psensor/slog-enabled", value: "false" }
-    - { key: "/apps/psensor/slog-interval", value: "300" }
-
-    # [org/gnome/desktop/app-folders/folders/Pop-Office]
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-Office/apps",
-        value: "['libreoffice-calc.desktop', 'libreoffice-draw.desktop', 'libreoffice-impress.desktop', 'libreoffice-math.desktop', 'libreoffice-startcenter.desktop', 'libreoffice-writer.desktop']",
-      }
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-Office/name",
-        value: "'Office'",
-      }
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-Office/translate",
-        value: "true",
-      }
-
-    #
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-System/apps",
-        value: "",
-      }
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-System/name",
-        value: "'System'",
-      }
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-System/translate",
-        value: "true",
-      }
-
-    # [org/gnome/desktop/app-folders/folders/Pop-Utility]
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-Utility/apps",
-        value: "",
-      }
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-Utility/name",
-        value: "'Utilities'",
-      }
-    - {
-        key: "/org/gnome/desktop/app-folders/folders/Pop-Utility/translate",
-        value: "true",
-      }
-
-    # [org/gnome/desktop/background]
-    - {
-        key: "/org/gnome/desktop/background/color-shading-type",
-        value: "'solid'",
-      }
-    - { key: "/org/gnome/desktop/background/picture-options", value: "'zoom'" }
-    - {
-        key: "/org/gnome/desktop/background/picture-uri-dark",
-        value: "'file:///usr/share/backgrounds/pop/kate-hazen-pop-retro2.png'",
-      }
-    - { key: "/org/gnome/desktop/background/primary-color", value: "'#000000'" }
-    - {
-        key: "/org/gnome/desktop/background/secondary-color",
-        value: "'#000000'",
-      }
-
-    # [org/gnome/desktop/input-sources]
-    - { key: "/org/gnome/desktop/input-sources/current", value: "uint32 0" }
-    - { key: "/org/gnome/desktop/input-sources/per-window", value: "false" }
-    - {
-        key: "/org/gnome/desktop/input-sources/sources",
-        value: "[('xkb', 'us')]",
-      }
-    - { key: "/org/gnome/desktop/input-sources/xkb-options", value: "@as" }
-
-    # [org/gnome/desktop/interface]
-    - {
-        key: "/org/gnome/desktop/interface/color-scheme",
-        value: "'prefer-dark'",
-      }
-    - { key: "/org/gnome/desktop/interface/cursor-size", value: "32" }
-    - { key: "/org/gnome/desktop/interface/enable-hot-corners", value: "false" }
-    - { key: "/org/gnome/desktop/interface/locate-pointer", value: "false" }
-
-    # [org/gnome/desktop/notifications]
-    - {
-        key: "/org/gnome/desktop/notifications/application-children",
-        value: "['io-elementary-appcenter', 'com-valvesoftware-steam', 'gnome-power-panel', 'com-discordapp-discord', 'org-gnome-fileroller', 'com-cisco-secureclient-gui', 'org-vinegarhq-sober', 'com-google-chrome', 'org-gnome-terminal', 'us-zoom-zoom', 'slack', 'org-gnome-nautilus']",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/com-cisco-secureclient-gui/application-id",
-        value: "'com.cisco.secureclient.gui.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/com-discordapp-discord/application-id",
-        value: "'com.discordapp.Discord.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/com-google-chrome/application-id",
-        value: "'com.google.Chrome.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/com-valvesoftware-steam/application-id",
-        value: "'com.valvesoftware.Steam.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/gnome-power-panel/application-id",
-        value: "'gnome-power-panel.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/io-elementary/appcenter/application-id",
-        value: "'io.elementary.appcenter.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/org-gnome-fileroller/application-id",
-        value: "'org.gnome.FileRoller.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/org-gnome-nautilus/application-id",
-        value: "'org.gnome.Nautilus.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/org-gnome-terminal/application-id",
-        value: "'org.gnome.Terminal.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/org-vinegarhq-sober/application-id",
-        value: "'org.vinegarhq.Sober.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/slack/application-id",
-        value: "'slack.desktop'",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/slack/show-banners",
-        value: "false",
-      }
-    - {
-        key: "/org/gnome/desktop/notifications/application/us-zoom-zoom/application-id",
-        value: "'us.zoom.Zoom.desktop'",
-      }
-
-    # [org/gnome/desktop/peripherals/keyboard]
-    - {
-        key: "/org/gnome/desktop/peripherals/keyboard/numlock-state",
-        value: "true",
-      }
-
-    # [org/gnome/desktop/peripherals/mouse]
-    - {
-        key: "/org/gnome/desktop/peripherals/mouse/natural-scroll",
-        value: "false",
-      }
-    - {
-        key: "/org/gnome/desktop/peripherals/mouse/speed",
-        value: "0.17647058823529416",
-      }
-
-    # [org/gnome/desktop/privacy]
-    - { key: "/org/gnome/desktop/privacy/old-files-age", value: "uint32 14" }
-    - { key: "/org/gnome/desktop/privacy/remove-old-temp-files", value: "true" }
-    - {
-        key: "/org/gnome/desktop/privacy/remove-old-trash-files",
-        value: "true",
-      }
-    - {
-        key: "/org/gnome/desktop/privacy/report-technical-problems",
-        value: "false",
-      }
-
-    # [org/gnome/desktop/screensaver]
-    - {
-        key: "/org/gnome/desktop/screensaver/color-shading-type",
-        value: "'solid'",
-      }
-    - { key: "/org/gnome/desktop/screensaver/lock-delay", value: "uint32 0" }
-    - { key: "/org/gnome/desktop/screensaver/picture-options", value: "'zoom'" }
-    - {
-        key: "/org/gnome/desktop/screensaver/picture-uri",
-        value: "'file:///usr/share/backgrounds/pop/kate-hazen-pop-retro2.png'",
-      }
-    - {
-        key: "/org/gnome/desktop/screensaver/primary-color",
-        value: "'#000000'",
-      }
-    - {
-        key: "/org/gnome/desktop/screensaver/secondary-color",
-        value: "'#000000'",
-      }
-
-    # [org/gnome/desktop/session]
-    - { key: "/org/gnome/desktop/session/idle-delay", value: "uint32 900" }
-
-    # [org/gnome/desktop/wm/preferences]
-    - {
-        key: "/org/gnome/desktop/wm/preferences/button-layout",
-        value: "'appmenu:minimize,maximize,close'",
-      }
-
-    # [org/gnome/eog/view]
-    - { key: "/org/gnome/eog/view/background-color", value: "'rgb(0,0,0)'" }
-    - { key: "/org/gnome/eog/view/use-background-color", value: "true" }
-
-    # [org/gnome/evolution-data-server]
-    - { key: "/org/gnome/evolution-data-server/migrated", value: "true" }
-    - {
-        key: "/org/gnome/evolution-data-server/network-monitor-gio-name",
-        value: "''",
-      }
-
-    # [org/gnome/file-roller/dialogs/extract]
-    - {
-        key: "/org/gnome/file-roller/dialogs/extract/recreate-folders",
-        value: "true",
-      }
-    - {
-        key: "/org/gnome/file-roller/dialogs/extract/skip-newer",
-        value: "false",
-      }
-
-    # [org/gnome/file-roller/listing]
-    - { key: "/org/gnome/file-roller/listing/list-mode", value: "'as-folder'" }
-    - { key: "/org/gnome/file-roller/listing/name-column-width", value: "250" }
-    - { key: "/org/gnome/file-roller/listing/show-path", value: "false" }
-    - { key: "/org/gnome/file-roller/listing/sort-method", value: "'name'" }
-    - { key: "/org/gnome/file-roller/listing/sort-type", value: "'ascending'" }
-
-    # [org/gnome/gnome-system-monitor/disktreenew]
-    - {
-        key: "/org/gnome/gnome-system-monitor/disktreenew/col-6-visible",
-        value: "true",
-      }
-    - {
-        key: "/org/gnome/gnome-system-monitor/disktreenew/col-6-width",
-        value: "0",
-      }
-
-    # [org/gnome/gnome-system-monitor/proctree]
-    - {
-        key: "/org/gnome/gnome-system-monitor/proctree/columns-order",
-        value: "",
-      }
-    - { key: "/org/gnome/gnome-system-monitor/proctree/sort-col", value: "15" }
-    - { key: "/org/gnome/gnome-system-monitor/proctree/sort-order", value: "0" }
-
-    # [org/gnome/mutter]
-    - { key: "/org/gnome/mutter/edge-tiling", value: "true" }
-    - {
-        key: "/org/gnome/mutter/experimental-features",
-        value: "['x11-randr-fractional-scaling']",
-      }
-
-    # [org/gnome/nautilus/preferences]
-    - {
-        key: "/org/gnome/nautilus/preferences/default-folder-viewer",
-        value: "'icon-view'",
-      }
-    - {
-        key: "/org/gnome/nautilus/preferences/search-filter-time-type",
-        value: "'last_modified'",
-      }
-    - {
-        key: "/org/gnome/nautilus/preferences/search-view",
-        value: "'list-view'",
-      }
-
-    # [org/gnome/settings-daemon/plugins/color]
-    - {
-        key: "/org/gnome/settings-daemon/plugins/color/night-light-enabled",
-        value: "true",
-      }
-
-    # [org/gnome/settings-daemon/plugins/media-keys]
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings",
-        value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']",
-      }
-    - { key: "/org/gnome/settings-daemon/plugins/media-keys/logout", value: "" }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver",
-        value: "",
-      }
-
-    # Custom Keybindings
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding",
-        value: "'<Super>s'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command",
-        value: "'flatpak run com.valvesoftware.Steam'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name",
-        value: "'Open Steam'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding",
-        value: "'<Super>d'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command",
-        value: "'flatpak run com.discordapp.Discord'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name",
-        value: "'Open Discord'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding",
-        value: "'<Super>n'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command",
-        value: "'gnome-text-editor'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name",
-        value: "'Open Notes'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding",
-        value: "'<Super>w'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command",
-        value: "'sh /home/hcnureth/Development/start_work_env.sh &'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name",
-        value: "'Open Work'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding",
-        value: "'<Super>b'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command",
-        value: '''flatpak run com.google.Chrome --profile-directory="Default"''',
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name",
-        value: "'Open Chrome'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/binding",
-        value: "'<Super>g'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/command",
-        value: '''flatpak run com.google.Chrome https://gemini.google.com/ --profile-directory="Default"''',
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/name",
-        value: "'Open Gemini'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/binding",
-        value: "'<Super>y'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/command",
-        value: '''flatpak run com.google.Chrome https://youtube.com/ --profile-directory="Default"''',
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/name",
-        value: "'Open YouTube'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/binding",
-        value: "'<Super>p'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/command",
-        value: '''flatpak run com.google.Chrome https://messages.google.com/ --profile-directory="Default"''',
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/name",
-        value: "'Open Phone'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/binding",
-        value: "'<Super>bracketright'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/command",
-        value: "'simplescreenrecorder'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name",
-        value: "'Record Screen'",
-      }
-
-    # [org/gnome/settings-daemon/plugins/power]
-    - {
-        key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-timeout",
-        value: "1800",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-ac-type",
-        value: "'suspend'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-timeout",
-        value: "1800",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/power/sleep-inactive-battery-type",
-        value: "'suspend'",
-      }
-
-    # [org/gnome/shell]
-    - { key: "/org/gnome/shell/disabled-extensions", value: "@as" }
+    # Shell and favorites
     - {
         key: "/org/gnome/shell/enabled-extensions",
         value: "['ding@rastersoft.com', 'pop-cosmic@system76.com', 'pop-shell@system76.com', 'system76-power@system76.com', 'ubuntu-appindicators@ubuntu.com', 'cosmic-dock@system76.com', 'cosmic-workspaces@system76.com', 'popx11gestures@system76.com', 'dash-to-panel@jderose9.github.com', 'sound-output-device-chooser@kgshank.net', 'lockkeys@vaina.lt', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'color-picker@tuberry']",
       }
-    - { key: "/org/gnome/shell/favorite-apps", value: "" }
     - {
-        key: "/org/gnome/shell/welcome-dialog-last-shown-version",
-        value: "'42.9'",
+        key: "/org/gnome/shell/favorite-apps",
+        value: "['pop-cosmic-applications.desktop', 'com.google.Chrome.desktop', 'com.discordapp.Discord.desktop', 'slack.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']",
       }
 
-    # [org/gnome/shell/extensions/color-picker]
-    - {
-        key: "/org/gnome/shell/extensions/color-picker/colors-collection",
-        value: "'#406ba1|#00a6ff'",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/color-picker/colors-history",
-        value: "'#2f4683|#406ba1|#00a6ff'",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/color-picker/menu-style",
-        value: "false",
-      }
-
-    # [org/gnome/shell/extensions/dash-to-dock]
-    - {
-        key: "/org/gnome/shell/extensions/dash-to-dock/click-action",
-        value: "'minimize-or-previews'",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/dash-to-dock/dock-fixed",
-        value: "true",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/dash-to-dock/extend-height",
-        value: "false",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/dash-to-dock/intellihide",
-        value: "false",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/dash-to-dock/manualhide",
-        value: "true",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/dash-to-dock/multi-monitor",
-        value: "false",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/dash-to-dock/show-mounts",
-        value: "false",
-      }
-
-    # [org/gnome/shell/extensions/dash-to-panel]
+    # Dash to Panel (layout and key visuals)
     - {
         key: "/org/gnome/shell/extensions/dash-to-panel/animate-appicon-hover",
         value: "true",
@@ -545,7 +70,7 @@
       }
     - {
         key: "/org/gnome/shell/extensions/dash-to-panel/panel-element-positions",
-        value: '''{"0":,"1":}''',
+        value: '''{"0":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}],"1":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}]}''',
       }
     - {
         key: "/org/gnome/shell/extensions/dash-to-panel/panel-element-positions-monitors-sync",
@@ -562,6 +87,26 @@
     - {
         key: "/org/gnome/shell/extensions/dash-to-panel/status-icon-padding",
         value: "-1",
+      }
+    - {
+        key: "/org/gnome/shell/extensions/dash-to-panel/show-appmenu",
+        value: "true",
+      }
+    - {
+        key: "/org/gnome/shell/extensions/dash-to-panel/show-apps-icon-file",
+        value: "''",
+      }
+    - {
+        key: "/org/gnome/shell/extensions/dash-to-panel/show-tooltip",
+        value: "true",
+      }
+    - {
+        key: "/org/gnome/shell/extensions/dash-to-panel/available-monitors",
+        value: "[0, 1]",
+      }
+    - {
+        key: "/org/gnome/shell/extensions/dash-to-panel/primary-monitor",
+        value: "0",
       }
     - {
         key: "/org/gnome/shell/extensions/dash-to-panel/stockgs-keep-dash",
@@ -612,138 +157,126 @@
         value: "'TOP'",
       }
 
-    # [org/gnome/shell/extensions/pop-cosmic]
+    # Custom keybindings only (and the parent list)
     - {
-        key: "/org/gnome/shell/extensions/pop-cosmic/clock-alignment",
-        value: "'RIGHT'",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/pop-cosmic/overlay-key-action",
-        value: "'APPLICATIONS'",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/pop-cosmic/show-applications-button",
-        value: "false",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/pop-cosmic/show-workspaces-button",
-        value: "false",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings",
+        value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']",
       }
 
-    # [org/gnome/shell/extensions/pop-shell]
     - {
-        key: "/org/gnome/shell/extensions/pop-shell/active-hint-border-radius",
-        value: "uint32 16",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding",
+        value: "'<Super>s'",
       }
     - {
-        key: "/org/gnome/shell/extensions/pop-shell/gap-inner",
-        value: "uint32 4",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command",
+        value: "'flatpak run com.valvesoftware.Steam'",
       }
     - {
-        key: "/org/gnome/shell/extensions/pop-shell/gap-outer",
-        value: "uint32 4",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/pop-shell/hint-color-rgba",
-        value: "'rgb(46,139,87)'",
-      }
-    - { key: "/org/gnome/shell/extensions/pop-shell/show-title", value: "true" }
-    - {
-        key: "/org/gnome/shell/extensions/pop-shell/tile-by-default",
-        value: "false",
-      }
-    - {
-        key: "/org/gnome/shell/extensions/pop-shell/toggle-floating",
-        value: "",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name",
+        value: "'Open Steam'",
       }
 
-    # [org/gnome/shell/weather]
-    - { key: "/org/gnome/shell/weather/automatic-location", value: "true" }
-
-    # [org/gnome/system/location]
-    - { key: "/org/gnome/system/location/enabled", value: "false" }
-
-    # [org/gnome/terminal/legacy/profiles:]
     - {
-        key: "/org/gnome/terminal/legacy/profiles:/list",
-        value: "['b1dcc9dd-5262-4d8d-a863-c897e6d979b9']",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding",
+        value: "'<Super>d'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command",
+        value: "'flatpak run com.discordapp.Discord'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name",
+        value: "'Open Discord'",
       }
 
-    # [org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9]
     - {
-        key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/custom-command",
-        value: "'zsh'",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding",
+        value: "'<Super>n'",
       }
     - {
-        key: "/org/gnome/terminal/legacy/profiles:/:b1dcc9dd-5262-4d8d-a863-c897e6d979b9/use-custom-command",
-        value: "true",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command",
+        value: "'gnome-text-editor'",
       }
-
-    # [org/gtk/gtk4/settings/color-chooser]
     - {
-        key: "/org/gtk/gtk4/settings/color-chooser/selected-color",
-        value: "(true, 0.0, 0.0, 0.0, 1.0)",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name",
+        value: "'Open Notes'",
       }
 
-    # [org/gtk/gtk4/settings/file-chooser]
     - {
-        key: "/org/gtk/gtk4/settings/file-chooser/date-format",
-        value: "'regular'",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding",
+        value: "'<Super>w'",
       }
     - {
-        key: "/org/gtk/gtk4/settings/file-chooser/location-mode",
-        value: "'path-bar'",
-      }
-    - { key: "/org/gtk/gtk4/settings/file-chooser/show-hidden", value: "false" }
-    - {
-        key: "/org/gtk/gtk4/settings/file-chooser/show-size-column",
-        value: "true",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command",
+        value: "'sh /home/hcnureth/Development/start_work_env.sh &'",
       }
     - {
-        key: "/org/gtk/gtk4/settings/file-chooser/show-type-column",
-        value: "true",
-      }
-    - {
-        key: "/org/gtk/gtk4/settings/file-chooser/sort-column",
-        value: "'name'",
-      }
-    - {
-        key: "/org/gtk/gtk4/settings/file-chooser/sort-directories-first",
-        value: "false",
-      }
-    - {
-        key: "/org/gtk/gtk4/settings/file-chooser/sort-order",
-        value: "'ascending'",
-      }
-    - {
-        key: "/org/gtk/gtk4/settings/file-chooser/type-format",
-        value: "'category'",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name",
+        value: "'Open Work'",
       }
 
-    # [org/gtk/settings/color-chooser]
     - {
-        key: "/org/gtk/settings/color-chooser/custom-colors",
-        value: "[(0.18039215686274512, 0.54509803921568623, 0.3411764705882353, 1.0), (0.98431372549019602, 0.72156862745098038, 0.42352941176470588, 1.0)]",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding",
+        value: "'<Super>b'",
       }
     - {
-        key: "/org/gtk/settings/color-chooser/selected-color",
-        value: "(true, 0.18039215686274512, 0.54509803921568623, 0.3411764705882353, 1.0)",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command",
+        value: '''flatpak run com.google.Chrome --profile-directory="Default"''',
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name",
+        value: "'Open Chrome'",
       }
 
-    # [org/gtk/settings/file-chooser]
-    - { key: "/org/gtk/settings/file-chooser/date-format", value: "'regular'" }
     - {
-        key: "/org/gtk/settings/file-chooser/location-mode",
-        value: "'path-bar'",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/binding",
+        value: "'<Super>g'",
       }
-    - { key: "/org/gtk/settings/file-chooser/show-hidden", value: "false" }
-    - { key: "/org/gtk/settings/file-chooser/show-size-column", value: "true" }
-    - { key: "/org/gtk/settings/file-chooser/show-type-column", value: "true" }
-    - { key: "/org/gtk/settings/file-chooser/sort-column", value: "'name'" }
     - {
-        key: "/org/gtk/settings/file-chooser/sort-directories-first",
-        value: "true",
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/command",
+        value: '''flatpak run com.google.Chrome https://gemini.google.com/ --profile-directory="Default"''',
       }
-    - { key: "/org/gtk/settings/file-chooser/sort-order", value: "'ascending'" }
-    - { key: "/org/gtk/settings/file-chooser/type-format", value: "'category'" }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/name",
+        value: "'Open Gemini'",
+      }
+
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/binding",
+        value: "'<Super>y'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/command",
+        value: '''flatpak run com.google.Chrome https://youtube.com/ --profile-directory="Default"''',
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/name",
+        value: "'Open YouTube'",
+      }
+
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/binding",
+        value: "'<Super>p'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/command",
+        value: '''flatpak run com.google.Chrome https://messages.google.com/ --profile-directory="Default"''',
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/name",
+        value: "'Open Phone'",
+      }
+
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/binding",
+        value: "'<Super>bracketright'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/command",
+        value: "'simplescreenrecorder'",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name",
+        value: "'Record Screen'",
+      }
   become: no

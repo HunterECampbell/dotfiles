@@ -1,4 +1,11 @@
 ---
+- name: Ensure Flathub remote exists (user)
+  community.general.flatpak_remote:
+    name: flathub
+    state: present
+    method: user
+    flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
+
 - name: Install Flatpak applications (user-level)
   community.general.flatpak:
     name:
@@ -7,9 +14,9 @@
       - com.google.Chrome
       - com.mattjakeman.ExtensionManager
       - com.valvesoftware.Steam
-      - org.prismlauncher.prismlauncher
+      - org.prismlauncher.PrismLauncher
       - org.vinegarhq.Sober
-      - org.zoom.Zoom
+      - us.zoom.Zoom
     method: user
     state: present
     remote: flathub

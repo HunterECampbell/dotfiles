@@ -1,9 +1,6 @@
 ---
 - name: Set up Pop!_OS workstation
   hosts: localhost
-  become: yes
-  vars:
-    ansible_python_interpreter: "{{ ansible_playbook_dir }}/.venv/bin/python3"
   roles:
     - apt-packages
     - chezmoi-setup
@@ -11,4 +8,3 @@
     - flatpak-apps
     - gnome-settings
     - snap-apps
-    - chezmoi-setup
