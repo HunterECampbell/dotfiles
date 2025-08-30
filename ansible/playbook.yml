@@ -11,3 +11,4 @@
     - flatpak-apps
     - gnome-settings
     - snap-apps
+    - chezmoi-setup

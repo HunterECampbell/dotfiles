@@ -1,0 +1,13 @@
+---
+- name: Ensure chezmoi is installed
+  ansible.builtin.apt:
+    name: chezmoi
+    state: present
+  become: yes
+
+- name: Initialize and apply dotfiles with Chezmoi
+  ansible.builtin.command: "{{ ansible_user_dir }}/.local/bin/chezmoi init --apply https://github.com/your-username/dotfiles.git"
+  args:
+    creates: "{{ ansible_user_dir }}/.local/share/chezmoi" # Prevent re-running if already initialized
+    chdir: "{{ ansible_user_dir }}"
+  become: no
