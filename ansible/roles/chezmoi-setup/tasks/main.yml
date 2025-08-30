@@ -118,7 +118,26 @@
     - chezmoi_tar_url == ''
     - chezmoi_deb_url == ''
 
-- name: Initialize and apply dotfiles with Chezmoi
-  ansible.builtin.command: "{{ ansible_user_dir }}/.local/bin/chezmoi init --apply https://github.com/HunterECampbell/dotfiles.git"
+- name: Initialize Chezmoi once
+  ansible.builtin.command: "{{ ansible_user_dir }}/.local/bin/chezmoi init https://github.com/HunterECampbell/dotfiles.git"
+  args:
+    creates: "{{ ansible_user_dir }}/.local/share/chezmoi"
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+- name: Apply Chezmoi changes
+  ansible.builtin.command:
+    argv:
+      - timeout
+      - "180s"
+      - "{{ ansible_user_dir }}/.local/bin/chezmoi"
+      - apply
+      - "--no-pager"
+      - "--force"
+  environment:
+    PAGER: cat
+    CHEZMOI_PAGER: ""
+    EDITOR: /bin/true
+    VISUAL: /bin/true
   become: yes
   become_user: "{{ ansible_user }}"

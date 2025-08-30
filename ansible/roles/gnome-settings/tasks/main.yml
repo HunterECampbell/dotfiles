@@ -279,4 +279,14 @@
         key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name",
         value: "'Record Screen'",
       }
+
+    # Selected system keybindings
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/calculator",
+        value: "['<Super>bracketleft']",
+      }
+    - {
+        key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver",
+        value: "['<Super>l']",
+      }
   become: no
