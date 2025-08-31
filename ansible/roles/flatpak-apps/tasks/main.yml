@@ -6,17 +6,16 @@
     method: user
     flatpakrepo_url: https://flathub.org/repo/flathub.flatpakrepo
 
+- name: Compute selected Flatpaks based on profile
+  ansible.builtin.set_fact:
+    flatpak_selected: >-
+      {{ flatpak_general
+         + ((((install_profile | default('all')) in ['home','all']) | ternary(flatpak_home, [])))
+         + ((((install_profile | default('all')) in ['work','all']) | ternary(flatpak_work, []))) }}
+
 - name: Install Flatpak applications (user-level)
   community.general.flatpak:
-    name:
-      - com.discordapp.Discord
-      - com.github.tchx84.Flatseal
-      - com.google.Chrome
-      - com.mattjakeman.ExtensionManager
-      - com.valvesoftware.Steam
-      - org.prismlauncher.PrismLauncher
-      - org.vinegarhq.Sober
-      - us.zoom.Zoom
+    name: "{{ flatpak_selected }}"
     method: user
     state: present
     remote: flathub

@@ -1,15 +1,14 @@
 ---
-- name: Install common APT packages
+- name: Compute selected APT packages based on profile
+  ansible.builtin.set_fact:
+    apt_selected: >-
+      {{ apt_general
+         + ((((install_profile | default('all')) in ['home','all']) | ternary(apt_home, [])))
+         + ((((install_profile | default('all')) in ['work','all']) | ternary(apt_work, []))) }}
+
+- name: Install APT packages
   ansible.builtin.apt:
-    name:
-      - anacron
-      - clamav
-      - clamav-daemon
-      - code
-      - cron
-      - python3-psutil
-      - simplescreenrecorder
-      - slack-desktop
+    name: "{{ apt_selected }}"
     state: present
     update_cache: yes
   become: yes

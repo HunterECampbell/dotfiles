@@ -1,0 +1,13 @@
+apt_general:
+  - anacron
+  - clamav
+  - clamav-daemon
+  - code
+  - cron
+  - python3-psutil
+  - simplescreenrecorder
+
+apt_home: []
+
+apt_work:
+  - slack-desktop

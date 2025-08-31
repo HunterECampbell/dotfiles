@@ -1,0 +1,136 @@
+
+PLAY [Set up Pop!_OS workstation] **********************************************
+
+TASK [Gathering Facts] *********************************************************
+ok: [localhost]
+
+TASK [apt-packages : Compute selected APT packages based on profile] ***********
+ok: [localhost]
+
+TASK [apt-packages : Install APT packages] *************************************
+ok: [localhost]
+
+TASK [chezmoi-setup : Ensure .local/bin directory exists for the user] *********
+ok: [localhost]
+
+TASK [chezmoi-setup : Get latest Chezmoi release info via GitHub API] **********
+skipping: [localhost]
+
+TASK [chezmoi-setup : Check if chezmoi already installed in ~/.local/bin] ******
+ok: [localhost]
+
+TASK [chezmoi-setup : Determine chezmoi asset URLs for current architecture] ***
+skipping: [localhost]
+
+TASK [chezmoi-setup : Download chezmoi tarball] ********************************
+skipping: [localhost]
+
+TASK [chezmoi-setup : Ensure chezmoi unpack dir exists] ************************
+skipping: [localhost]
+
+TASK [chezmoi-setup : Unpack chezmoi tarball] **********************************
+skipping: [localhost]
+
+TASK [chezmoi-setup : Install chezmoi binary from tarball] *********************
+skipping: [localhost]
+
+TASK [chezmoi-setup : Download chezmoi .deb] ***********************************
+skipping: [localhost]
+
+TASK [chezmoi-setup : Install chezmoi from .deb] *******************************
+skipping: [localhost]
+
+TASK [chezmoi-setup : Fallback to install vendored chezmoi binary] *************
+skipping: [localhost]
+
+TASK [chezmoi-setup : Initialize Chezmoi once] *********************************
+ok: [localhost]
+
+TASK [chezmoi-setup : Apply Chezmoi changes] ***********************************
+skipping: [localhost]
+
+TASK [custom-dirs : Create essential user directories] *************************
+ok: [localhost] => (item=Development/repos)
+ok: [localhost] => (item=Minecraft Servers)
+ok: [localhost] => (item=Pictures/Wallpapers)
+
+TASK [flatpak-apps : Ensure Flathub remote exists (user)] **********************
+ok: [localhost]
+
+TASK [flatpak-apps : Compute selected Flatpaks based on profile] ***************
+ok: [localhost]
+
+TASK [flatpak-apps : Install Flatpak applications (user-level)] ****************
+ok: [localhost]
+
+TASK [gnome-settings : Apply curated GNOME dconf settings (minimal, opinionated)] ***
+ok: [localhost] => (item={'key': '/org/gnome/shell/enabled-extensions', 'value': "['ding@rastersoft.com', 'pop-cosmic@system76.com', 'pop-shell@system76.com', 'system76-power@system76.com', 'ubuntu-appindicators@ubuntu.com', 'cosmic-dock@system76.com', 'cosmic-workspaces@system76.com', 'popx11gestures@system76.com', 'dash-to-panel@jderose9.github.com', 'sound-output-device-chooser@kgshank.net', 'lockkeys@vaina.lt', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'color-picker@tuberry']"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/favorite-apps', 'value': "['pop-cosmic-applications.desktop', 'com.google.Chrome.desktop', 'com.discordapp.Discord.desktop', 'slack.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/animate-appicon-hover', 'value': 'true'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/animate-appicon-hover-animation-extent', 'value': "{'RIPPLE': 4, 'PLANK': 4, 'SIMPLE': 1}"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/appicon-margin', 'value': '8'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/appicon-padding', 'value': '4'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/dot-position', 'value': "'BOTTOM'"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/dot-style-focused', 'value': "'METRO'"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/dot-style-unfocused', 'value': "'METRO'"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/group-apps', 'value': 'true'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/hotkeys-overlay-combo', 'value': "'TEMPORARILY'"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/leftbox-padding', 'value': '-1'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/multi-monitors', 'value': 'true'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/panel-anchors', 'value': '\'{"0":"MIDDLE","1":"MIDDLE"}\''})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/panel-element-positions', 'value': '\'{"0":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}],"1":[{"element":"showAppsButton","visible":false,"position":"stackedTL"},{"element":"activitiesButton","visible":false,"position":"stackedTL"},{"element":"leftBox","visible":true,"position":"stackedTL"},{"element":"taskbar","visible":true,"position":"stackedTL"},{"element":"centerBox","visible":true,"position":"stackedBR"},{"element":"rightBox","visible":true,"position":"stackedBR"},{"element":"dateMenu","visible":true,"position":"stackedBR"},{"element":"systemMenu","visible":true,"position":"stackedBR"},{"element":"desktopButton","visible":true,"position":"stackedBR"}]}\''})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/panel-element-positions-monitors-sync', 'value': 'true'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/panel-lengths', 'value': '\'{"0":100,"1":100}\''})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/panel-sizes', 'value': '\'{"0":48,"1":48}\''})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/status-icon-padding', 'value': '-1'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/show-appmenu', 'value': 'true'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/show-apps-icon-file', 'value': "''"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/show-tooltip', 'value': 'true'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/available-monitors', 'value': '[0, 1]'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/primary-monitor', 'value': '0'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/stockgs-keep-dash', 'value': 'false'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/stockgs-keep-top-panel', 'value': 'false'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/stockgs-panelbtn-click-only', 'value': 'false'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/trans-bg-color', 'value': "'#000000'"})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/trans-gradient-bottom-opacity', 'value': '0.20000000000000001'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/trans-gradient-top-opacity', 'value': '0.0'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/trans-panel-opacity', 'value': '0.80000000000000004'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/trans-use-custom-bg', 'value': 'false'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/trans-use-custom-gradient', 'value': 'false'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/trans-use-custom-opacity', 'value': 'false'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/tray-padding', 'value': '-1'})
+ok: [localhost] => (item={'key': '/org/gnome/shell/extensions/dash-to-panel/window-preview-title-position', 'value': "'TOP'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings', 'value': "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding', 'value': "'<Super>s'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command', 'value': "'flatpak run com.valvesoftware.Steam'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name', 'value': "'Open Steam'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding', 'value': "'<Super>d'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command', 'value': "'flatpak run com.discordapp.Discord'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name', 'value': "'Open Discord'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding', 'value': "'<Super>n'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command', 'value': "'gnome-text-editor'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name', 'value': "'Open Notes'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding', 'value': "'<Super>w'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command', 'value': "'sh /home/hcnureth/Development/start_work_env.sh &'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name', 'value': "'Open Work'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding', 'value': "'<Super>b'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command', 'value': '\'flatpak run com.google.Chrome --profile-directory="Default"\''})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name', 'value': "'Open Chrome'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/binding', 'value': "'<Super>g'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/command', 'value': '\'flatpak run com.google.Chrome https://gemini.google.com/ --profile-directory="Default"\''})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/name', 'value': "'Open Gemini'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/binding', 'value': "'<Super>y'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/command', 'value': '\'flatpak run com.google.Chrome https://youtube.com/ --profile-directory="Default"\''})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/name', 'value': "'Open YouTube'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/binding', 'value': "'<Super>p'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/command', 'value': '\'flatpak run com.google.Chrome https://messages.google.com/ --profile-directory="Default"\''})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/name', 'value': "'Open Phone'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/binding', 'value': "'<Super>bracketright'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/command', 'value': "'simplescreenrecorder'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name', 'value': "'Record Screen'"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/calculator', 'value': "['<Super>bracketleft']"})
+ok: [localhost] => (item={'key': '/org/gnome/settings-daemon/plugins/media-keys/screensaver', 'value': "['<Super>l']"})
+
+PLAY RECAP *********************************************************************
+localhost                  : ok=11   changed=0    unreachable=0    failed=0    skipped=10   rescued=0    ignored=0   
+

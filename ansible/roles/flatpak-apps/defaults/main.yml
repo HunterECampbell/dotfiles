@@ -1,0 +1,13 @@
+flatpak_general:
+  - com.discordapp.Discord
+  - com.github.tchx84.Flatseal
+  - com.google.Chrome
+  - com.mattjakeman.ExtensionManager
+
+flatpak_home:
+  - com.valvesoftware.Steam
+  - org.prismlauncher.PrismLauncher
+  - org.vinegarhq.Sober
+
+flatpak_work:
+  - us.zoom.Zoom
