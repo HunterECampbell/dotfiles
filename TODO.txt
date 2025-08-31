@@ -5,6 +5,8 @@ FEATURES:
   - /usr/local/bin/clamscan
   - /usr/local/bin/clamscan_notify.sh
 - Make sure firewall is setup in the auto setup stuff
+- Automate github cli setup
+- Automate zsh setup
 - Add Drata to work setup
 
 BUGS:

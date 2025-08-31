@@ -1,0 +1,32 @@
+---
+# Apply only discovered stable, non-default Zoom settings.
+# Gated by install_profile in ['work','all'] at playbook level.
+- name: Ensure Zoom config dir (Flatpak)
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.var/app/us.zoom.Zoom/config"
+    state: directory
+    mode: "0755"
+
+- name: Set Zoom [General] keys
+  community.general.ini_file:
+    path: "{{ ansible_user_dir }}/.var/app/us.zoom.Zoom/config/zoomus.conf"
+    section: "General"
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: true
+    mode: "0644"
+  loop:
+    - { key: "playSoundForNewMessage", value: "false" }
+    - { key: "showSystemTitlebar", value: "false" }
+    - { key: "timeFormat12HoursEnable", value: "true" }
+    - { key: "useSystemTheme", value: "false" }
+    - { key: "xwayland", value: "true" }
+
+- name: Set Zoom [zoom_new_im] keys
+  community.general.ini_file:
+    path: "{{ ansible_user_dir }}/.var/app/us.zoom.Zoom/config/zoomus.conf"
+    section: "zoom_new_im"
+    option: "is_landscape_mode"
+    value: "true"
+    no_extra_spaces: true
+    mode: "0644"

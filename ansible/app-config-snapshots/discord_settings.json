@@ -1,0 +1,14 @@
+{
+  "BACKGROUND_COLOR": "#121214",
+  "IS_MAXIMIZED": true,
+  "IS_MINIMIZED": false,
+  "SKIP_HOST_UPDATE": true,
+  "WINDOW_BOUNDS": {
+    "height": 815,
+    "width": 1600,
+    "x": 0,
+    "y": 577
+  },
+  "chromiumSwitches": {},
+  "offloadAdmControls": false
+}

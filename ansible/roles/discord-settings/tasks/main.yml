@@ -1,0 +1,66 @@
+---
+# Apply only the discovered non-default Discord app settings (always applied).
+- name: Determine Discord config directory (Flatpak vs XDG)
+  ansible.builtin.stat:
+    path: "{{ ansible_user_dir }}/.var/app/com.discordapp.Discord/config/discord"
+  register: discord_flatpak_dir
+
+- name: Set Discord config dir fact
+  ansible.builtin.set_fact:
+    discord_config_dir: >-
+      {{ (discord_flatpak_dir.stat.exists | default(false))
+         | ternary(ansible_user_dir ~ '/.var/app/com.discordapp.Discord/config/discord',
+                   ansible_user_dir ~ '/.config/discord') }}
+
+- name: Ensure Discord config dir exists
+  ansible.builtin.file:
+    path: "{{ discord_config_dir }}"
+    state: directory
+    mode: "0755"
+
+- name: Write Discord settings.json (curated, non-defaults only)
+  ansible.builtin.copy:
+    dest: "{{ discord_config_dir }}/settings.json"
+    mode: "0600"
+    backup: yes
+    validate: "bash -c 'command -v jq >/dev/null 2>&1 && jq -e . %s >/dev/null || true'"
+    content: |
+      {
+        "BACKGROUND_COLOR": "#121214",
+        "IS_MAXIMIZED": true,
+        "IS_MINIMIZED": false,
+        "SKIP_HOST_UPDATE": true,
+        "chromiumSwitches": {},
+        "offloadAdmControls": false
+      }
+
+- name: Discord notifications (GNOME dconf)
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+  loop:
+    - {
+        key: "/org/gnome/desktop/notifications/application/com.discordapp.Discord/enable",
+        value: "true",
+      }
+    - {
+        key: "/org/gnome/desktop/notifications/application/com.discordapp.Discord/show-banners",
+        value: "false",
+      }
+    - {
+        key: "/org/gnome/desktop/notifications/application/com.discordapp.Discord/show-in-lock-screen",
+        value: "false",
+      }
+    - {
+        key: "/org/gnome/desktop/notifications/application/com.discordapp.Discord/enable-sound-alerts",
+        value: "true",
+      }
+    - {
+        key: "/org/gnome/desktop/notifications/application/com.discordapp.Discord/details-in-lock-screen",
+        value: "false",
+      }
+    - {
+        key: "/org/gnome/desktop/notifications/application/com.discordapp.Discord/force-expanded",
+        value: "false",
+      }

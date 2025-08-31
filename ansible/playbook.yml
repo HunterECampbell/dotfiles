@@ -6,5 +6,8 @@
     - chezmoi-setup
     - custom-dirs
     - flatpak-apps
+    - discord-settings
+    - role: zoom-settings
+      when: "install_profile | default('all') in ['work','all']"
     - gnome-settings
     - snap-apps
