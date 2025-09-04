@@ -1,9 +1,0 @@
-[Unit]
-Description=Set Hyprsunset Night Temperature
-
-[Service]
-Type=oneshot
-ExecStart=/usr/bin/hyprctl hyprsunset temperature 4000
-
-[Install]
-WantedBy=hyprsunset-night.timer
