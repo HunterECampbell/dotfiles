@@ -8,6 +8,7 @@
   roles:
     - { role: apt-packages, tags: ["apt", "apt-packages"] }
     - { role: chezmoi-setup, tags: ["chezmoi", "dotfiles"] }
+    - { role: zsh, tags: ["zsh", "ohmyzsh"] }
     - { role: custom-dirs, tags: ["dirs", "custom-dirs"] }
     - { role: flatpak-apps, tags: ["flatpak", "flatpak-apps"] }
     - { role: discord-settings, tags: ["discord"] }

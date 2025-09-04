@@ -1,0 +1,87 @@
+---
+# Role: zsh
+# Purpose: Ensure zsh installed, Oh My Zsh + plugins present (without overwriting existing .zshrc managed by chezmoi),
+#          and set zsh as the user's default login shell.
+
+- name: Ensure zsh package is installed
+  ansible.builtin.apt:
+    name: zsh
+    state: present
+    update_cache: yes
+  become: yes
+  tags: ["zsh", "ohmyzsh"]
+
+- name: Determine zsh binary path
+  ansible.builtin.command: which zsh
+  register: zsh_path
+  changed_when: false
+  tags: ["zsh", "ohmyzsh"]
+
+- name: Install / update Oh My Zsh (git clone, idempotent; does NOT touch existing .zshrc)
+  ansible.builtin.git:
+    repo: https://github.com/ohmyzsh/ohmyzsh.git
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh"
+    version: master
+    update: yes
+    depth: 1
+  register: omz_git_result
+  become: yes
+  become_user: "{{ ansible_user }}"
+  tags: ["zsh", "ohmyzsh"]
+
+- name: Ensure custom plugins directory exists
+  ansible.builtin.file:
+    path: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins"
+    state: directory
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+    mode: "0755"
+  become: yes
+  become_user: "{{ ansible_user }}"
+  tags: ["zsh", "ohmyzsh"]
+
+- name: Install / update zsh-autosuggestions plugin
+  ansible.builtin.git:
+    repo: https://github.com/zsh-users/zsh-autosuggestions.git
+    dest: "{{ ansible_user_dir }}/.oh-my-zsh/custom/plugins/zsh-autosuggestions"
+    version: master
+    update: yes
+    depth: 1
+  register: autosuggest_git_result
+  become: yes
+  become_user: "{{ ansible_user }}"
+  tags: ["zsh", "ohmyzsh", "zsh-autosuggestions"]
+
+- name: Source ~/.zshrc to load new Oh My Zsh changes (only if installs/updates occurred)
+  ansible.builtin.shell: "zsh -ic 'source ~/.zshrc'"
+  register: zsh_source_result
+  changed_when: false
+  failed_when: false
+  become: yes
+  become_user: "{{ ansible_user }}"
+  when: omz_git_result.changed or autosuggest_git_result.changed
+  tags: ["zsh", "ohmyzsh"]
+
+- name: Set default shell to zsh for user
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    shell: "{{ zsh_path.stdout | default('/usr/bin/zsh') }}"
+  become: yes
+  tags: ["zsh", "ohmyzsh"]
+
+# (Optional) Lightweight verification task (non-fatal) to confirm Oh My Zsh can load.
+# Runs a non-interactive zsh, echoes theme variable if sourcing succeeds.
+- name: Verify Oh My Zsh environment (non-fatal)
+  ansible.builtin.shell: "zsh -ic 'echo OMZ_THEME:$ZSH_THEME'"
+  register: omz_verify
+  changed_when: false
+  failed_when: false
+  become: yes
+  become_user: "{{ ansible_user }}"
+  tags: ["zsh", "ohmyzsh"]
+
+- name: Debug verification output
+  ansible.builtin.debug:
+    msg: "{{ omz_verify.stdout | default('No output') }}"
+  when: omz_verify is defined
+  tags: ["zsh", "ohmyzsh"]

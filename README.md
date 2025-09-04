@@ -6,14 +6,13 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 
 1. [Post-Installation Setup](#1-post-installation-setup)
 1. [Chrome Setup](#2-chrome-setup)
-1. [ClamAV Setup (Antivirus)](#3-clamav-setup-antivirus)
-1. [Discord Settings](#4-discord-settings)
-1. [FoundryVTT Setup](#5-foundryvtt-setup)
-1. [GitHub CLI Setup](#6-github-cli-setup)
-1. [Google Messages Setup](#7-google-messages-setup)
-1. [Steam Settings](#8-steam-settings)
-1. [VPN Setup](#9-vpn-setup)
-1. [Zoom Settings](#10-zoom-settings)
+1. [Discord Settings](#3-discord-settings)
+1. [FoundryVTT Setup](#4-foundryvtt-setup)
+1. [GitHub CLI Setup](#5-github-cli-setup)
+1. [Google Messages Setup](#6-google-messages-setup)
+1. [Steam Settings](#7-steam-settings)
+1. [VPN Setup](#8-vpn-setup)
+1. [Zoom Settings](#9-zoom-settings)
 
 ## 1. Post-Installation Setup
 
@@ -41,31 +40,7 @@ To open personal vs work accounts, follow these steps:
    - Edit these bindings to use the two different profiles
 1. Remove the default binding and uncomment the new ones
 
-## 3. ClamAV Setup (Antivirus)
-
-We need to copy the custom ClamAV configs, reload the daemon, and restart the services.
-
-> [!IMPORTANT]
-> We do not do this in a script because it edits the `/etc/` directory
-
-Run these commands:
-
-```
-sudo cp -r ~/Development/repos/dotfiles/etc/clamav /etc/
-sudo cp -r ~/Development/repos/dotfiles/etc/sudoers.d /etc/
-sudo cp -r ~/Development/repos/dotfiles/etc/systemd/system/clamav-clamonacc.service.d /etc/systemd/system/
-sudo chmod +x /etc/clamav/virus-event.bash
-sudo mkdir /root/quarantine
-sudo chown root:clamav /root/quarantine
-sudo chmod 770 /root/quarantine
-sudo systemctl daemon-reload
-sudo systemctl enable --now clamav-daemon.service
-sudo systemctl restart clamav-daemon.service
-sudo systemctl restart clamav-clamonacc.service
-sudo freshclam
-```
-
-## 4. Discord Settings
+## 3. Discord Settings
 
 You need to turn off Desktop Notifications:
 
@@ -76,7 +51,7 @@ You need to turn off Desktop Notifications:
 
 For a virtual background, follow this guide: [Discord Virtual Background Setup](../discord-virtual-background-setup.md)
 
-## 5. FoundryVTT Setup
+## 4. FoundryVTT Setup
 
 > [!IMPORTANT]
 > FoundryVTT should not be automatically downloaded/setup, because it uses a **Purchased License** to validate ownership. Adding an automatic download/setup will make the license public, which is not what we want.
@@ -90,19 +65,19 @@ For a virtual background, follow this guide: [Discord Virtual Background Setup](
 
 When setting up a live server, it uses your machine's IP Address as the Browser's URL. We want to hide this IP so players don't access your IP directly. You can setup a hidden IP via [No IP](https://www.noip.com/login). No IP essentially creates a different browser URL that will point to your IP (e.g. my-random-name.ddns.net:30000 - 30000 is the default FoundryVTT port).
 
-## 6. GitHub CLI Setup
+## 5. GitHub CLI Setup
 
 For seamless interaction with GitHub from your terminal (e.g., `git push`, `git pull` without password prompts), it's highly recommended to set up `github-cli` (`gh`).
 
 Refer to the dedicated guide: [github-cli-setup.md](../github-cli-setup.md)
 
-## 7. Google Messages Setup
+## 6. Google Messages Setup
 
 To use the phone keybind ($SUPER + P)
 
 Setup browser texting at: [Google Messages Web](https://messages.google.com/web)
 
-## 8. Steam Settings
+## 7. Steam Settings
 
 ### For faster steam load times, make sure to follow these steps:
 
@@ -112,14 +87,14 @@ Setup browser texting at: [Google Messages Web](https://messages.google.com/web)
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
-## 9. VPN Setup
+## 8. VPN Setup
 
 Follow the steps at work to finish setup from here
 
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
-## 10. Zoom Settings
+## 9. Zoom Settings
 
 ### Audio & Video Settings
 
