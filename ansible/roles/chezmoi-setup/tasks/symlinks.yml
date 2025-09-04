@@ -17,6 +17,10 @@
           source: "{{ playbook_dir | regex_replace('/ansible$', '') }}/scripts",
           destination: "{{ ansible_user_dir }}/scripts",
         }
+      - {
+          source: "{{ playbook_dir | regex_replace('/ansible$', '') }}/Test Files",
+          destination: "{{ ansible_user_dir }}/Development/Test Files",
+        }
 
 # Ensure parent directories exist (NOT the destination if it will be a symlink itself)
 - name: Ensure parent directories for symlink destinations exist
