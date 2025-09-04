@@ -22,33 +22,33 @@ Follow the interactive prompts:
 
 - **"What account do you want to log into?":**
 
-    - Choose `GitHub.com` (unless you're using GitHub Enterprise).
+  - Choose `GitHub.com` (unless you're using GitHub Enterprise).
 
 - **"What is your preferred protocol for Git operations?":**
 
-    - **SSH (Recommended):** If you have SSH keys set up for GitHub (or plan to), choose SSH. This is generally more secure and convenient as it doesn't require password prompts for Git operations after the initial setup. <ins>**To setup SSH, reference the [Troubleshooting SSH Authentication](#4-troubleshooting-ssh-authentication-permission-denied-publickey) section.**</ins>
+  - **SSH (Recommended):** If you have SSH keys set up for GitHub (or plan to), choose SSH. This is generally more secure and convenient as it doesn't require password prompts for Git operations after the initial setup. <ins>**To setup SSH, reference the [Troubleshooting SSH Authentication](#4-troubleshooting-ssh-authentication-permission-denied-publickey) section.**</ins>
 
-    - **HTTPS:** If you don't use SSH keys, choose HTTPS. gh will configure a credential helper, so you won't need to type your password, but it relies on a Personal Access Token (PAT) managed by gh.
+  - **HTTPS:** If you don't use SSH keys, choose HTTPS. gh will configure a credential helper, so you won't need to type your password, but it relies on a Personal Access Token (PAT) managed by gh.
 
 - **"Authenticate Git with your GitHub credentials?":**
 
-    - Choose `Yes`. This allows `gh` to configure Git to use its authentication helper, so you don't have to type credentials repeatedly for `git push`/`git pull`.
+  - Choose `Yes`. This allows `gh` to configure Git to use its authentication helper, so you don't have to type credentials repeatedly for `git push`/`git pull`.
 
 - **"How would you like to authenticate GitHub CLI?":**
 
-    - **Login with a web browser (Recommended):** This is the easiest and most secure method. `gh` will open a browser window, and you'll log in there and authorize the CLI.
+  - **Login with a web browser (Recommended):** This is the easiest and most secure method. `gh` will open a browser window, and you'll log in there and authorize the CLI.
 
-        - `gh` will display a unique **one-time code** (e.g., `XXXX-XXXX`).
+    - `gh` will display a unique **one-time code** (e.g., `XXXX-XXXX`).
 
-        - It will then prompt you to press `Enter` to open your browser.
+    - It will then prompt you to press `Enter` to open your browser.
 
-        - Your browser will open to `github.com/login/device`.
+    - Your browser will open to `github.com/login/device`.
 
-        - **Paste the one-time code** into the field on the GitHub page and click "Continue."
+    - **Paste the one-time code** into the field on the GitHub page and click "Continue."
 
-        - On the next screen, click "Authorize GitHub CLI."
+    - On the next screen, click "Authorize GitHub CLI."
 
-        - Once authorized in the browser, return to your terminal. `gh` will detect the successful authentication.
+    - Once authorized in the browser, return to your terminal. `gh` will detect the successful authentication.
 
 You should see a success message like: `✓ Authenticated via web browser` and `✓ Configured git to use ssh` (or `https` depending on your choice).
 
@@ -71,7 +71,7 @@ If you chose SSH and later encounter `Permission denied (publickey)` when trying
 Ensure your Git remote URL is set to use SSH:
 
 ```
-cd ~/dotfiles/ # Or your repository directory
+cd ~/Development/repos/dotfiles # Or your repository directory
 git remote -v
 ```
 
