@@ -116,12 +116,8 @@ source $ZSH/oh-my-zsh.sh
 # fi
 
 
-# Compilation flags
-# export ARCHFLAGS="-arch x86_64"
-
-
 # Scripts
-source ~/Development/repos/dotfiles/scripts/zsh_scripts/*
+source ~/scripts/zsh_scripts/*
 # This source includes:
 # start_minecraft_server.zsh
 
