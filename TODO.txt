@@ -1,5 +1,5 @@
 FEATURES:
-- Make sure firewall is setup in the auto setup stuff
+- Automate gnome extensions
 - Automate github cli setup
 - Automate zsh setup
 - Add Drata to work setup

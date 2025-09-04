@@ -1,0 +1,75 @@
+---
+# Default variables for gnome-extensions role
+# Each item may define:
+#   uuid: GNOME extension UUID (required)
+#   enabled: whether it should remain in enabled list (informational if another role enforces the list)
+#   package: apt / deb package name providing the extension (if packaged)
+#   alternate_packages: list of fallback package names (NOT automatically attempted yet; informational)
+#   source: 'system' (already provided by OS), or 'manual'
+#   manual_url: URL to download zip (when source == manual)
+#   manual_version: version string (used for idempotent caching if desired)
+#
+# NOTE: Enabling order / full enabled extensions array is currently enforced
+#       by the existing gnome-settings role via the dconf key
+#       /org/gnome/shell/enabled-extensions. This role focuses on ensuring
+#       the extensions are installed & available. If you want this role
+#       to build the enabled list dynamically, refactor the other role to
+#       construct the list from the enabled items here.
+
+gnome_extensions:
+  - uuid: dash-to-panel@jderose9.github.com
+    enabled: true
+    source: system
+
+  - uuid: color-picker@tuberry
+    enabled: true
+    source: system
+
+  - uuid: sound-output-device-chooser@kgshank.net
+    enabled: true
+    source: system
+
+  - uuid: lockkeys@vaina.lt
+    enabled: true
+    source: system
+
+  - uuid: ding@rastersoft.com
+    enabled: true
+    # Package name varies by distro; keep both documented.
+    package: gnome-shell-extension-desktop-icons-ng
+    alternate_packages:
+      - gnome-shell-extension-ding
+
+  - uuid: ubuntu-appindicators@ubuntu.com
+    enabled: true
+    package: gnome-shell-extension-appindicator
+
+  # Pop!_OS / System76 provided extensions (already installed via system packages)
+  - uuid: pop-cosmic@system76.com
+    enabled: true
+    source: system
+  - uuid: pop-shell@system76.com
+    enabled: true
+    source: system
+  - uuid: popx11gestures@system76.com
+    enabled: true
+    source: system
+  - uuid: cosmic-dock@system76.com
+    enabled: true
+    source: system
+  - uuid: cosmic-workspaces@system76.com
+    enabled: true
+    source: system
+  - uuid: system76-power@system76.com
+    enabled: true
+    source: system
+
+# Whether to attempt installing apt packages for packaged extensions
+gnome_extensions_install_packages: true
+
+# If true, fail the play when a declared package is missing.
+# If false, missing packages will be skipped with a warning.
+gnome_extensions_strict_packages: false
+
+# Directory where manually downloaded extension zips would be cached (future use)
+gnome_extensions_cache_dir: "{{ ansible_user_dir }}/.cache/ansible-gnome-extensions"

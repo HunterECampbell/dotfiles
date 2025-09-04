@@ -16,6 +16,7 @@
         when: "install_profile | default('all') in ['work','all']",
         tags: ["zoom"],
       }
+    - { role: gnome-extensions, tags: ["gnome", "gnome-extensions"] }
     - { role: gnome-settings, tags: ["gnome", "gnome-settings"] }
     - { role: snap-apps, tags: ["snap", "snap-apps"] }
     - { role: firewall, tags: ["firewall"] }

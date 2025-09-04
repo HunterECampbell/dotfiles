@@ -1,0 +1,105 @@
+---
+# ansible/roles/gnome-extensions/tasks/main.yml
+# Purpose: Ensure required GNOME Shell extensions are present (via apt packages or future manual installs).
+# This role does NOT manage enabled state ordering (that is handled by gnome-settings dconf key).
+# It focuses on presence/installation so that settings enforced elsewhere apply cleanly.
+
+- name: Gather candidate packaged extensions
+  set_fact:
+    _gnome_extension_packages: >-
+      {{ gnome_extensions
+         | selectattr('package','defined')
+         | rejectattr('source','defined')
+         | list }}
+
+- name: Install GNOME extension apt packages (if enabled)
+  apt:
+    name: "{{ item.package }}"
+    state: present
+  become: yes
+  loop: "{{ _gnome_extension_packages }}"
+  loop_control:
+    label: "{{ item.uuid }}"
+  when: gnome_extensions_install_packages
+  register: _gnome_extension_pkg_results
+  ignore_errors: "{{ not gnome_extensions_strict_packages }}"
+
+- name: Fail if any extension packages missing (strict mode)
+  fail:
+    msg: "Missing extension package(s): {{ (_gnome_extension_pkg_results.results | rejectattr('failed','undefined') | rejectattr('failed','equalto',false) | map(attribute='item.uuid') | list) }}"
+  when:
+    - gnome_extensions_install_packages
+    - gnome_extensions_strict_packages
+    - _gnome_extension_pkg_results is defined
+    - (_gnome_extension_pkg_results.results | selectattr('failed','defined') | selectattr('failed') | list | length) > 0
+
+- name: Warn about skipped / missing packages (non-strict)
+  debug:
+    msg: "Package for extension {{ item.item.uuid }} not found or failed to install (ignored)"
+  when:
+    - gnome_extensions_install_packages
+    - not gnome_extensions_strict_packages
+    - item.failed is defined
+    - item.failed
+  loop: "{{ _gnome_extension_pkg_results.results | default([]) }}"
+
+# Manual install placeholder (future enhancement)
+# Expected dictionary members for manual items:
+#   uuid, source=manual, manual_url, manual_version
+- name: Filter manual extensions (not yet implemented)
+  set_fact:
+    _gnome_manual_extensions: >-
+      {{ gnome_extensions
+         | selectattr('source','defined')
+         | selectattr('source','equalto','manual')
+         | list }}
+
+- name: Assert no manual extensions (implementation pending)
+  assert:
+    that: _gnome_manual_extensions | length == 0
+    fail_msg: "Manual extensions declared but manual installation logic not yet implemented."
+    success_msg: "No manual extensions declared."
+
+# Verification: ensure each declared extension directory exists in either user or system path
+- name: Build list of declared extension UUIDs
+  set_fact:
+    _declared_extension_uuids: "{{ gnome_extensions | map(attribute='uuid') | list }}"
+
+- name: Stat extension directories (user)
+  stat:
+    path: "{{ ansible_user_dir }}/.local/share/gnome-shell/extensions/{{ item }}"
+  loop: "{{ _declared_extension_uuids }}"
+  register: _user_ext_stats
+
+- name: Stat extension directories (system)
+  stat:
+    path: "/usr/share/gnome-shell/extensions/{{ item }}"
+  loop: "{{ _declared_extension_uuids }}"
+  register: _system_ext_stats
+  become: yes
+
+- name: Aggregate extension presence
+  set_fact:
+    _missing_extensions: >-
+      {{
+        _declared_extension_uuids | reject('in',
+          (
+            (_user_ext_stats.results | selectattr('stat.exists') | map(attribute='item') | list)
+            +
+            (_system_ext_stats.results | selectattr('stat.exists') | map(attribute='item') | list)
+          )
+        ) | list
+      }}
+
+- name: Report missing extensions (informational)
+  debug:
+    msg: "Declared extension not found in user or system dirs: {{ item }}"
+  loop: "{{ _missing_extensions }}"
+  when: _missing_extensions | length > 0
+
+- name: Fail if any required extension missing (strict mode only)
+  fail:
+    msg: "Missing required extensions on filesystem: {{ _missing_extensions }}"
+  when:
+    - gnome_extensions_strict_packages
+    - _missing_extensions | length > 0
