@@ -1,6 +1,5 @@
 FEATURES:
 - Automate github cli setup
-- Automate zsh setup
 - Add Drata to work setup
 - Create autoclicker
 
