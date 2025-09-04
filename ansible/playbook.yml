@@ -18,3 +18,4 @@
       }
     - { role: gnome-settings, tags: ["gnome", "gnome-settings"] }
     - { role: snap-apps, tags: ["snap", "snap-apps"] }
+    - { role: clamav, tags: ["clamav"] }

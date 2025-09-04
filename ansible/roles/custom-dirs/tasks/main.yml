@@ -5,6 +5,5 @@
     state: directory
     mode: "0755"
   loop:
-    - Development/repos
     - "Minecraft Servers"
-    - Pictures/Wallpapers
+    # - Pictures/Wallpapers # Created by chezmoi during symlink setup
