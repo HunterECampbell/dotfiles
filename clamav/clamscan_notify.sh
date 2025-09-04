@@ -1,0 +1,33 @@
+#!/bin/bash
+
+# Define paths and user
+CLAMSCAN_BIN="/usr/local/bin/clamscan"
+USER_NAME="hcnureth"
+
+# Create a temporary file to hold the list of files
+TEMP_FILE=$(mktemp)
+
+# Use find to get the list of files and redirect it to the temporary file
+sudo -u root find /home/"$USER_NAME" -not -path "/home/$USER_NAME/.vscode/extensions/*" -print > "$TEMP_FILE"
+
+# Run the full scan on the list of files from the temporary file
+FULL_SCAN_OUTPUT=$(sudo -u root "$CLAMSCAN_BIN" -f "$TEMP_FILE" --no-summary)
+
+# Get the infected files from the full scan output for the notification
+INFECTED_FILES=$(echo "$FULL_SCAN_OUTPUT" | grep "FOUND")
+
+# If infected files were found, send a desktop notification and write to log
+if [ -n "$INFECTED_FILES" ]; then
+    # Get a date stamp for the log file
+    DATE_STAMP=$(date +%m-%d-%Y)
+    RESULTS_FILE="/home/$USER_NAME/virus_scan_results_$DATE_STAMP.log"
+
+    # Send a desktop notification
+    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send -u critical "ClamAV Virus Found!" "ClamAV detected a virus:\n$INFECTED_FILES"
+
+    # Append the final scan results to the results file
+    echo "$INFECTED_FILES" >> "$RESULTS_FILE"
+fi
+
+# Clean up the temporary file
+rm "$TEMP_FILE"

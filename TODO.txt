@@ -1,5 +1,5 @@
 FEATURES:
-- Setup ClamAV in pop os - https://gemini.google.com/app/dedc796997b05381
+- Setup ClamAV in pop os
   - /etc/cron.daily/clamav-light-scan
   - /etc/cron.weekly/clamav-full-scan
   - /etc/systemd/system/clamav-daemon.service.d/extend.conf
@@ -10,5 +10,6 @@ FEATURES:
 - Automate github cli setup
 - Automate zsh setup
 - Add Drata to work setup
+- Create autoclicker
 
 BUGS:
