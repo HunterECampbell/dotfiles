@@ -1,0 +1,117 @@
+---
+# Minecraft UPnP port forwarding role
+# Ensures miniupnpc is installed, deploys helper script, creates/validates TCP 25565 mapping.
+# Emits a JSON-style summary (key fields) for downstream consumption.
+
+- name: Determine if root escalation is required
+  ansible.builtin.set_fact:
+    escalate_root: "{{ (ansible_user_id | default(ansible_user) | lower) != 'root' }}"
+
+- name: Force single sudo authentication early
+  ansible.builtin.command: /bin/true
+  when: escalate_root
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Set dotfiles root absolute path
+  ansible.builtin.set_fact:
+    dotfiles_root: "{{ playbook_dir | regex_replace('/ansible$', '') }}"
+
+- name: Define script and port variables
+  ansible.builtin.set_fact:
+    mc_port_script_source: "{{ dotfiles_root }}/scripts/setup_minecraft_port_forwarding.sh"
+    mc_port_script_link: "/usr/local/bin/setup_minecraft_port_forwarding"
+    mc_port_external: 25565
+    mc_port_protocol: "TCP"
+
+- name: Ensure miniupnpc package installed (provides upnpc)
+  ansible.builtin.package:
+    name: miniupnpc
+    state: present
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Ensure source script is executable
+  ansible.builtin.file:
+    path: "{{ mc_port_script_source }}"
+    mode: "0755"
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Ensure destination directory exists
+  ansible.builtin.file:
+    path: "{{ mc_port_script_link | dirname }}"
+    state: directory
+    mode: "0755"
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Stat existing destination symlink
+  ansible.builtin.stat:
+    path: "{{ mc_port_script_link }}"
+    follow: false
+  register: mc_port_link_stat
+
+- name: Remove non-matching existing destination
+  ansible.builtin.file:
+    path: "{{ mc_port_script_link }}"
+    state: absent
+  when: >
+    mc_port_link_stat.stat.exists and (
+      (not mc_port_link_stat.stat.islnk) or
+      (mc_port_link_stat.stat.islnk and (mc_port_link_stat.stat.lnk_source | default('')) != mc_port_script_source)
+    )
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Create symlink to port forward script
+  ansible.builtin.file:
+    src: "{{ mc_port_script_source }}"
+    path: "{{ mc_port_script_link }}"
+    state: link
+    owner: root
+    group: root
+    force: true
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Execute port forward script (attempt mapping)
+  ansible.builtin.command: "{{ mc_port_script_link }}"
+  register: mc_port_run
+  changed_when: false
+  failed_when: false
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Parse MC_PORTFWD_* key=value lines
+  ansible.builtin.set_fact:
+    mc_port_kv: "{{ mc_port_kv | default({}) | combine({ (item.split('=')[0]): (item.split('=')[1] | default('')) }) }}"
+  loop: "{{ (mc_port_run.stdout_lines | default([])) | select('search','^MC_PORTFWD_') | list }}"
+
+- name: Derive mapping active flag
+  ansible.builtin.set_fact:
+    mc_port_active: "{{ (mc_port_kv.MC_PORTFWD_ACTIVE | default('false')) | lower == 'true' }}"
+
+- name: Assemble minecraft port forward summary
+  ansible.builtin.set_fact:
+    minecraft_port_summary:
+      script_source: "{{ mc_port_script_source }}"
+      script_link: "{{ mc_port_script_link }}"
+      executed: "{{ mc_port_run.rc is defined }}"
+      result: "{{ mc_port_kv.MC_PORTFWD_RESULT | default('unknown') }}"
+      action: "{{ mc_port_kv.MC_PORTFWD_ACTION | default('') }}"
+      active: "{{ mc_port_active }}"
+      external_port: "{{ mc_port_external }}"
+      internal_ip: "{{ mc_port_kv.MC_PORTFWD_INTERNAL_IP | default('') }}"
+      internal_port: "{{ mc_port_kv.MC_PORTFWD_INTERNAL_PORT | default('') }}"
+      protocol: "{{ mc_port_kv.MC_PORTFWD_PROTOCOL | default(mc_port_protocol) }}"
+      error: >-
+        {% if mc_port_kv.MC_PORTFWD_ERROR is defined and mc_port_kv.MC_PORTFWD_ERROR|length > 0 %}
+        {{ mc_port_kv.MC_PORTFWD_ERROR }}
+        {% elif not mc_port_active %}
+        inactive_mapping
+        {% else %}{% endif %}
+
+- name: Output minecraft port forward summary JSON
+  ansible.builtin.debug:
+    msg: "{{ minecraft_port_summary | to_nice_json }}"

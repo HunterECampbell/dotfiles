@@ -1,0 +1,110 @@
+---
+# Firewall automation role (Pop!_OS / Ubuntu) enabling ufw with sane defaults
+# Outputs a JSON summary of status.
+
+- name: Determine if root escalation is required
+  ansible.builtin.set_fact:
+    escalate_root: "{{ (ansible_user_id | default(ansible_user) | lower) != 'root' }}"
+
+- name: Force single sudo authentication early
+  ansible.builtin.command: /bin/true
+  when: escalate_root
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Set dotfiles root absolute path
+  ansible.builtin.set_fact:
+    dotfiles_root: "{{ playbook_dir | regex_replace('/ansible$', '') }}"
+
+- name: Ensure ufw package is installed
+  ansible.builtin.package:
+    name: ufw
+    state: present
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Define firewall script paths
+  ansible.builtin.set_fact:
+    firewall_script_source: "{{ dotfiles_root }}/scripts/setup_firewall.sh"
+    firewall_script_link: "/usr/local/bin/setup_firewall"
+
+- name: Ensure source script is executable
+  ansible.builtin.file:
+    path: "{{ firewall_script_source }}"
+    mode: "0755"
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Ensure destination directory exists
+  ansible.builtin.file:
+    path: "{{ firewall_script_link | dirname }}"
+    state: directory
+    mode: "0755"
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Stat existing destination
+  ansible.builtin.stat:
+    path: "{{ firewall_script_link }}"
+    follow: false
+  register: firewall_link_stat
+
+- name: Remove non-matching destination
+  ansible.builtin.file:
+    path: "{{ firewall_script_link }}"
+    state: absent
+  when: >
+    firewall_link_stat.stat.exists and (
+      (not firewall_link_stat.stat.islnk) or
+      (firewall_link_stat.stat.islnk and (firewall_link_stat.stat.lnk_source | default('')) != firewall_script_source)
+    )
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Create symlink to firewall script
+  ansible.builtin.file:
+    src: "{{ firewall_script_source }}"
+    path: "{{ firewall_script_link }}"
+    state: link
+    owner: root
+    group: root
+    force: true
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Run firewall setup script
+  ansible.builtin.command: "{{ firewall_script_link }}"
+  register: firewall_run
+  changed_when: false
+  failed_when: false
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Parse FIREWALL_* key=value lines
+  ansible.builtin.set_fact:
+    firewall_kv: "{{ firewall_kv | default({}) | combine({ (item.split('=')[0]): (item.split('=')[1] | default('')) }) }}"
+  loop: "{{ (firewall_run.stdout_lines | default([])) | select('search','^FIREWALL_') | list }}"
+
+- name: Determine firewall active flag
+  ansible.builtin.set_fact:
+    firewall_active: "{{ (firewall_kv.FIREWALL_STATUS_ACTIVE | default('false')) | lower == 'true' }}"
+
+- name: Assemble firewall JSON summary
+  ansible.builtin.set_fact:
+    firewall_summary:
+      script_source: "{{ firewall_script_source }}"
+      script_link: "{{ firewall_script_link }}"
+      executed: "{{ (firewall_run.rc is defined) }}"
+      active: "{{ firewall_active }}"
+      default_incoming: "{{ firewall_kv.FIREWALL_DEFAULT_INCOMING | default('unknown') }}"
+      default_outgoing: "{{ firewall_kv.FIREWALL_DEFAULT_OUTGOING | default('unknown') }}"
+      error: >-
+        {% if firewall_run.rc != 0 %}
+        nonzero_rc_{{ firewall_run.rc }}
+        {% elif not firewall_active %}
+        not_active
+        {% else %}{% endif %}
+
+- name: Output firewall summary JSON
+  ansible.builtin.debug:
+    msg: "{{ firewall_summary | to_nice_json }}"

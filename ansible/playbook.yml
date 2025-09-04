@@ -18,4 +18,10 @@
       }
     - { role: gnome-settings, tags: ["gnome", "gnome-settings"] }
     - { role: snap-apps, tags: ["snap", "snap-apps"] }
+    - { role: firewall, tags: ["firewall"] }
+    - {
+        role: minecraft-port,
+        when: "install_profile | default('all') in ['home','all']",
+        tags: ["minecraft", "minecraft-port"],
+      }
     - { role: clamav, tags: ["clamav"] }

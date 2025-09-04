@@ -1,0 +1,8 @@
+---
+# Directory group defaults for custom-dirs role
+# Segmented by install profile similar to apt-packages role.
+# Adjust lists as needed; empty lists are acceptable.
+custom_dirs_general: []
+custom_dirs_home:
+  - "Minecraft Servers"
+custom_dirs_work: []

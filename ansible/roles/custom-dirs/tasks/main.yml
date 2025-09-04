@@ -1,9 +1,15 @@
 ---
-- name: Create essential user directories
+- name: Compute selected custom directories based on profile
+  ansible.builtin.set_fact:
+    custom_dirs_selected: >-
+      {{ custom_dirs_general
+         + ((((install_profile | default('all')) in ['home','all']) | ternary(custom_dirs_home, [])))
+         + ((((install_profile | default('all')) in ['work','all']) | ternary(custom_dirs_work, []))) }}
+
+- name: Create selected user directories
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/{{ item }}"
     state: directory
     mode: "0755"
-  loop:
-    - "Minecraft Servers"
-    # - Pictures/Wallpapers # Created by chezmoi during symlink setup
+  loop: "{{ custom_dirs_selected }}"
+  when: custom_dirs_selected | length > 0

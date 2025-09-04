@@ -1,11 +1,4 @@
 FEATURES:
-- Setup ClamAV in pop os
-  - /etc/cron.daily/clamav-light-scan
-  - /etc/cron.weekly/clamav-full-scan
-  - /etc/systemd/system/clamav-daemon.service.d/extend.conf
-  - /usr/local/bin/clamscan
-  - /usr/local/bin/clamscan_notify.sh
-  - ~/.config/systemd/user/clamav_monitor.service
 - Make sure firewall is setup in the auto setup stuff
 - Automate github cli setup
 - Automate zsh setup
