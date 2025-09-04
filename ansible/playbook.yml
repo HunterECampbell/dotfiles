@@ -1,13 +1,20 @@
 ---
 - name: Set up Pop!_OS workstation
   hosts: localhost
+  # You can run a specific role with: `ansible-playbook --tags role-name` (e.g. ansible-playbook --tags chezmoi)
+  vars:
+    ansible_user: "{{ lookup('env','USER') }}"
+    ansible_user_dir: "{{ lookup('env','HOME') }}"
   roles:
-    - apt-packages
-    - chezmoi-setup
-    - custom-dirs
-    - flatpak-apps
-    - discord-settings
-    - role: zoom-settings
-      when: "install_profile | default('all') in ['work','all']"
-    - gnome-settings
-    - snap-apps
+    - { role: apt-packages, tags: ["apt", "apt-packages"] }
+    - { role: chezmoi-setup, tags: ["chezmoi", "dotfiles"] }
+    - { role: custom-dirs, tags: ["dirs", "custom-dirs"] }
+    - { role: flatpak-apps, tags: ["flatpak", "flatpak-apps"] }
+    - { role: discord-settings, tags: ["discord"] }
+    - {
+        role: zoom-settings,
+        when: "install_profile | default('all') in ['work','all']",
+        tags: ["zoom"],
+      }
+    - { role: gnome-settings, tags: ["gnome", "gnome-settings"] }
+    - { role: snap-apps, tags: ["snap", "snap-apps"] }

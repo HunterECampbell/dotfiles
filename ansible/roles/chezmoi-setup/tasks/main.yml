@@ -161,3 +161,18 @@
   become_user: "{{ ansible_user }}"
   when:
     - chezmoi_diff.stdout is not defined or chezmoi_diff.stdout != ''
+
+- name: Update Chezmoi source repository
+  ansible.builtin.command:
+    argv:
+      - timeout
+      - "60s"
+      - "{{ ansible_user_dir }}/.local/bin/chezmoi"
+      - update
+  register: chezmoi_update
+  changed_when: "chezmoi_update.stdout is defined and ('Already up to date' not in chezmoi_update.stdout)"
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+- name: Include symlink creation tasks
+  ansible.builtin.include_tasks: symlinks.yml

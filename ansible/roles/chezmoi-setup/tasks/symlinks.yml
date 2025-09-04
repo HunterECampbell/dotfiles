@@ -1,0 +1,146 @@
+---
+# Define symlink specifications (explicit source and destination)
+- name: Define symlink items
+  ansible.builtin.set_fact:
+    chezmoi_symlinks:
+      # `source` is the location where the file original is from (i.e. in the dotfiles repo)
+      # `destination` is where the symlink is created in the local system's filesystem
+      - {
+          source: "{{ playbook_dir | regex_replace('/ansible$', '') }}/Pictures/Wallpapers",
+          destination: "{{ ansible_user_dir }}/Pictures/Wallpapers",
+        }
+      - {
+          source: "{{ playbook_dir | regex_replace('/ansible$', '') }}/.zshrc",
+          destination: "{{ ansible_user_dir }}/.zshrc",
+        }
+      - {
+          source: "{{ playbook_dir | regex_replace('/ansible$', '') }}/scripts",
+          destination: "{{ ansible_user_dir }}/scripts",
+        }
+
+# Ensure parent directories exist (NOT the destination if it will be a symlink itself)
+- name: Ensure parent directories for symlink destinations exist
+  ansible.builtin.file:
+    path: "{{ item.destination | dirname }}"
+    state: directory
+    mode: "0755"
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  loop: "{{ chezmoi_symlinks }}"
+  loop_control:
+    label: "{{ item.destination }}"
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+# Gather current state of each destination
+- name: Stat existing destinations
+  ansible.builtin.stat:
+    path: "{{ item.destination }}"
+    follow: false
+  register: symlink_stats
+  loop: "{{ chezmoi_symlinks }}"
+  loop_control:
+    label: "{{ item.destination }}"
+
+# Remove any existing non-matching file/dir so link can be created idempotently
+- name: Remove conflicting non-symlink destinations
+  ansible.builtin.file:
+    path: "{{ item.item.destination }}"
+    state: absent
+  loop: "{{ symlink_stats.results }}"
+  when: >
+    item.stat.exists and (
+      (not item.stat.islnk) or
+      (item.stat.islnk and (item.stat.lnk_source | default('')) != item.item.source)
+    )
+  loop_control:
+    label: "{{ item.item.destination }}"
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+# Create / fix symlink
+- name: Create or correct symlink
+  ansible.builtin.file:
+    src: "{{ item.source }}"
+    path: "{{ item.destination }}"
+    state: link
+    force: true
+    owner: "{{ ansible_user }}"
+    group: "{{ ansible_user }}"
+  loop: "{{ chezmoi_symlinks }}"
+  loop_control:
+    label: "{{ item.destination }}"
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+# Validate each symlink in 1-2 line assertion
+- name: Re-stat symlink destinations for validation
+  ansible.builtin.stat:
+    path: "{{ item.destination }}"
+    follow: false
+  register: symlink_validations
+  loop: "{{ chezmoi_symlinks }}"
+  loop_control:
+    label: "{{ item.destination }}"
+
+- name: Assert symlink correctness
+  ansible.builtin.assert:
+    that:
+      - item.stat.islnk | default(false)
+      - (item.stat.lnk_source | default('')) == (item.item.source | regex_replace('/ansible$', '') | regex_replace('/ansible/\\.{2}', ''))
+    fail_msg: "Symlink invalid (normalized mismatch): {{ item.item.destination }} -> {{ item.stat.lnk_source }} (expected {{ item.item.source }})"
+    success_msg: "Validated: {{ item.item.destination }} -> {{ item.stat.lnk_source }}"
+  loop: "{{ symlink_validations.results }}"
+  loop_control:
+    label: "{{ item.item.destination }}"
+
+# Short debug summary (concise)
+- name: Symlink summary
+  ansible.builtin.debug:
+    msg: "Linked {{ item.item.destination }} to {{ item.item.source }}"
+  loop: "{{ symlink_validations.results }}"
+  loop_control:
+    label: "{{ item.item.destination }}"
+
+# Recursively ensure every script file under the scripts directory is executable (0755)
+- name: Recursively find scripts (follow symlink)
+  ansible.builtin.find:
+    paths: "{{ ansible_user_dir }}/scripts"
+    recurse: yes
+    file_type: file
+    follow: yes
+  register: found_scripts
+  when: (ansible_user_dir ~ '/scripts') in (chezmoi_symlinks | map(attribute='destination') | list)
+
+- name: Ensure each script has mode 0755
+  ansible.builtin.file:
+    path: "{{ item.path }}"
+    mode: "0755"
+  loop: "{{ found_scripts.files | default([]) }}"
+  when: found_scripts is defined and (found_scripts.files | length) > 0
+  loop_control:
+    label: "{{ item.path | regex_replace(ansible_user_dir + '/', '') }}"
+  become: yes
+  become_user: "{{ ansible_user }}"
+
+- name: Validate all scripts executable
+  ansible.builtin.stat:
+    path: "{{ item.path }}"
+    follow: false
+  loop: "{{ found_scripts.files | default([]) }}"
+  register: script_stats
+  when: found_scripts is defined and (found_scripts.files | length) > 0
+
+- name: Assert script executability
+  ansible.builtin.assert:
+    that:
+      - item.stat.exists
+      - item.stat.isreg
+      - (item.stat.mode | length) == 10 or (item.stat.mode is match('.*')) # mode string present
+      - (item.stat.mode[-3] in ['7','5','3','1']) # owner execute bit set
+    fail_msg: "Script not executable: {{ item.stat.path }} (mode={{ item.stat.mode }})"
+    success_msg: "Validated executable: {{ item.stat.path }}"
+  loop: "{{ script_stats.results | default([]) }}"
+  loop_control:
+    label: "{{ (item.stat.path | default('unknown')) | regex_replace(ansible_user_dir + '/', '') }}"
+  when: script_stats is defined
