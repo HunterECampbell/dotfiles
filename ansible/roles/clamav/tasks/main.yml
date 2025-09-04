@@ -1,10 +1,10 @@
 ---
-# ClamAV automation role: symlinks, permissions, cron jobs, systemd service, JSON summary
-# Assumptions:
-# - Dotfiles repo root = playbook_dir with trailing '/ansible' removed.
-# - We use absolute paths for all symlink sources as required.
-# - We do not modify service ExecStart (provided file references a script that currently does not exist).
-# - Validation results accumulated into a JSON structure output via debug.
+# ClamAV automation role: symlinks, permissions, cron jobs, JSON summary (systemd service omitted)
+# Decisions:
+# - Systemd monitoring service removed (cron covers scans). We record omission in JSON.
+# - Absolute paths used for all symlink sources.
+# - Idempotent: safely recreates/corrects symlinks and permissions.
+# - JSON summary includes: symlinks, permissions, cron_jobs, services (with omission note).
 
 - name: Determine if root escalation is required
   ansible.builtin.set_fact:
@@ -37,7 +37,7 @@
           src: "{{ dotfiles_root }}/clamav/clamscan_notify.sh",
         }
 
-- name: Define symlink targets (binaries + cron + service)
+- name: Define symlink targets (executables + cron only)
   ansible.builtin.set_fact:
     clamav_symlinks:
       # Executables in /usr/local/bin
@@ -66,13 +66,8 @@
           source: "{{ dotfiles_root }}/clamav/clamav-full-scan",
           dest: "/etc/cron.weekly/clamav-full-scan",
         }
-      # Systemd service file (system scope)
-      - {
-          source: "{{ dotfiles_root }}/clamav/clamav_monitor.service",
-          dest: "/etc/systemd/system/clamav_monitor.service",
-        }
 
-# Ensure parent directories exist (for system paths)
+# Ensure parent directories exist
 - name: Ensure parent directories for symlink destinations exist
   ansible.builtin.file:
     path: "{{ item.dest | dirname }}"
@@ -94,7 +89,7 @@
   loop_control:
     label: "{{ item.dest }}"
 
-# Remove conflicts (non-symlink or wrong link target)
+# Remove conflicts
 - name: Remove conflicting non-matching destinations
   ansible.builtin.file:
     path: "{{ item.item.dest }}"
@@ -125,7 +120,7 @@
   become: "{{ escalate_root }}"
   become_user: root
 
-# Ensure source scripts are executable (0755)
+# Ensure scripts executable
 - name: Ensure source scripts/binaries are executable
   ansible.builtin.file:
     path: "{{ item.src }}"
@@ -136,7 +131,7 @@
   become: "{{ escalate_root }}"
   become_user: root
 
-# Validate symlinks
+# Re-stat symlinks
 - name: Re-stat symlinks after creation
   ansible.builtin.stat:
     path: "{{ item.dest }}"
@@ -146,7 +141,7 @@
   loop_control:
     label: "{{ item.dest }}"
 
-# Validate scripts executable
+# Stat scripts for permissions
 - name: Stat source scripts for permissions
   ansible.builtin.stat:
     path: "{{ item.src }}"
@@ -156,7 +151,7 @@
   loop_control:
     label: "{{ item.name }}"
 
-# Build symlink results list
+# Build symlink results
 - name: Assemble symlink result objects
   ansible.builtin.set_fact:
     clamav_symlink_results: "{{ clamav_symlink_results | default([]) + [ {
@@ -169,7 +164,7 @@
   loop_control:
     label: "{{ item.item.dest }}"
 
-# Build permission results list
+# Build permission results
 - name: Assemble permission result objects
   ansible.builtin.set_fact:
     clamav_permission_results: "{{ clamav_permission_results | default([]) + [ {
@@ -182,7 +177,7 @@
   loop_control:
     label: "{{ item.stat.path | default('unknown') }}"
 
-# Extract cron job entries (filter symlink results)
+# Extract cron job entries
 - name: Build cron job result list
   ansible.builtin.set_fact:
     clamav_cron_jobs: "{{ clamav_cron_jobs | default([]) + [ { 'file': item.destination, 'registered': item.created, 'error': item.error } ] }}"
@@ -191,61 +186,14 @@
   loop_control:
     label: "{{ item.destination }}"
 
-# Systemd service validation (basic)
-- name: Stat systemd service symlink
-  ansible.builtin.stat:
-    path: "/etc/systemd/system/clamav_monitor.service"
-    follow: false
-  register: clamav_service_stat
-  become: "{{ escalate_root }}"
-  become_user: root
-
-- name: Register systemd daemon-reload (only if service file present)
-  ansible.builtin.command: systemctl daemon-reload
-  when: clamav_service_stat.stat.islnk | default(false)
-  register: daemon_reload_result
-  changed_when: false
-  become: "{{ escalate_root }}"
-  become_user: root
-
-- name: Enable clamav_monitor service
-  ansible.builtin.systemd:
-    name: clamav_monitor.service
-    enabled: true
-  when: clamav_service_stat.stat.islnk | default(false)
-  register: enable_service_result
-  become: "{{ escalate_root }}"
-
-- name: Start clamav_monitor service
-  ansible.builtin.systemd:
-    name: clamav_monitor.service
-    state: started
-  when: clamav_service_stat.stat.islnk | default(false)
-  register: start_service_result
-  become: "{{ escalate_root }}"
-  become_user: root
-
-- name: Assemble service result object
+# Record service omission
+- name: Set service results (service omitted)
   ansible.builtin.set_fact:
     clamav_service_results:
       - service_file: "/etc/systemd/system/clamav_monitor.service"
-        enabled: "{{ enable_service_result is defined and ( (enable_service_result.enabled | default(false)) or (enable_service_result.changed | default(false)) ) }}"
-        started: >-
-          {{ start_service_result is defined and (
-               (start_service_result.status is defined and start_service_result.status.SubState | default('') == 'running')
-               or (start_service_result.state | default('') in ['started','running'])
-             ) }}
-        error: >-
-          {% if not (clamav_service_stat.stat.islnk | default(false)) %}
-          service_symlink_missing_or_invalid
-          {% elif enable_service_result is defined and enable_service_result.failed | default(false) %}
-          enable_failed
-          {% elif start_service_result is defined and (
-                 start_service_result.failed | default(false) or
-                 (start_service_result.status is defined and start_service_result.status.SubState | default('') != 'running')
-               ) %}
-          start_failed
-          {% else %}{% endif %}
+        enabled: false
+        started: false
+        error: "omitted"
 
 # Final JSON aggregation
 - name: Aggregate ClamAV automation JSON
@@ -259,6 +207,6 @@
 - name: Output ClamAV automation JSON summary
   ansible.builtin.debug:
     msg: "{{ clamav_automation_summary | to_nice_json }}"
-# Notes / Warnings:
-# - Service ExecStart points to /home/hcnureth/clamav_monitor.sh (missing in repo). Service will likely fail to start.
-# - Validation JSON will reflect service start status accordingly.
+# Notes:
+# - Systemd service intentionally omitted; cron handles scanning schedule.
+# - To reintroduce service later, add its symlink and validation tasks back.
