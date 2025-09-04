@@ -20,13 +20,39 @@ After a fresh Pop!\_OS Linux install, your entire system can be automatically co
 
 Follow these steps to get started:
 
-### 1. Run `bootstrap.sh`
+### 1. Make `bootstrap.sh` executable
 
-Execute the `bootstrap.sh` script to begin the automated setup. This command will prompt you for your `sudo` password to perform system-level tasks.
+Before we can run `bootstrap.sh`, it must be made executable:
 
 ```
 chmod +x ~/Development/repos/dotfiles/scripts/bootstrap.sh
+```
+
+### 2. Run `bootstrap.sh`
+
+`bootstrap.sh` can be run in 3 modes:
+
+1. `home` - Adds things used specifically for a home setup (Steam, Minecraft setup, etc.)
+1. `work` - Adds things used specifically for a work setup (Slack, Zoom, etc.)
+1. `all` - Adds things used in both a home and work setup
+
+You can simply run `bootstrap.sh` and it will prompt for a `home/work/all` choice
+
+```
 ~/Development/repos/dotfiles/scripts/bootstrap.sh
+```
+
+Or you can run a specific setup command:
+
+```
+# Home Setup
+~/Development/repos/dotfiles/scripts/bootstrap.sh home
+
+# Work Setup
+~/Development/repos/dotfiles/scripts/bootstrap.sh work
+
+# All Setup
+~/Development/repos/dotfiles/scripts/bootstrap.sh all
 ```
 
 ## 2. Chrome Setup
@@ -41,6 +67,9 @@ To open personal vs work accounts, follow these steps:
 1. Remove the default binding and uncomment the new ones
 
 ## 3. Discord Settings
+
+> [!IMPORTANT]
+> Discord settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
 
 You need to turn off Desktop Notifications:
 
@@ -79,6 +108,9 @@ Setup browser texting at: [Google Messages Web](https://messages.google.com/web)
 
 ## 7. Steam Settings
 
+> [!IMPORTANT]
+> Steam settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
+
 ### For faster steam load times, make sure to follow these steps:
 
 1. Open **Steam** (This will usually take a second if it's loading for the first time during a login session).
@@ -89,12 +121,15 @@ Setup browser texting at: [Google Messages Web](https://messages.google.com/web)
 
 ## 8. VPN Setup
 
-Follow the steps at work to finish setup from here
-
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
+Follow the steps at work to finish your VPN setup
+
 ## 9. Zoom Settings
+
+> [!IMPORTANT]
+> Zoom settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
 
 ### Audio & Video Settings
 
