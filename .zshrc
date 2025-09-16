@@ -211,6 +211,7 @@ alias rtw='npm run test:watch -w apps/workflow'
 alias rtwu='npm run test:watch -w @vac/workflow'
 alias rtc='npm run test:watch -w @vac/capture'
 alias prdp='pnpm run:prod'
+alias fixfe='pnpm --filter @vasion/root dev'
 
 
 # Go Setup
