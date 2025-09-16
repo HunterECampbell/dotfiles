@@ -27,3 +27,4 @@
         tags: ["minecraft", "minecraft-port"],
       }
     - { role: clamav, tags: ["clamav"] }
+    - { role: lid-switch, tags: ["lid", "lid-switch"] }

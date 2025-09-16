@@ -1,5 +1,4 @@
 FEATURES:
-- Create autoclicker
 - Add all keybinds
 
 BUGS:

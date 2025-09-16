@@ -1,0 +1,23 @@
+---
+- name: Ensure logind drop-in directory exists
+  ansible.builtin.file:
+    path: /etc/systemd/logind.conf.d
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: yes
+
+- name: Configure lid switch handling
+  ansible.builtin.copy:
+    dest: /etc/systemd/logind.conf.d/lid-ignore.conf
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      [Login]
+      HandleLidSwitch=ignore
+      HandleLidSwitchExternalPower=ignore
+      HandleLidSwitchDocked=ignore
+  notify: Restart systemd-logind
+  become: yes
