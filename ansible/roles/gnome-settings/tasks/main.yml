@@ -1,9 +1,9 @@
 ---
 # ansible/roles/gnome-settings/tasks/main.yml
-# Managed policy: only enforce opinionated settings we explicitly care about.
-# All other GNOME settings are left to system defaults to reduce noise and churn.
+# Managed policy: only enforce opinionated non-keybinding settings inline.
+# Full keybinding set is maintained separately in vars/keybindings.yml (gnome_keybindings).
 
-- name: Apply curated GNOME dconf settings (minimal, opinionated)
+- name: Apply curated GNOME dconf settings (extensions, favorites, panel layout)
   community.general.dconf:
     key: "{{ item.key }}"
     value: "{{ item.value }}"
@@ -19,7 +19,7 @@
         value: "['pop-cosmic-applications.desktop', 'com.google.Chrome.desktop', 'com.discordapp.Discord.desktop', 'slack.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']",
       }
 
-    # Dash to Panel (layout and key visuals)
+    # Dash to Panel (layout and visuals)
     - {
         key: "/org/gnome/shell/extensions/dash-to-panel/animate-appicon-hover",
         value: "true",
@@ -156,137 +156,19 @@
         key: "/org/gnome/shell/extensions/dash-to-panel/window-preview-title-position",
         value: "'TOP'",
       }
+  become: no
 
-    # Custom keybindings only (and the parent list)
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings",
-        value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']",
-      }
+- name: Load GNOME keybindings snapshot vars
+  ansible.builtin.include_vars:
+    file: "{{ role_path }}/vars/keybindings.yml"
+  when: gnome_keybindings is not defined
+  become: no
 
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding",
-        value: "'<Super>s'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command",
-        value: "'flatpak run com.valvesoftware.Steam'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name",
-        value: "'Open Steam'",
-      }
-
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding",
-        value: "'<Super>d'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command",
-        value: "'flatpak run com.discordapp.Discord'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name",
-        value: "'Open Discord'",
-      }
-
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/binding",
-        value: "'<Super>n'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/command",
-        value: "'gnome-text-editor'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/name",
-        value: "'Open Notes'",
-      }
-
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/binding",
-        value: "'<Super>w'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command",
-        value: "'sh /home/hcnureth/Development/start_work_env.sh &'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name",
-        value: "'Open Work'",
-      }
-
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding",
-        value: "'<Super>b'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command",
-        value: '''flatpak run com.google.Chrome --profile-directory="Default"''',
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name",
-        value: "'Open Chrome'",
-      }
-
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/binding",
-        value: "'<Super>g'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/command",
-        value: '''flatpak run com.google.Chrome https://gemini.google.com/ --profile-directory="Default"''',
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/name",
-        value: "'Open Gemini'",
-      }
-
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/binding",
-        value: "'<Super>y'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/command",
-        value: '''flatpak run com.google.Chrome https://youtube.com/ --profile-directory="Default"''',
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/name",
-        value: "'Open YouTube'",
-      }
-
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/binding",
-        value: "'<Super>p'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/command",
-        value: '''flatpak run com.google.Chrome https://messages.google.com/ --profile-directory="Default"''',
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/name",
-        value: "'Open Phone'",
-      }
-
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/binding",
-        value: "'<Super>bracketright'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/command",
-        value: "'simplescreenrecorder'",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name",
-        value: "'Record Screen'",
-      }
-
-    # Selected system keybindings
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/calculator",
-        value: "['<Super>bracketleft']",
-      }
-    - {
-        key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver",
-        value: "['<Super>l']",
-      }
+- name: Apply GNOME keybindings snapshot (full coverage)
+  community.general.dconf:
+    key: "{{ item.key }}"
+    value: "{{ item.value }}"
+    state: present
+  loop: "{{ gnome_keybindings }}"
+  when: gnome_keybindings is defined
   become: no

@@ -9,20 +9,17 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [Discord Settings](#3-discord-settings)
 1. [FoundryVTT Setup](#4-foundryvtt-setup)
 1. [GitHub CLI Setup](#5-github-cli-setup)
-1. [Google Messages Setup](#6-google-messages-setup)
-1. [Steam Settings](#7-steam-settings)
-1. [VPN Setup](#8-vpn-setup)
-1. [Zoom Settings](#9-zoom-settings)
+1. [GNOME Keybindings Management](#6-gnome-keybindings-management)
+1. [Google Messages Setup](#7-google-messages-setup)
+1. [Steam Settings](#8-steam-settings)
+1. [VPN Setup](#9-vpn-setup)
+1. [Zoom Settings](#10-zoom-settings)
 
 ## 1. Post-Installation Setup
 
 After a fresh Pop!\_OS Linux install, your entire system can be automatically configured by running a single command. The `bootstrap.sh` script serves as the sole entry point to your self-contained automation. This script will handle all necessary steps, including installing Ansible and its dependencies in a dedicated virtual environment, and then executing the main Ansible playbook to set up your applications, system settings, and dotfiles.
 
-Follow these steps to get started:
-
 ### 1. Make `bootstrap.sh` executable
-
-Before we can run `bootstrap.sh`, it must be made executable:
 
 ```
 chmod +x ~/Development/repos/dotfiles/scripts/bootstrap.sh
@@ -36,13 +33,13 @@ chmod +x ~/Development/repos/dotfiles/scripts/bootstrap.sh
 1. `work` - Adds things used specifically for a work setup (Slack, Zoom, etc.)
 1. `all` - Adds things used in both a home and work setup
 
-You can simply run `bootstrap.sh` and it will prompt for a `home/work/all` choice
+You can simply run `bootstrap.sh` and it will prompt for a `home/work/all` choice:
 
 ```
 ~/Development/repos/dotfiles/scripts/bootstrap.sh
 ```
 
-Or you can run a specific setup command:
+Or you can run a specific setup:
 
 ```
 # Home Setup
@@ -100,33 +97,57 @@ For seamless interaction with GitHub from your terminal (e.g., `git push`, `git 
 
 Refer to the dedicated guide: [github-cli-setup.md](../github-cli-setup.md)
 
-## 6. Google Messages Setup
+## 6. GNOME Keybindings Management
 
-To use the phone keybind ($SUPER + P)
+A full snapshot of GNOME keybindings is applied by the Ansible role `gnome-settings` using:
+`ansible/roles/gnome-settings/vars/keybindings.yml`
 
-Setup browser texting at: [Google Messages Web](https://messages.google.com/web)
+### To Update Keybinds
 
-## 7. Steam Settings
+1. Change keybindings in GNOME as desired.
+1. You will need to be in the repo to run the below command to regenerate keybindings:
+   ```
+   ./scripts/export_gnome_keybindings.sh
+   ```
+   - If you need to make the script executable (it should already be executable if you run the `bootstrap.sh`):
+     ```
+     chmod +x ./scripts/export_gnome_keybindings.sh
+     ```
+1. Script actions:
+   - Rebuilds the vars file with window manager, media-keys, shell, mutter (if present), and custom keybindings
+   - Stages the updated vars file (you will still need to commit)
+   - It will prompt you to optionally apply the keybind settings immediately. You can also manually apply the settings via:
+     ```
+     ansible-playbook ansible/playbook.yml --tags gnome-settings
+     ```
+
+## 7. Google Messages Setup
+
+This is so you can use the phone keybind ($SUPER + P).
+
+Set up browser texting at: [Google Messages Web](https://messages.google.com/web)
+
+## 8. Steam Settings
 
 > [!IMPORTANT]
 > Steam settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
 
 ### For faster steam load times, make sure to follow these steps:
 
-1. Open **Steam** (This will usually take a second if it's loading for the first time during a login session).
+1. Open **Steam**
 1. Go to **Steam** (top-left corner) -> **Settings**
 1. Navigate to the **Interface** tab.
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
-## 8. VPN Setup
+## 9. VPN Setup
 
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
 Follow the steps at work to finish your VPN setup
 
-## 9. Zoom Settings
+## 10. Zoom Settings
 
 > [!IMPORTANT]
 > Zoom settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
@@ -140,7 +161,7 @@ Check the following settings:
 - Camera
 - Virtual Background
 
-### Additional Settings:
+### Additional Settings
 
 - General -> Turn Off **"Change status to 'Away' when inactive for:"**
 - Audio -> Audio Profile -> Select **"Personalized audio isolation"**
