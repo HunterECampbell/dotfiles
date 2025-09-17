@@ -13,7 +13,7 @@ sleep 3
 xdotool keydown Control_L+Shift_L+t
 xdotool keyup Control_L+Shift_L+t
 sleep 1
-xdotool type "repo vac && prd"
+xdotool type "repo vac && prdp"
 xdotool key KP_Enter
 sleep 1
 xdotool keydown Control+Page_Up
