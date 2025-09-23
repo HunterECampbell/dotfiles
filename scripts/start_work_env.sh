@@ -4,7 +4,7 @@ flatpak run com.google.Chrome --profile-directory="Profile 2" &
 # Open Discord and Slack
 flatpak run com.discordapp.Discord &
 slack &
-sleep 3
+sleep 5
 
 # Setup Code via the Terminal
 gnome-terminal &
