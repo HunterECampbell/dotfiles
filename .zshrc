@@ -188,6 +188,7 @@ alias u='npm uninstall'
 alias rb='npm run build'
 alias rd='npm run dev'
 alias lint='npm run lint'
+alias lint:check='npm run lint:check'
 
 
 ## PNPM Specific Aliases
