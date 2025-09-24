@@ -10,9 +10,10 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [GitHub CLI Setup](#4-github-cli-setup)
 1. [GNOME Keybindings Management](#5-gnome-keybindings-management)
 1. [Google Messages Setup](#6-google-messages-setup)
-1. [Steam Settings](#7-steam-settings)
-1. [VPN Setup](#8-vpn-setup)
-1. [Zoom Settings](#9-zoom-settings)
+1. [NVM Setup](#7-nvm-setup)
+1. [Steam Settings](#8-steam-settings)
+1. [VPN Setup](#9-vpn-setup)
+1. [Zoom Settings](#10-zoom-settings)
 
 ## 1. Post-Installation Setup
 
@@ -49,6 +50,7 @@ Or you can run a specific setup:
 
 # All Setup
 ~/Development/repos/dotfiles/scripts/bootstrap.sh all
+```
 
 ## 2. Discord Settings
 
@@ -93,16 +95,19 @@ A full snapshot of GNOME keybindings is applied by the Ansible role `gnome-setti
 
 1. Change keybindings in GNOME as desired.
 1. You will need to be in the repo to run the below command to regenerate keybindings:
-```
 
+```
 ./scripts/export_gnome_keybindings.sh
 
-````
+```
+
 - If you need to make the script executable (it should already be executable if you run the `bootstrap.sh`):
   ```
   chmod +x ./scripts/export_gnome_keybindings.sh
   ```
+
 1. Script actions:
+
 - Rebuilds the vars file with window manager, media-keys, shell, mutter (if present), and custom keybindings
 - Stages the updated vars file (you will still need to commit)
 - It will prompt you to optionally apply the keybind settings immediately. You can also manually apply the settings via:
@@ -116,7 +121,23 @@ This is so you can use the phone keybind ($SUPER + P).
 
 Set up browser texting at: [Google Messages Web](https://messages.google.com/web)
 
-## 7. Steam Settings
+## 7. NVM Setup
+
+Make sure `curl` is installed.
+
+```
+sudo apt install curl
+```
+
+Install `nvm`
+
+```
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
+```
+
+Close your terminal and re-open it. You may need to source your `.zshrc` with `s` (alias).
+
+## 8. Steam Settings
 
 > [!IMPORTANT]
 > Steam settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
@@ -129,14 +150,14 @@ Set up browser texting at: [Google Messages Web](https://messages.google.com/web
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
-## 8. VPN Setup
+## 9. VPN Setup
 
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
 Follow the steps at work to finish your VPN setup
 
-## 9. Zoom Settings
+## 10. Zoom Settings
 
 > [!IMPORTANT]
 > Zoom settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
@@ -158,4 +179,11 @@ Check the following settings:
 - Meetings & webinars -> Join Experience -> Select **"Keep my camera off"**
 - Meetings & webinars -> My Video -> Select **"Show me as an active speaker when I talk"**
 - Meetings & webinars -> Controls -> Select **"Keep meeting controls visible**
-````
+
+```
+
+```
+
+```
+
+```
