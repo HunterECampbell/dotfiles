@@ -1,13 +1,11 @@
 # GitHub CLI (`gh`) Setup Guide
 
-This guide details how to install and authenticate the GitHub CLI (`gh`) on your Arch Linux system, which is essential for seamless Git operations (like `git push` and `git pull`) without repeatedly entering your password.
+This guide details how to install and authenticate the GitHub CLI (`gh`) on your Pop!\_OS Linux system, which is essential for seamless Git operations (like `git push` and `git pull`) without repeatedly entering your password.
 
 ## 1. Install GitHub CLI
 
-The `gh` package is available in the official Arch Linux repositories. (This will be auto installed when running the `run_all_scripts.sh` script.)
-
 ```
-sudo pacman -S github-cli
+sudo apt install gh
 ```
 
 ## 2. Authenticate GitHub CLI

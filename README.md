@@ -5,15 +5,14 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 ## Table of Contents
 
 1. [Post-Installation Setup](#1-post-installation-setup)
-1. [Chrome Setup](#2-chrome-setup)
-1. [Discord Settings](#3-discord-settings)
-1. [FoundryVTT Setup](#4-foundryvtt-setup)
-1. [GitHub CLI Setup](#5-github-cli-setup)
-1. [GNOME Keybindings Management](#6-gnome-keybindings-management)
-1. [Google Messages Setup](#7-google-messages-setup)
-1. [Steam Settings](#8-steam-settings)
-1. [VPN Setup](#9-vpn-setup)
-1. [Zoom Settings](#10-zoom-settings)
+1. [Discord Settings](#2-discord-settings)
+1. [FoundryVTT Setup](#3-foundryvtt-setup)
+1. [GitHub CLI Setup](#4-github-cli-setup)
+1. [GNOME Keybindings Management](#5-gnome-keybindings-management)
+1. [Google Messages Setup](#6-google-messages-setup)
+1. [Steam Settings](#7-steam-settings)
+1. [VPN Setup](#8-vpn-setup)
+1. [Zoom Settings](#9-zoom-settings)
 
 ## 1. Post-Installation Setup
 
@@ -50,20 +49,8 @@ Or you can run a specific setup:
 
 # All Setup
 ~/Development/repos/dotfiles/scripts/bootstrap.sh all
-```
 
-## 2. Chrome Setup
-
-To open personal vs work accounts, follow these steps:
-
-1. Open **Google Chrome** and go to **chrome://version**
-1. Find the **Profile Path** value and copy it
-1. Go to your `~/.config/hypr/hyprland.conf` and find the binding section
-   - There should be some commented out bindings for **Personal** and **Work** Chrome profiles
-   - Edit these bindings to use the two different profiles
-1. Remove the default binding and uncomment the new ones
-
-## 3. Discord Settings
+## 2. Discord Settings
 
 > [!IMPORTANT]
 > Discord settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
@@ -77,7 +64,7 @@ You need to turn off Desktop Notifications:
 
 For a virtual background, follow this guide: [Discord Virtual Background Setup](../discord-virtual-background-setup.md)
 
-## 4. FoundryVTT Setup
+## 3. FoundryVTT Setup
 
 > [!IMPORTANT]
 > FoundryVTT should not be automatically downloaded/setup, because it uses a **Purchased License** to validate ownership. Adding an automatic download/setup will make the license public, which is not what we want.
@@ -91,13 +78,13 @@ For a virtual background, follow this guide: [Discord Virtual Background Setup](
 
 When setting up a live server, it uses your machine's IP Address as the Browser's URL. We want to hide this IP so players don't access your IP directly. You can setup a hidden IP via [No IP](https://www.noip.com/login). No IP essentially creates a different browser URL that will point to your IP (e.g. my-random-name.ddns.net:30000 - 30000 is the default FoundryVTT port).
 
-## 5. GitHub CLI Setup
+## 4. GitHub CLI Setup
 
 For seamless interaction with GitHub from your terminal (e.g., `git push`, `git pull` without password prompts), it's highly recommended to set up `github-cli` (`gh`).
 
-Refer to the dedicated guide: [github-cli-setup.md](../github-cli-setup.md)
+Refer to the dedicated guide: [github-cli-setup.md](./github-cli-setup.md)
 
-## 6. GNOME Keybindings Management
+## 5. GNOME Keybindings Management
 
 A full snapshot of GNOME keybindings is applied by the Ansible role `gnome-settings` using:
 `ansible/roles/gnome-settings/vars/keybindings.yml`
@@ -106,28 +93,30 @@ A full snapshot of GNOME keybindings is applied by the Ansible role `gnome-setti
 
 1. Change keybindings in GNOME as desired.
 1. You will need to be in the repo to run the below command to regenerate keybindings:
-   ```
-   ./scripts/export_gnome_keybindings.sh
-   ```
-   - If you need to make the script executable (it should already be executable if you run the `bootstrap.sh`):
-     ```
-     chmod +x ./scripts/export_gnome_keybindings.sh
-     ```
-1. Script actions:
-   - Rebuilds the vars file with window manager, media-keys, shell, mutter (if present), and custom keybindings
-   - Stages the updated vars file (you will still need to commit)
-   - It will prompt you to optionally apply the keybind settings immediately. You can also manually apply the settings via:
-     ```
-     ansible-playbook ansible/playbook.yml --tags gnome-settings
-     ```
+```
 
-## 7. Google Messages Setup
+./scripts/export_gnome_keybindings.sh
+
+````
+- If you need to make the script executable (it should already be executable if you run the `bootstrap.sh`):
+  ```
+  chmod +x ./scripts/export_gnome_keybindings.sh
+  ```
+1. Script actions:
+- Rebuilds the vars file with window manager, media-keys, shell, mutter (if present), and custom keybindings
+- Stages the updated vars file (you will still need to commit)
+- It will prompt you to optionally apply the keybind settings immediately. You can also manually apply the settings via:
+  ```
+  ansible-playbook ansible/playbook.yml --tags gnome-settings
+  ```
+
+## 6. Google Messages Setup
 
 This is so you can use the phone keybind ($SUPER + P).
 
 Set up browser texting at: [Google Messages Web](https://messages.google.com/web)
 
-## 8. Steam Settings
+## 7. Steam Settings
 
 > [!IMPORTANT]
 > Steam settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
@@ -140,14 +129,14 @@ Set up browser texting at: [Google Messages Web](https://messages.google.com/web
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
-## 9. VPN Setup
+## 8. VPN Setup
 
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
 Follow the steps at work to finish your VPN setup
 
-## 10. Zoom Settings
+## 9. Zoom Settings
 
 > [!IMPORTANT]
 > Zoom settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
@@ -169,3 +158,4 @@ Check the following settings:
 - Meetings & webinars -> Join Experience -> Select **"Keep my camera off"**
 - Meetings & webinars -> My Video -> Select **"Show me as an active speaker when I talk"**
 - Meetings & webinars -> Controls -> Select **"Keep meeting controls visible**
+````
