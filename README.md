@@ -174,7 +174,7 @@ Check the following settings:
 ### Additional Settings
 
 - General -> Turn Off **"Change status to 'Away' when inactive for:"**
-- Audio -> Audio Profile -> Select **"Personalized audio isolation"**
+- Audio -> Microphone modes -> Select **"Personalized audio isolation"**
 - Meetings & webinars -> Join Experience -> Select **"Show video preview first"**
 - Meetings & webinars -> Join Experience -> Select **"Keep my camera off"**
 - Meetings & webinars -> My Video -> Select **"Show me as an active speaker when I talk"**
