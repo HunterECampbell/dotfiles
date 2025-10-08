@@ -215,10 +215,23 @@ alias prdp='pnpm run:prod'
 alias fixfe='pnpm --filter @vasion/root dev'
 
 
+## Zellij Specific Aliases
+alias list-sessions='zellij list-sessions'
+alias create-session='f() { zellij -s $1 };f' # $1 is the session name to create
+alias attach='f() { zellij attach $1 };f' # $1 is the session name to attach to
+alias delete-session='f() { zellij delete-session $1 --force };f' # $1 is the session name to delete
+
+
 # Go Setup
 # export GOROOT=/usr/local/go-1.21.3
 # export GOPATH=$HOME/go
 # export PATH=$GOPATH/bin:$GOROOT/bin:$PATH
+
+
+# Automatically load terminal sessions with zellij if installed and not already inside a zellij session
+if command -v zellij &> /dev/null && [ -z "$ZELLIJ" ]; then
+    zellij attach -c
+fi
 
 
 # NVM auto-use for directories with .nvmrc - Recommended by nvm
