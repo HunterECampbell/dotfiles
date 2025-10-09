@@ -1,3 +1,4 @@
 FEATURES:
+- Add kitty terminal with zellij
 
 BUGS:
