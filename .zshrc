@@ -213,7 +213,7 @@ alias rtwu='npm run test:watch -w @vac/workflow'
 alias rtc='npm run test:watch -w @vac/capture'
 alias prdp='pnpm run:prod'
 alias fixfe='pnpm --filter @vasion/root dev'
-alias run-stage='com.google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"com.google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"'
+alias run-stage='flatpak run com.google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"com.google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"flatpak run com.google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"'
 
 
 ## Zellij Specific Aliases
