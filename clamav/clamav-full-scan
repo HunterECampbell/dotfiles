@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Define paths and user
-CLAMSCAN_BIN="/usr/local/bin/clamscan"
+# Resolve clamscan dynamically (fallback to previous path if not found)
+CLAMSCAN_BIN="$(command -v clamscan || echo /usr/local/bin/clamscan)"
 USER_NAME="hcnureth"
 
 # Create a temporary file to hold the list of files

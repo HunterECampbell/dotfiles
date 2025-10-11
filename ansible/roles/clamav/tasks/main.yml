@@ -23,7 +23,6 @@
 - name: Define ClamAV script sources (absolute)
   ansible.builtin.set_fact:
     clamav_scripts:
-      - { name: "clamscan", src: "{{ dotfiles_root }}/clamav/clamscan" }
       - {
           name: "clamav-light-scan",
           src: "{{ dotfiles_root }}/clamav/clamav-light-scan",
@@ -41,10 +40,6 @@
   ansible.builtin.set_fact:
     clamav_symlinks:
       # Executables in /usr/local/bin
-      - {
-          source: "{{ dotfiles_root }}/clamav/clamscan",
-          dest: "/usr/local/bin/clamscan",
-        }
       - {
           source: "{{ dotfiles_root }}/clamav/clamav-light-scan",
           dest: "/usr/local/bin/clamav-light-scan",
@@ -210,3 +205,276 @@
 # Notes:
 # - Systemd service intentionally omitted; cron handles scanning schedule.
 # - To reintroduce service later, add its symlink and validation tasks back.
+
+#################################################################
+# Build & install latest stable ClamAV from source (stable only)
+#################################################################
+
+- name: Install ClamAV build dependencies
+  ansible.builtin.apt:
+    name:
+      - build-essential
+      - cmake
+      - pkg-config
+      - libssl-dev
+      - zlib1g-dev
+      - libcurl4-openssl-dev
+      - libxml2-dev
+      - libpcre2-dev
+      - libjson-c-dev
+      - libncurses-dev
+      - check
+      - rustc
+      - cargo
+      - gnupg
+      - jq
+      - curl
+    state: present
+    update_cache: true
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Fetch ClamAV releases metadata (GitHub)
+  ansible.builtin.uri:
+    url: https://api.github.com/repos/Cisco-Talos/clamav/releases
+    return_content: true
+    headers:
+      Accept: application/vnd.github+json
+  register: clamav_releases_json
+
+- name: Determine latest stable ClamAV tag
+  ansible.builtin.set_fact:
+    clamav_latest_tag: "{{ (clamav_releases_json.json | selectattr('prerelease','equalto',false) | selectattr('draft','equalto',false) | map(attribute='tag_name') | list)[0] }}"
+    clamav_version: "{{ ( (clamav_releases_json.json | selectattr('prerelease','equalto',false) | selectattr('draft','equalto',false) | map(attribute='tag_name') | list)[0] | regex_replace('^v','') ) }}"
+
+- name: Set source URLs
+  ansible.builtin.set_fact:
+    clamav_tarball_url: "https://github.com/Cisco-Talos/clamav/archive/refs/tags/{{ clamav_latest_tag }}.tar.gz"
+    clamav_sig_url: "https://github.com/Cisco-Talos/clamav/releases/download/{{ clamav_latest_tag }}/clamav-{{ clamav_version }}.tar.gz.sig"
+
+- name: Ensure build workspace exists
+  ansible.builtin.file:
+    path: /tmp/clamav-src
+    state: directory
+    mode: "0755"
+
+- name: Download ClamAV source tarball
+  ansible.builtin.get_url:
+    url: "{{ clamav_tarball_url }}"
+    dest: "/tmp/clamav-src/clamav-{{ clamav_version }}.tar.gz"
+    mode: "0644"
+
+- name: Attempt to download ClamAV signature (optional)
+  ansible.builtin.get_url:
+    url: "{{ clamav_sig_url }}"
+    dest: "/tmp/clamav-src/clamav-{{ clamav_version }}.tar.gz.sig"
+    mode: "0644"
+  register: clamav_sig_fetch
+  failed_when: false
+
+- name: Import ClamAV signing key (best effort)
+  ansible.builtin.command: >
+    gpg --keyserver keyserver.ubuntu.com --recv-keys 7E31177E6E0C13A7
+  changed_when: false
+  failed_when: false
+
+- name: Verify tarball signature if signature present
+  ansible.builtin.command: >
+    gpg --verify /tmp/clamav-src/clamav-{{ clamav_version }}.tar.gz.sig
+                                       /tmp/clamav-src/clamav-{{ clamav_version }}.tar.gz
+  when: clamav_sig_fetch is defined and clamav_sig_fetch.status is defined and clamav_sig_fetch.status == 200
+  register: clamav_sig_verify
+  failed_when: clamav_sig_fetch.status == 200 and clamav_sig_verify.rc != 0
+
+- name: Extract ClamAV source
+  ansible.builtin.unarchive:
+    src: "/tmp/clamav-src/clamav-{{ clamav_version }}.tar.gz"
+    dest: /tmp/clamav-src
+    remote_src: true
+  register: clamav_src_unpack
+
+- name: Build & install ClamAV (skip if already installed matching version)
+  ansible.builtin.shell: |
+    set -euo pipefail
+    cd /tmp/clamav-src/clamav-{{ clamav_version }}
+    mkdir -p build
+    cd build
+    cmake -DCMAKE_BUILD_TYPE=Release \
+          -DCMAKE_INSTALL_PREFIX=/usr/local \
+          -DBUILD_TESTING=OFF \
+          -DENABLE_MILTER=OFF \
+          -DENABLE_SYSTEMD=ON \
+          -DCMAKE_INSTALL_SYSCONFDIR=/usr/local/etc \
+          ..
+    make -j"$(nproc)"
+    make install
+  args:
+    creates: "/usr/local/bin/clamscan"
+    executable: /bin/bash
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Run ldconfig after install
+  ansible.builtin.command: ldconfig
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Ensure ClamAV database directory exists
+  ansible.builtin.file:
+    path: /usr/local/share/clamav
+    state: directory
+    mode: "0755"
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Provide minimal freshclam.conf (if absent)
+  ansible.builtin.copy:
+    dest: /usr/local/etc/freshclam.conf
+    mode: "0644"
+    force: false
+    content: |
+      DatabaseDirectory /usr/local/share/clamav
+      UpdateLogFile /usr/local/var/log/freshclam.log
+      LogTime yes
+      DNSDatabaseInfo current.cvd.clamav.net
+      DatabaseMirror database.clamav.net
+      ScriptedUpdates yes
+      CompressLocalDatabase no
+      SafeBrowsing no
+      Checks 12
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Summary note for ClamAV source build
+  ansible.builtin.debug:
+    msg: "ClamAV {{ clamav_version }} ({{ clamav_latest_tag }}) source build tasks executed."
+
+#################################################################
+# Optional: systemd services for freshclam (updates) and clamd
+#################################################################
+
+- name: Ensure clamav system user exists
+  ansible.builtin.user:
+    name: clamav
+    system: true
+    shell: /usr/sbin/nologin
+    create_home: false
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Ensure freshclam log directory exists
+  ansible.builtin.file:
+    path: /usr/local/var/log
+    state: directory
+    mode: "0755"
+    owner: clamav
+    group: clamav
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Provide clamd.conf if absent
+  ansible.builtin.copy:
+    dest: /usr/local/etc/clamd.conf
+    mode: "0644"
+    force: false
+    content: |
+      # Minimal clamd.conf generated by Ansible
+      LogFile /usr/local/var/log/clamd.log
+      LogTime yes
+      PidFile /run/clamav/clamd.pid
+      DatabaseDirectory /usr/local/share/clamav
+      LocalSocket /run/clamav/clamd.sock
+      LocalSocketMode 666
+      Foreground false
+      User clamav
+      ScanMail yes
+      ScanArchive yes
+      ScanPE yes
+      ScanELF yes
+      ScanPDF yes
+      ScanHTML yes
+      ScanOLE2 yes
+      DetectPUA no
+      Bytecode yes
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Create systemd unit for freshclam
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/freshclam.service
+    mode: "0644"
+    content: |
+      [Unit]
+      Description=ClamAV signature updater (freshclam)
+      After=network-online.target
+      Wants=network-online.target
+
+      [Service]
+      Type=simple
+      ExecStart=/usr/local/bin/freshclam -d --foreground=true
+      Restart=on-failure
+      User=clamav
+      Group=clamav
+
+      [Install]
+      WantedBy=multi-user.target
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Create systemd unit for clamd
+  ansible.builtin.copy:
+    dest: /etc/systemd/system/clamd.service
+    mode: "0644"
+    content: |
+      [Unit]
+      Description=ClamAV daemon
+      After=network-online.target freshclam.service
+      Wants=network-online.target
+
+      [Service]
+      Type=simple
+      ExecStartPre=/bin/mkdir -p /run/clamav
+      ExecStartPre=/bin/chown clamav:clamav /run/clamav
+      ExecStart=/usr/local/sbin/clamd --foreground=true
+      Restart=on-failure
+      User=clamav
+      Group=clamav
+
+      [Install]
+      WantedBy=multi-user.target
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Reload systemd daemon
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Enable and start freshclam
+  ansible.builtin.systemd:
+    name: freshclam.service
+    enabled: true
+    state: started
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Enable and start clamd
+  ansible.builtin.systemd:
+    name: clamd.service
+    enabled: true
+    state: started
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Verify clamscan version
+  ansible.builtin.command: /usr/local/bin/clamscan -V
+  register: clamscan_version_output
+  changed_when: false
+  failed_when: clamscan_version_output.rc != 0
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Show clamscan version output
+  ansible.builtin.debug:
+    msg: "{{ clamscan_version_output.stdout | default('No output') }}"
