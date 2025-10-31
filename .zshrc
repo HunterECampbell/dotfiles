@@ -132,11 +132,11 @@ alias mcserver='start_minecraft_server'
 
 
 # Aliases
-alias c='f() { if [[ -z "$1" ]]; then cursor .; else cursor "$@"; fi };f'
+alias c='f() { if [[ -z "$1" ]]; then code .; else code "$@"; fi };f'
 alias cl='clear'
 alias run='npm run'
 alias s='source ~/.zshrc'
-alias z='cursor ~/.zshrc'
+alias z='code ~/.zshrc'
 alias repo='f() { ~/Development/repos/$1 };f'
 alias repoc='f() { ~/Development/repos/$1 && c };f'
 alias update-pop='sudo apt update -y && sudo apt upgrade -y'
