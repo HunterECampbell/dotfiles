@@ -32,11 +32,19 @@
           src: "{{ dotfiles_root }}/clamav/clamav-full-scan",
         }
       - {
+          name: "clamav-download-monitor",
+          src: "{{ dotfiles_root }}/clamav/clamav-download-monitor",
+        }
+      - {
+          name: "clamav-status",
+          src: "{{ dotfiles_root }}/clamav/clamav-status",
+        }
+      - {
           name: "clamscan_notify.sh",
           src: "{{ dotfiles_root }}/clamav/clamscan_notify.sh",
         }
 
-- name: Define symlink targets (executables + cron only)
+- name: Define symlink targets (executables + cron + systemd)
   ansible.builtin.set_fact:
     clamav_symlinks:
       # Executables in /usr/local/bin
@@ -49,17 +57,30 @@
           dest: "/usr/local/bin/clamav-full-scan",
         }
       - {
+          source: "{{ dotfiles_root }}/clamav/clamav-download-monitor",
+          dest: "/usr/local/bin/clamav-download-monitor",
+        }
+      - {
+          source: "{{ dotfiles_root }}/clamav/clamav-status",
+          dest: "/usr/local/bin/clamav-status",
+        }
+      - {
           source: "{{ dotfiles_root }}/clamav/clamscan_notify.sh",
           dest: "/usr/local/bin/clamscan_notify.sh",
         }
-      # Cron (daily light scan, weekly full scan)
+      # Cron configurations (specific scheduling)
       - {
-          source: "{{ dotfiles_root }}/clamav/clamav-light-scan",
-          dest: "/etc/cron.daily/clamav-light-scan",
+          source: "{{ dotfiles_root }}/clamav/clamav-cron-full",
+          dest: "/etc/cron.d/clamav-full",
         }
       - {
-          source: "{{ dotfiles_root }}/clamav/clamav-full-scan",
-          dest: "/etc/cron.weekly/clamav-full-scan",
+          source: "{{ dotfiles_root }}/clamav/clamav-cron-light",
+          dest: "/etc/cron.d/clamav-light",
+        }
+      # Systemd service for download monitor
+      - {
+          source: "{{ dotfiles_root }}/clamav/clamav-download-monitor.service",
+          dest: "/etc/systemd/system/clamav-download-monitor.service",
         }
 
 # Ensure parent directories exist
@@ -210,7 +231,7 @@
 # Build & install latest stable ClamAV from source (stable only)
 #################################################################
 
-- name: Install ClamAV build dependencies
+- name: Install ClamAV build dependencies and runtime tools
   ansible.builtin.apt:
     name:
       - build-essential
@@ -229,6 +250,7 @@
       - gnupg
       - jq
       - curl
+      - inotify-tools
     state: present
     update_cache: true
   become: "{{ escalate_root }}"
@@ -467,6 +489,34 @@
   become: "{{ escalate_root }}"
   become_user: root
 
+#################################################################
+# Enhanced ClamAV Services: Download Monitor & Cleanup
+#################################################################
+
+- name: Remove old cron symlinks (replace with /etc/cron.d/ entries)
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: absent
+  loop:
+    - "/etc/cron.weekly/clamav-full-scan"
+    - "/etc/cron.daily/clamav-light-scan"
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Reload systemd daemon (for download monitor service)
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: "{{ escalate_root }}"
+  become_user: root
+
+- name: Enable and start ClamAV download monitor service
+  ansible.builtin.systemd:
+    name: clamav-download-monitor.service
+    enabled: true
+    state: started
+  become: "{{ escalate_root }}"
+  become_user: root
+
 - name: Verify clamscan version
   ansible.builtin.command: /usr/local/bin/clamscan -V
   register: clamscan_version_output
@@ -478,3 +528,21 @@
 - name: Show clamscan version output
   ansible.builtin.debug:
     msg: "{{ clamscan_version_output.stdout | default('No output') }}"
+
+- name: Display ClamAV setup completion summary
+  ansible.builtin.debug:
+    msg: |
+      🛡️ ClamAV Enhanced Setup Complete! 🛡️
+
+      ✅ Installed: Latest ClamAV from source
+      ✅ Services: freshclam, clamd, download-monitor
+      ✅ Scheduling: Sunday 8PM full scans, Mon-Sat 10AM light scans
+      ✅ Monitoring: Real-time download scanning with notifications
+      ✅ Management: Use 'clamav-status' command for monitoring
+
+      Next steps:
+      1. Test notifications: clamav-status test
+      2. Run manual scan: clamav-status scan light
+      3. Check status: clamav-status
+
+      Your system is now protected with comprehensive ClamAV monitoring!

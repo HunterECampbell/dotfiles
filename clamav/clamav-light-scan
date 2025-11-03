@@ -1,28 +1,68 @@
 #!/bin/bash
 
+# ClamAV Light Scan - Enhanced with completion notifications
+# Runs a quick scan of Downloads and Documents directories
+
 # Define paths and user
 # Resolve clamscan dynamically (fallback to previous path if not found)
 CLAMSCAN_BIN="$(command -v clamscan || echo /usr/local/bin/clamscan)"
 USER_NAME="hcnureth"
+LOG_DIR="/home/$USER_NAME/.local/share/clamav"
+DATE_STAMP=$(date +%Y-%m-%d_%H-%M-%S)
+
+# Ensure log directory exists
+mkdir -p "$LOG_DIR"
 
 # Define directories to scan (Downloads and Documents)
 SCAN_DIRECTORIES="/home/$USER_NAME/Downloads /home/$USER_NAME/Documents"
 
+# Record start time
+START_TIME=$(date +%s)
+START_TIME_READABLE=$(date '+%Y-%m-%d %H:%M:%S')
+
+echo "[$START_TIME_READABLE] ClamAV Light Scan Started" >> "$LOG_DIR/scan_history.log"
+
+# Check if online (basic connectivity test)
+if ! ping -c 1 8.8.8.8 &> /dev/null; then
+    echo "[$START_TIME_READABLE] Light scan skipped - no internet connection" >> "$LOG_DIR/scan_history.log"
+    exit 0
+fi
+
 # Run the light scan on the specified directories
-LIGHT_SCAN_OUTPUT=$(sudo -u root "$CLAMSCAN_BIN" -r "$SCAN_DIRECTORIES" --no-summary)
+LIGHT_SCAN_OUTPUT=$(sudo -u root "$CLAMSCAN_BIN" -r $SCAN_DIRECTORIES --no-summary 2>&1)
+SCAN_EXIT_CODE=$?
 
-# Get the infected files from the light scan output for the notification
+# Calculate scan duration
+END_TIME=$(date +%s)
+END_TIME_READABLE=$(date '+%Y-%m-%d %H:%M:%S')
+DURATION=$((END_TIME - START_TIME))
+DURATION_SEC=$DURATION
+
+# Count files scanned (approximate from output)
+FILE_COUNT=$(echo "$LIGHT_SCAN_OUTPUT" | grep -c "OK\|FOUND\|ERROR" || echo "0")
+
+# Get the infected files from the light scan output
 INFECTED_FILES=$(echo "$LIGHT_SCAN_OUTPUT" | grep "FOUND")
+INFECTED_COUNT=$(echo "$INFECTED_FILES" | grep -c "FOUND" || echo "0")
 
-# If infected files were found, send a desktop notification and write to log
-if [ -n "$INFECTED_FILES" ]; then
-    # Get a date stamp for the log file
-    DATE_STAMP=$(date +%m-%d-%Y)
-    RESULTS_FILE="/home/$USER_NAME/virus_scan_results_$DATE_STAMP.log"
+# Log completion
+echo "[$END_TIME_READABLE] Light scan completed - Files: $FILE_COUNT, Duration: ${DURATION_SEC}s, Infected: $INFECTED_COUNT" >> "$LOG_DIR/scan_history.log"
 
-    # Send a desktop notification
-    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send -u critical "ClamAV Virus Found!" "ClamAV detected a virus:\n$INFECTED_FILES"
+# Send appropriate notification based on results
+if [ -n "$INFECTED_FILES" ] && [ "$INFECTED_COUNT" -gt 0 ]; then
+    # Virus found - critical notification
+    RESULTS_FILE="$LOG_DIR/virus_scan_results_$DATE_STAMP.log"
 
-    # Append the final scan results to the results file
+    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send --hint=int:transient:1 -u critical -t 15000 "🦠 ClamAV: Virus Found!" "Light scan detected $INFECTED_COUNT infected file(s)!\nDuration: ${DURATION_SEC} seconds\nCheck: $RESULTS_FILE"
+
+    # Save detailed results
+    echo "ClamAV Light Scan Results - $START_TIME_READABLE" > "$RESULTS_FILE"
+    echo "Scan Duration: ${DURATION_SEC} seconds" >> "$RESULTS_FILE"
+    echo "Files Scanned: $FILE_COUNT" >> "$RESULTS_FILE"
+    echo "Infected Files Found: $INFECTED_COUNT" >> "$RESULTS_FILE"
+    echo "----------------------------------------" >> "$RESULTS_FILE"
     echo "$INFECTED_FILES" >> "$RESULTS_FILE"
+else
+    # Clean scan - normal notification
+    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send --hint=int:transient:1 -u normal -t 5000 "✅ ClamAV: Light Scan Complete" "Downloads & Documents are clean!\nFiles scanned: $FILE_COUNT\nDuration: ${DURATION_SEC} seconds"
 fi

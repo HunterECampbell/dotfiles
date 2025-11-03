@@ -1,0 +1,21 @@
+[Unit]
+Description=ClamAV Download Monitor Service
+After=network-online.target clamd.service
+Wants=network-online.target
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/clamav-download-monitor
+Restart=always
+RestartSec=10
+User=root
+Group=root
+StandardOutput=journal
+StandardError=journal
+
+# Minimal security settings for compatibility
+NoNewPrivileges=true
+ProtectHome=false
+
+[Install]
+WantedBy=multi-user.target

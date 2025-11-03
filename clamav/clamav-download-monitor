@@ -1,0 +1,186 @@
+#!/bin/bash
+
+# ClamAV Download Monitor - Real-time scanning of new downloads
+# Uses inotify to monitor Downloads folder and scan new files immediately
+
+# Define paths and user
+CLAMSCAN_BIN="$(command -v clamscan || echo /usr/local/bin/clamscan)"
+USER_NAME="hcnureth"
+DOWNLOADS_DIR="/home/$USER_NAME/Downloads"
+LOG_DIR="/home/$USER_NAME/.local/share/clamav"
+PID_FILE="/run/clamav-download-monitor.pid"
+
+# Deduplication settings
+PROCESSED_FILES_CACHE="/tmp/clamav_processed_files.cache"
+DEDUP_WINDOW=60  # seconds - don't process same file again within this window
+
+# Ensure log directory exists
+mkdir -p "$LOG_DIR"
+
+# Function to log messages
+log_message() {
+    echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_DIR/download_monitor.log"
+}
+
+# Function to send notification
+send_notification() {
+    local urgency="$1"
+    local title="$2"
+    local message="$3"
+    local timeout="$4"
+
+    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send --hint=int:transient:1 -u "$urgency" -t "$timeout" "$title" "$message"
+}
+
+# Function to check if file was recently processed (deduplication)
+is_recently_processed() {
+    local file_path="$1"
+    local current_time=$(date +%s)
+    local file_hash=$(echo "$file_path" | md5sum | cut -d' ' -f1)
+
+    # Check if cache file exists and read it
+    if [[ -f "$PROCESSED_FILES_CACHE" ]]; then
+        while IFS='|' read -r cached_hash cached_time cached_path; do
+            # Skip empty lines
+            [[ -z "$cached_hash" ]] && continue
+
+            # If same file and within time window, it's a duplicate
+            if [[ "$cached_hash" == "$file_hash" ]] && (( current_time - cached_time < DEDUP_WINDOW )); then
+                return 0  # Recently processed
+            fi
+        done < "$PROCESSED_FILES_CACHE"
+    fi
+
+    return 1  # Not recently processed
+}
+
+# Function to mark file as processed
+mark_as_processed() {
+    local file_path="$1"
+    local current_time=$(date +%s)
+    local file_hash=$(echo "$file_path" | md5sum | cut -d' ' -f1)
+
+    # Add to cache
+    echo "$file_hash|$current_time|$file_path" >> "$PROCESSED_FILES_CACHE"
+
+    # Clean old entries (older than dedup window)
+    if [[ -f "$PROCESSED_FILES_CACHE" ]]; then
+        local temp_file=$(mktemp)
+        while IFS='|' read -r cached_hash cached_time cached_path; do
+            # Skip empty lines
+            [[ -z "$cached_hash" ]] && continue
+
+            # Keep entries within the dedup window
+            if (( current_time - cached_time < DEDUP_WINDOW )); then
+                echo "$cached_hash|$cached_time|$cached_path" >> "$temp_file"
+            fi
+        done < "$PROCESSED_FILES_CACHE"
+        mv "$temp_file" "$PROCESSED_FILES_CACHE"
+    fi
+}
+
+# Function to scan a single file
+scan_file() {
+    local file_path="$1"
+    local file_name=$(basename "$file_path")
+
+    # Skip if file doesn't exist or is a directory
+    if [[ ! -f "$file_path" ]]; then
+        return 0
+    fi
+
+    # Skip temporary files, hidden files, and Chrome download files
+    if [[ "$file_name" == .* ]] || [[ "$file_name" == *.tmp ]] || [[ "$file_name" == *.part ]] || [[ "$file_name" == *.crdownload ]]; then
+        return 0
+    fi
+
+    # Check for duplicate processing
+    if is_recently_processed "$file_path"; then
+        log_message "Skipping recently processed file: $file_name"
+        return 0
+    fi
+
+    # Mark as being processed
+    mark_as_processed "$file_path"
+
+    log_message "Scanning new download: $file_name"
+
+    # Wait a moment for file to be fully written
+    sleep 2
+
+    # Scan the file
+    local scan_output
+    scan_output=$(sudo -u root "$CLAMSCAN_BIN" "$file_path" --no-summary 2>&1)
+    local scan_result=$?
+
+    # Check results
+    if echo "$scan_output" | grep -q "FOUND"; then
+        # Virus found!
+        local virus_info=$(echo "$scan_output" | grep "FOUND")
+        log_message "VIRUS FOUND in $file_name: $virus_info"
+
+        send_notification "critical" "🚨 ClamAV: Virus in Download!" "File: $file_name\nThreat: $virus_info\nAction: File quarantined" 15000
+
+        # Log to virus results
+        local date_stamp=$(date +%Y-%m-%d_%H-%M-%S)
+        local results_file="$LOG_DIR/virus_scan_results_$date_stamp.log"
+        echo "ClamAV Download Scan - $(date '+%Y-%m-%d %H:%M:%S')" > "$results_file"
+        echo "File: $file_path" >> "$results_file"
+        echo "Result: $virus_info" >> "$results_file"
+    else
+        # Clean file
+        log_message "Download scan clean: $file_name"
+        send_notification "normal" "✅ ClamAV: Download Scanned" "File: $file_name\nResult: Clean" 5000
+    fi
+}
+
+# Function to cleanup on exit
+cleanup() {
+    log_message "Download monitor stopping"
+    rm -f "$PID_FILE"
+    rm -f "$PROCESSED_FILES_CACHE"
+    exit 0
+}
+
+# Set up signal handlers
+trap cleanup SIGTERM SIGINT
+
+# Check if already running
+if [[ -f "$PID_FILE" ]]; then
+    old_pid=$(cat "$PID_FILE")
+    if kill -0 "$old_pid" 2>/dev/null; then
+        log_message "Download monitor already running (PID: $old_pid)"
+        exit 1
+    fi
+fi
+
+# Create PID file
+echo $$ > "$PID_FILE"
+
+# Check if inotify-tools is available
+if ! command -v inotifywait &> /dev/null; then
+    log_message "ERROR: inotify-tools not installed. Installing..."
+    sudo apt-get update && sudo apt-get install -y inotify-tools
+    if ! command -v inotifywait &> /dev/null; then
+        log_message "ERROR: Failed to install inotify-tools"
+        exit 1
+    fi
+fi
+
+# Ensure Downloads directory exists
+mkdir -p "$DOWNLOADS_DIR"
+
+log_message "Download monitor started, watching: $DOWNLOADS_DIR"
+
+# Monitor Downloads directory for new files
+inotifywait -m -e close_write,moved_to --format '%w%f' "$DOWNLOADS_DIR" 2>/dev/null | while read file_path; do
+    # Process the file in background to avoid blocking the monitor
+    {
+        scan_file "$file_path"
+    } &
+
+    # Limit concurrent scans (max 3)
+    while (( $(jobs -r | wc -l) >= 3 )); do
+        sleep 1
+    done
+done

@@ -1,0 +1,222 @@
+#!/bin/bash
+
+# ClamAV Status and Control Script
+# Provides comprehensive status information and manual control options
+
+# Define paths and user
+USER_NAME="hcnureth"
+LOG_DIR="/home/$USER_NAME/.local/share/clamav"
+CLAMSCAN_BIN="$(command -v clamscan || echo /usr/local/bin/clamscan)"
+
+# Colors for output
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# Function to print colored output
+print_status() {
+    local color=$1
+    local message=$2
+    echo -e "${color}${message}${NC}"
+}
+
+# Function to check service status
+check_service() {
+    local service_name=$1
+    if systemctl is-active --quiet "$service_name"; then
+        print_status $GREEN "✓ $service_name is running"
+        return 0
+    else
+        print_status $RED "✗ $service_name is not running"
+        return 1
+    fi
+}
+
+# Function to show scan history
+show_scan_history() {
+    local history_file="$LOG_DIR/scan_history.log"
+    local monitor_file="$LOG_DIR/download_monitor.log"
+
+    echo
+    print_status $BLUE "=== Recent Scan History ==="
+
+    if [[ -f "$history_file" ]]; then
+        echo "Last 10 scheduled scans:"
+        tail -n 10 "$history_file" | while read -r line; do
+            if [[ "$line" == *"Infected: 0"* ]]; then
+                print_status $GREEN "$line"
+            elif [[ "$line" == *"Infected:"* ]] && [[ "$line" != *"Infected: 0"* ]]; then
+                print_status $RED "$line"
+            else
+                echo "$line"
+            fi
+        done
+    else
+        print_status $YELLOW "No scan history found"
+    fi
+
+    echo
+    if [[ -f "$monitor_file" ]]; then
+        echo "Recent download monitor activity:"
+        tail -n 5 "$monitor_file" | while read -r line; do
+            if [[ "$line" == *"VIRUS FOUND"* ]]; then
+                print_status $RED "$line"
+            elif [[ "$line" == *"clean"* ]]; then
+                print_status $GREEN "$line"
+            else
+                echo "$line"
+            fi
+        done
+    else
+        print_status $YELLOW "No download monitor history found"
+    fi
+}
+
+# Function to show cron jobs
+show_cron_status() {
+    echo
+    print_status $BLUE "=== Scheduled Scans ==="
+
+    if [[ -L "/etc/cron.weekly/clamav-full-scan" ]]; then
+        print_status $GREEN "✓ Weekly full scan scheduled (cron.weekly)"
+    elif [[ -f "/etc/cron.d/clamav-full" ]]; then
+        print_status $GREEN "✓ Weekly full scan scheduled (Sunday 8PM)"
+    else
+        print_status $RED "✗ Weekly full scan not scheduled"
+    fi
+
+    if [[ -L "/etc/cron.daily/clamav-light-scan" ]]; then
+        print_status $GREEN "✓ Daily light scan scheduled (cron.daily)"
+    elif [[ -f "/etc/cron.d/clamav-light" ]]; then
+        print_status $GREEN "✓ Daily light scan scheduled (Mon-Sat 10AM)"
+    else
+        print_status $RED "✗ Daily light scan not scheduled"
+    fi
+}
+
+# Function to test notifications
+test_notifications() {
+    echo
+    print_status $BLUE "=== Testing Notifications ==="
+
+    echo "Sending test notification..."
+    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send --hint=int:transient:1 -u normal -t 5000 "🧪 ClamAV Test" "Notification system is working!\nThis should appear on your desktop."
+
+    print_status $GREEN "Test notification sent! Check your desktop for the notification."
+}
+
+# Function to run manual scan
+manual_scan() {
+    local scan_type=$1
+
+    echo
+    print_status $BLUE "=== Manual Scan ==="
+
+    case $scan_type in
+        "light")
+            print_status $YELLOW "Starting light scan (Downloads & Documents)..."
+            /usr/local/bin/clamav-light-scan
+            ;;
+        "full")
+            print_status $YELLOW "Starting full scan (entire home directory)..."
+            print_status $YELLOW "This may take a while..."
+            /usr/local/bin/clamav-full-scan
+            ;;
+        "downloads")
+            print_status $YELLOW "Starting Downloads folder scan..."
+            sudo -u root "$CLAMSCAN_BIN" -r "/home/$USER_NAME/Downloads" --no-summary
+            ;;
+        *)
+            echo "Usage: $0 scan [light|full|downloads]"
+            ;;
+    esac
+}
+
+# Function to show configuration
+show_config() {
+    echo
+    print_status $BLUE "=== ClamAV Configuration ==="
+
+    echo "ClamAV Version:"
+    if command -v clamscan &> /dev/null; then
+        clamscan --version | head -1
+    else
+        print_status $RED "ClamAV not found"
+    fi
+
+    echo
+    echo "Database Status:"
+    if [[ -d "/usr/local/share/clamav" ]]; then
+        ls -la /usr/local/share/clamav/*.cvd /usr/local/share/clamav/*.cld 2>/dev/null | while read -r line; do
+            echo "  $line"
+        done
+    fi
+
+    echo
+    echo "Log Directory: $LOG_DIR"
+    echo "Download Monitor PID: $(cat /run/clamav-download-monitor.pid 2>/dev/null || echo 'Not running')"
+}
+
+# Main function
+main() {
+    local command=${1:-status}
+
+    case $command in
+        "status")
+            print_status $BLUE "=== ClamAV System Status ==="
+            echo
+
+            # Check core services
+            check_service "freshclam.service"
+            check_service "clamd.service"
+            check_service "clamav-download-monitor.service"
+
+            # Show configuration
+            show_config
+
+            # Show cron status
+            show_cron_status
+
+            # Show recent history
+            show_scan_history
+            ;;
+        "test")
+            test_notifications
+            ;;
+        "scan")
+            manual_scan $2
+            ;;
+        "history")
+            show_scan_history
+            ;;
+        "config")
+            show_config
+            ;;
+        "help"|"--help"|"-h")
+            echo "ClamAV Status and Control Script"
+            echo
+            echo "Usage: $0 [command] [options]"
+            echo
+            echo "Commands:"
+            echo "  status              Show complete system status (default)"
+            echo "  test               Test desktop notifications"
+            echo "  scan [type]        Run manual scan (light|full|downloads)"
+            echo "  history            Show recent scan history"
+            echo "  config             Show configuration details"
+            echo "  help               Show this help message"
+            ;;
+        *)
+            print_status $RED "Unknown command: $command"
+            echo "Use '$0 help' for usage information"
+            exit 1
+            ;;
+    esac
+}
+
+# Ensure log directory exists
+mkdir -p "$LOG_DIR"
+
+# Run main function with all arguments
+main "$@"
