@@ -22,15 +22,8 @@ log_message() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_DIR/download_monitor.log"
 }
 
-# Function to send notification
-send_notification() {
-    local urgency="$1"
-    local title="$2"
-    local message="$3"
-    local timeout="$4"
-
-    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send --hint=int:transient:1 -u "$urgency" -t "$timeout" "$title" "$message"
-}
+# Source shared notification functions
+source "$(dirname "$0")/clamav_notifications.sh"
 
 # Function to check if file was recently processed (deduplication)
 is_recently_processed() {
@@ -119,7 +112,8 @@ scan_file() {
         local virus_info=$(echo "$scan_output" | grep "FOUND")
         log_message "VIRUS FOUND in $file_name: $virus_info"
 
-        send_notification "critical" "🚨 ClamAV: Virus in Download!" "File: $file_name\nThreat: $virus_info\nAction: File quarantined" 15000
+        # Send notification using shared function
+        send_download_scan_notification "$file_path" "false" "$virus_info"
 
         # Log to virus results
         local date_stamp=$(date +%Y-%m-%d_%H-%M-%S)
@@ -130,7 +124,9 @@ scan_file() {
     else
         # Clean file
         log_message "Download scan clean: $file_name"
-        send_notification "normal" "✅ ClamAV: Download Scanned" "File: $file_name\nResult: Clean" 5000
+
+        # Send notification using shared function
+        send_download_scan_notification "$file_path" "true"
     fi
 }
 

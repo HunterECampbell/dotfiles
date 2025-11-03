@@ -1,6 +1,9 @@
 # Function to scan files/directories for viruses with desktop notifications
 # Usage: virus_scan "/path/to/file/or/directory"
 function virus_scan() {
+    # Source the shared notification functions
+    source ~/Development/repos/dotfiles/clamav/clamav_notifications.sh
+
     # Check if a path was provided
     if [ -z "$1" ]; then
         echo "Error: Please provide a file or directory path to scan."
@@ -9,7 +12,6 @@ function virus_scan() {
     fi
 
     local target="$1"
-    local target_name=$(basename "$target")
 
     # Check if the target exists
     if [ ! -e "$target" ]; then
@@ -32,16 +34,16 @@ function virus_scan() {
         echo "🚨 VIRUS FOUND!"
         echo "$virus_info"
 
-        # Send critical desktop notification
-        notify-send --hint=int:transient:1 -u critical -t 15000 "🚨 ClamAV: Virus Found!" "Location: $target_name\nThreat: $virus_info\nAction: Review immediately"
+        # Send notification using shared function
+        send_file_scan_notification "$target" "false" "$virus_info"
 
         return 1
     else
         # Clean scan
         echo "✅ Scan complete - No threats detected"
 
-        # Send normal desktop notification
-        notify-send --hint=int:transient:1 -u normal -t 5000 "✅ ClamAV: Scan Complete" "Location: $target_name\nResult: Clean"
+        # Send notification using shared function
+        send_file_scan_notification "$target" "true"
 
         return 0
     fi

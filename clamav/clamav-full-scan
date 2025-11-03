@@ -13,6 +13,9 @@ DATE_STAMP=$(date +%Y-%m-%d_%H-%M-%S)
 # Ensure log directory exists
 mkdir -p "$LOG_DIR"
 
+# Source shared notification functions
+source "$(dirname "$0")/clamav_notifications.sh"
+
 # Create a temporary file to hold the list of files
 TEMP_FILE=$(mktemp)
 
@@ -55,19 +58,18 @@ echo "[$END_TIME_READABLE] Full scan completed - Files: $FILE_COUNT, Duration: $
 if [ -n "$INFECTED_FILES" ] && [ "$INFECTED_COUNT" -gt 0 ]; then
     # Virus found - critical notification
     RESULTS_FILE="$LOG_DIR/virus_scan_results_$DATE_STAMP.log"
-
-    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send --hint=int:transient:1 -u critical -t 15000 "🦠 ClamAV: Virus Found!" "Full scan detected $INFECTED_COUNT infected file(s)!\nDuration: ${DURATION_MIN} minutes\nCheck: $RESULTS_FILE"
-
-    # Save detailed results
     echo "ClamAV Full Scan Results - $START_TIME_READABLE" > "$RESULTS_FILE"
     echo "Scan Duration: ${DURATION_MIN} minutes" >> "$RESULTS_FILE"
     echo "Files Scanned: $FILE_COUNT" >> "$RESULTS_FILE"
     echo "Infected Files Found: $INFECTED_COUNT" >> "$RESULTS_FILE"
     echo "----------------------------------------" >> "$RESULTS_FILE"
     echo "$INFECTED_FILES" >> "$RESULTS_FILE"
+
+    # Send notification using shared function
+    send_scheduled_scan_notification "Full Scan" "$FILE_COUNT" "${DURATION_MIN} minutes" "$INFECTED_COUNT" "$RESULTS_FILE"
 else
-    # Clean scan - normal notification
-    sudo -u "$USER_NAME" DISPLAY=:0 DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$(id -u "$USER_NAME")/bus notify-send --hint=int:transient:1 -u normal -t 8000 "✅ ClamAV: Full Scan Complete" "System is clean!\nFiles scanned: $FILE_COUNT\nDuration: ${DURATION_MIN} minutes"
+    # Send clean scan notification using shared function
+    send_scheduled_scan_notification "Full Scan" "$FILE_COUNT" "${DURATION_MIN} minutes" "0"
 fi
 
 # Clean up the temporary file
