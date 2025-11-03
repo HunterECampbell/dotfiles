@@ -116,19 +116,21 @@ source $ZSH/oh-my-zsh.sh
 # fi
 
 
-# Scripts
-source ~/scripts/zsh_scripts/*
-# This source includes:
-# start_minecraft_server.zsh
-
-
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
 # For a full list of active aliases, run `alias`.
-#
+
+
+# Scripts
+source ~/scripts/zsh_scripts/*
+# This source includes:
+# start_minecraft_server.zsh
+# virus_scan.zsh
+
 # Script Aliases
 alias mcserver='start_minecraft_server'
+alias virus-scan='virus_scan'
 
 
 # Aliases
@@ -140,7 +142,6 @@ alias z='code ~/.zshrc'
 alias repo='f() { ~/Development/repos/$1 };f'
 alias repoc='f() { ~/Development/repos/$1 && c };f'
 alias update-pop='sudo apt update -y && sudo apt upgrade -y'
-alias virus-scan='sudo /usr/local/bin/clamscan_notify.sh'
 alias quarantine-virus='f() { sudo /usr/local/bin/clamscan --move=/var/quarantine $1 };f'
 alias remove-virus='f() { sudo /usr/local/bin/clamscan --remove $1 };f'
 
