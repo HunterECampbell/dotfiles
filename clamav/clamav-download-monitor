@@ -22,8 +22,9 @@ log_message() {
     echo "[$(date '+%Y-%m-%d %H:%M:%S')] $1" >> "$LOG_DIR/download_monitor.log"
 }
 
-# Source shared notification functions
-source "$(dirname "$0")/clamav_notifications.sh"
+# Source shared notification and logging functions
+source "/home/hcnureth/Development/repos/dotfiles/clamav/clamav_notifications.sh"
+source "/home/hcnureth/Development/repos/dotfiles/clamav/clamav_logging.sh"
 
 # Function to check if file was recently processed (deduplication)
 is_recently_processed() {
@@ -112,10 +113,21 @@ scan_file() {
         local virus_info=$(echo "$scan_output" | grep "FOUND")
         log_message "VIRUS FOUND in $file_name: $virus_info"
 
+        # Log virus detection to user's home directory log file
+        # Override HOME for logging functions since we're running as root
+        local original_home="$HOME"
+        export HOME="/home/$USER_NAME"
+        local virus_log_file=$(log_multiple_viruses "$scan_output")
+        export HOME="$original_home"
+
+        if [[ -n "$virus_log_file" ]]; then
+            log_message "Virus details logged to: $virus_log_file"
+        fi
+
         # Send notification using shared function
         send_download_scan_notification "$file_path" "false" "$virus_info"
 
-        # Log to virus results
+        # Keep the existing detailed scan results in ClamAV log directory
         local date_stamp=$(date +%Y-%m-%d_%H-%M-%S)
         local results_file="$LOG_DIR/virus_scan_results_$date_stamp.log"
         echo "ClamAV Download Scan - $(date '+%Y-%m-%d %H:%M:%S')" > "$results_file"

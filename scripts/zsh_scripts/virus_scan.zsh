@@ -1,8 +1,9 @@
 # Function to scan files/directories for viruses with desktop notifications
 # Usage: virus_scan "/path/to/file/or/directory"
 function virus_scan() {
-    # Source the shared notification functions
+    # Source the shared notification and logging functions
     source ~/Development/repos/dotfiles/clamav/clamav_notifications.sh
+    source ~/Development/repos/dotfiles/clamav/clamav_logging.sh
 
     # Check if a path was provided
     if [ -z "$1" ]; then
@@ -33,6 +34,12 @@ function virus_scan() {
         local virus_info=$(echo "$scan_output" | grep "FOUND")
         echo "🚨 VIRUS FOUND!"
         echo "$virus_info"
+
+        # Log virus detection to file
+        local log_file=$(log_multiple_viruses "$scan_output")
+        if [[ -n "$log_file" ]]; then
+            echo "📝 Virus details logged to: $log_file"
+        fi
 
         # Send notification using shared function
         send_file_scan_notification "$target" "false" "$virus_info"

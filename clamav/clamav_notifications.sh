@@ -47,8 +47,16 @@ send_clamav_notification() {
         message="📁 ${display_path}\n📄 ${file_name}\n"
     fi
 
-    # Add result information
-    message="${message}🔍 ${result_info}"
+    # Add result information - extract virus name if it's a virus detection
+    local display_result="$result_info"
+
+    # If this is a virus detection, extract just the virus name part
+    if echo "$result_info" | grep -q "FOUND"; then
+        # Extract everything after the colon (virus name and "FOUND")
+        display_result=$(echo "$result_info" | sed 's/.*: //')
+    fi
+
+    message="${message}🔍 ${display_result}"
 
     # Add duration information if provided
     if [[ -n "$duration_info" ]]; then

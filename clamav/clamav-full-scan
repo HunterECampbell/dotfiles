@@ -13,8 +13,9 @@ DATE_STAMP=$(date +%Y-%m-%d_%H-%M-%S)
 # Ensure log directory exists
 mkdir -p "$LOG_DIR"
 
-# Source shared notification functions
+# Source shared notification and logging functions
 source "$(dirname "$0")/clamav_notifications.sh"
+source "$(dirname "$0")/clamav_logging.sh"
 
 # Create a temporary file to hold the list of files
 TEMP_FILE=$(mktemp)
@@ -56,7 +57,15 @@ echo "[$END_TIME_READABLE] Full scan completed - Files: $FILE_COUNT, Duration: $
 
 # Send appropriate notification based on results
 if [ -n "$INFECTED_FILES" ] && [ "$INFECTED_COUNT" -gt 0 ]; then
-    # Virus found - critical notification
+    # Virus found - log to home directory and create detailed results
+
+    # Log virus detections to home directory log file
+    local virus_log_file=$(log_multiple_viruses "$FULL_SCAN_OUTPUT")
+    if [[ -n "$virus_log_file" ]]; then
+        echo "[$END_TIME_READABLE] Virus details logged to: $virus_log_file" >> "$LOG_DIR/scan_history.log"
+    fi
+
+    # Create detailed scan results in ClamAV log directory
     RESULTS_FILE="$LOG_DIR/virus_scan_results_$DATE_STAMP.log"
     echo "ClamAV Full Scan Results - $START_TIME_READABLE" > "$RESULTS_FILE"
     echo "Scan Duration: ${DURATION_MIN} minutes" >> "$RESULTS_FILE"
