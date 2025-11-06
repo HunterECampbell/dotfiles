@@ -130,7 +130,6 @@ source ~/scripts/zsh_scripts/*
 
 # Script Aliases
 alias mcserver='start_minecraft_server'
-alias virus-scan='virus_scan'
 
 
 # Aliases
@@ -142,6 +141,10 @@ alias z='code ~/.zshrc'
 alias repo='f() { ~/Development/repos/$1 };f'
 alias repoc='f() { ~/Development/repos/$1 && c };f'
 alias update-pop='sudo apt update -y && sudo apt upgrade -y'
+
+
+## Virus Scanning Specific Aliases
+alias virus-scan='virus_scan'
 alias full-system-virus-scan="~/Development/repos/dotfiles/clamav/clamav-full-scan"
 alias quarantine-virus='f() { sudo /usr/local/bin/clamscan --move=/var/quarantine $1 };f'
 alias remove-virus='f() { sudo /usr/local/bin/clamscan --remove $1 };f'
