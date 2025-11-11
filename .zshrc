@@ -170,6 +170,7 @@ alias gchd='git checkout develop'
 alias gpl='git pull'
 alias fresh='f() { git checkout "${1:-develop}" && gpl; }; f' # Defaults to develop, but allows you to pass in a specific branch
 alias freshm='f() { git fetch origin "${1:-develop}" && git merge "origin/${1:-develop}"; }; f' # Defaults to develop, but allows you to pass in a specific branch
+alias gdiff='f() { git diff develop..$(git symbolic-ref --short HEAD) | xclip -selection clipboard };f'
 
 alias rh='git reset --hard'
 alias gst='git stash'
