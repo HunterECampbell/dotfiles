@@ -94,7 +94,7 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0",
       key: "command",
-      value: "'flatpak run com.valvesoftware.Steam'",
+      value: "'steam'",
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0",
