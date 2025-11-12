@@ -1,5 +1,4 @@
 FEATURES:
-- Update keybindings
 - Get extensions to download correctly
 
 BUGS:

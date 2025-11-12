@@ -16,7 +16,7 @@
       }
     - {
         key: "/org/gnome/shell/favorite-apps",
-        value: "['pop-cosmic-applications.desktop', 'com.google.Chrome.desktop', 'com.discordapp.Discord.desktop', 'slack.desktop', 'code.desktop', 'org.gnome.Terminal.desktop']",
+        value: "['pop-cosmic-applications.desktop', 'com.google.Chrome.desktop', 'com.discordapp.Discord.desktop', 'slack.desktop', 'code.desktop', 'kitty.desktop']",
       }
 
     # Dash to Panel (layout and visuals)
