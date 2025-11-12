@@ -1,9 +1,20 @@
 ---
-# Generated GNOME keybindings snapshot (regenerated 2025-09-16T09:58:21-06:00).
+# Generated GNOME keybindings snapshot (regenerated 2025-11-11T19:00:18-07:00).
 # Regenerate with: scripts/export_gnome_keybindings.sh
 # This list is applied by the gnome-settings role.
+# 
+# This file contains ALL GNOME keybindings:
+#   - Allowed keybindings (from allowed_keybindings.yml) with their values
+#   - All other keybindings set to disabled ([''])
 gnome_keybindings:
 
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/home", value: "['<Super>f']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/calculator", value: "['<Super>bracketleft']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/terminal", value: "['<Super>t']" }
+  - { key: "/org/gnome/shell/keybindings/show-screenshot-ui", value: "['Print']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver", value: "['<Super>l']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/logout", value: "['<Super>Escape']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/close", value: "['<Super>x']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings", value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding", value: "'<Super>s'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command", value: "'flatpak run com.valvesoftware.Steam'" }
@@ -32,121 +43,217 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/binding", value: "'<Super>bracketright'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/command", value: "'simplescreenrecorder'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name", value: "'Record Screen'" }
-  - { key: "/org/gnome/desktop/wm/keybindings/close", value: "['<Super>x']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-left", value: "['<Super><Shift>Page_Up', '<Super><Shift><Alt>Left', '<Control><Shift><Alt>Left']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-right", value: "['<Super><Shift>Page_Down', '<Super><Shift><Alt>Right', '<Control><Shift><Alt>Right']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/panel-main-menu", value: "['<Alt>F1']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-applications", value: "['<Alt>Tab']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-applications-backward", value: "['<Shift><Alt>Tab']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-1", value: "['<Super>1']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-2", value: "['<Super>2']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-3", value: "['<Super>3']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-4", value: "['<Super>4']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-left", value: "['<Super>Page_Up', '<Super><Alt>Left', '<Control><Alt>Left']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-right", value: "['<Super>Page_Down', '<Super><Alt>Right', '<Control><Alt>Right']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/toggle-fullscreen", value: "['<Shift><Super>f']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/unmaximize", value: "['<Super>Down', '<Alt>F5']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/activate-window-menu", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/always-on-top", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/begin-move", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/begin-resize", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/cycle-group", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/cycle-group-backward", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/cycle-panels", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/cycle-panels-backward", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/cycle-windows", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/cycle-windows-backward", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/lower", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/maximize", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/maximize-horizontally", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/maximize-vertically", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/minimize", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-center", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-corner-ne", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-corner-nw", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-corner-se", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-corner-sw", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-monitor-down", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-monitor-left", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-monitor-right", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-monitor-up", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-side-e", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-side-n", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-side-s", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-side-w", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-1", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-10", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-11", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-12", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-2", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-3", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-4", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-5", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-6", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-7", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-8", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-9", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-down", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-last", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-left", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-right", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/move-to-workspace-up", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/panel-main-menu", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/panel-run-dialog", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/raise", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/raise-or-lower", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/set-spew-mark", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/show-desktop", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-applications", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-applications-backward", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-group", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-group-backward", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-input-source", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-input-source-backward", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-panels", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-panels-backward", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-1", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-10", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-11", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-12", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-2", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-3", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-4", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-5", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-6", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-7", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-8", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-9", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-down", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-last", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-left", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-right", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-to-workspace-up", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-windows", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-windows-backward", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/toggle-above", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/toggle-fullscreen", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/toggle-maximized", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/toggle-on-all-workspaces", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/toggle-shaded", value: "['']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/unmaximize", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/battery-status", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/battery-status-static", value: "['XF86Battery']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/calculator", value: "['<Super>bracketleft']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/calculator-static", value: "['XF86Calculator']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/battery-status-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/calculator-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/control-center", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/control-center-static", value: "['XF86Tools']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings", value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/control-center-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/decrease-text-size", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/eject", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/eject-static", value: "['XF86Eject']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/email-static", value: "['XF86Mail']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/eject-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/email", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/email-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/help", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/hibernate", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/hibernate-static", value: "['XF86Suspend', 'XF86Hibernate']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/home", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/home-static", value: "['XF86Explorer']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/hibernate-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/home-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/increase-text-size", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-down", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-down-static", value: "['XF86KbdBrightnessDown']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-down-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-toggle", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-toggle-static", value: "['XF86KbdLightOnOff']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-toggle-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-up", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-up-static", value: "['XF86KbdBrightnessUp']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/keyboard-brightness-up-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/magnifier", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/magnifier-zoom-in", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/magnifier-zoom-out", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/media", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/media-static", value: "['XF86AudioMedia']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/media-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/mic-mute", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/mic-mute-static", value: "['XF86AudioMicMute']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/mic-mute-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/next", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/next-static", value: "['XF86AudioNext', '<Ctrl>XF86AudioNext']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/next-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/on-screen-keyboard", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/pause", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/pause-static", value: "['XF86AudioPause']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/pause-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/play", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/play-static", value: "['XF86AudioPlay', '<Ctrl>XF86AudioPlay']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/play-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-forward", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-forward-static", value: "['XF86AudioForward']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-forward-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-random", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-random-static", value: "['XF86AudioRandomPlay']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-random-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-repeat", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-repeat-static", value: "['XF86AudioRepeat']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-repeat-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-rewind", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-rewind-static", value: "['XF86AudioRewind']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/playback-rewind-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/power", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/power-static", value: "['XF86PowerOff']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/power-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/previous", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/previous-static", value: "['XF86AudioPrev', '<Ctrl>XF86AudioPrev']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/previous-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/rfkill", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/rfkill-bluetooth", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/rfkill-bluetooth-static", value: "['XF86Bluetooth']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/rfkill-static", value: "['XF86WLAN', 'XF86UWB', 'XF86RFKill']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/rfkill-bluetooth-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/rfkill-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/rotate-video-lock", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/rotate-video-lock-static", value: "['<Super>o', 'XF86RotationLockToggle']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/rotate-video-lock-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-cycle", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-cycle-static", value: "['XF86MonBrightnessCycle']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-cycle-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-down", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-down-static", value: "['XF86MonBrightnessDown']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-down-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-up", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-up-static", value: "['XF86MonBrightnessUp']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver", value: "['<Super>l']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver-static", value: "['XF86ScreenSaver']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screen-brightness-up-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screenreader", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/search", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/search-static", value: "['XF86Search']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/search-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/stop", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/stop-static", value: "['XF86AudioStop']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/stop-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/suspend", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/suspend-static", value: "['XF86Sleep']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/terminal", value: "['<Primary><Alt>t']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/suspend-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/toggle-contrast", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-off", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-off-static", value: "['XF86TouchpadOff']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-off-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-on", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-on-static", value: "['XF86TouchpadOn']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-on-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-toggle", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-toggle-static", value: "['XF86TouchpadToggle', '<Ctrl><Super>XF86TouchpadToggle']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/touchpad-toggle-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down-precise", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down-precise-static", value: "['<Shift>XF86AudioLowerVolume', '<Ctrl><Shift>XF86AudioLowerVolume']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down-precise-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down-quiet", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down-quiet-static", value: "['<Alt>XF86AudioLowerVolume', '<Alt><Ctrl>XF86AudioLowerVolume']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down-static", value: "['XF86AudioLowerVolume', '<Ctrl>XF86AudioLowerVolume']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down-quiet-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-down-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-mute", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-mute-quiet", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-mute-quiet-static", value: "['<Alt>XF86AudioMute']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-mute-static", value: "['XF86AudioMute']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-mute-quiet-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-mute-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up-precise", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up-precise-static", value: "['<Shift>XF86AudioRaiseVolume', '<Ctrl><Shift>XF86AudioRaiseVolume']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up-precise-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up-quiet", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up-quiet-static", value: "['<Alt>XF86AudioRaiseVolume', '<Alt><Ctrl>XF86AudioRaiseVolume']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up-static", value: "['XF86AudioRaiseVolume', '<Ctrl>XF86AudioRaiseVolume']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/www-static", value: "['XF86WWW']" }
-  - { key: "/org/gnome/shell/keybindings/open-application-menu", value: "['<Super>F10']" }
-  - { key: "/org/gnome/shell/keybindings/shift-overview-down", value: "['<Super><Alt>Down']" }
-  - { key: "/org/gnome/shell/keybindings/shift-overview-up", value: "['<Super><Alt>Up']" }
-  - { key: "/org/gnome/shell/keybindings/show-screenshot-ui", value: "['Print']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-1", value: "['<Super>1']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-2", value: "['<Super>2']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-3", value: "['<Super>3']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-4", value: "['<Super>4']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-5", value: "['<Super>5']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-6", value: "['<Super>6']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-7", value: "['<Super>7']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-8", value: "['<Super>8']" }
-  - { key: "/org/gnome/shell/keybindings/switch-to-application-9", value: "['<Super>9']" }
-  - { key: "/org/gnome/mutter/keybindings/rotate-monitor", value: "['XF86RotateWindows']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up-quiet-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/volume-up-static", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/www", value: "['']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/www-static", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/focus-active-notification", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-application-menu", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/screenshot", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/screenshot-window", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/shift-overview-down", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/shift-overview-up", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/show-screen-recording-ui", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-1", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-2", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-3", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-4", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-5", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-6", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-7", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-8", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/switch-to-application-9", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/toggle-application-view", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/toggle-message-tray", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/toggle-overview", value: "['']" }
+  - { key: "/org/gnome/mutter/keybindings/rotate-monitor", value: "['']" }
+  - { key: "/org/gnome/mutter/keybindings/switch-monitor", value: "['']" }
+  - { key: "/org/gnome/mutter/keybindings/tab-popup-cancel", value: "['']" }
+  - { key: "/org/gnome/mutter/keybindings/tab-popup-select", value: "['']" }
+  - { key: "/org/gnome/mutter/keybindings/toggle-tiled-left", value: "['']" }
+  - { key: "/org/gnome/mutter/keybindings/toggle-tiled-right", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/restore-shortcuts", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-1", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-10", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-11", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-12", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-2", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-3", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-4", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-5", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-6", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-7", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-8", value: "['']" }
+  - { key: "/org/gnome/mutter/wayland/keybindings/switch-to-session-9", value: "['']" }

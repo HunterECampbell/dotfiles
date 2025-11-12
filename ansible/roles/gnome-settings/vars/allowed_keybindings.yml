@@ -1,0 +1,239 @@
+---
+# Allowed GNOME keybindings whitelist
+# This file defines the ONLY keybindings that should be active.
+# All other keybindings will be disabled by the export script.
+#
+# Maintained manually - edit this file to add/remove allowed keybindings.
+# Run scripts/export_gnome_keybindings.sh to regenerate keybindings.yml
+
+allowed_keybindings:
+  # ============================================================================
+  # LAUNCHERS (org.gnome.settings-daemon.plugins.media-keys)
+  # ============================================================================
+
+  # Home Folder (Super + F)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys",
+      key: "home",
+      value: "['<Super>f']",
+    }
+
+  # Launch Calculator (Super + [)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys",
+      key: "calculator",
+      value: "['<Super>bracketleft']",
+    }
+
+  # Launch Terminal (Super + T) - Note: Pop!_OS might use different key
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys",
+      key: "terminal",
+      value: "['<Super>t']",
+    }
+
+  # Launch Web Browser (Super + B) - Handled by custom shortcut below
+
+  # ============================================================================
+  # SCREENSHOTS (org.gnome.shell.keybindings)
+  # ============================================================================
+
+  # Take a screenshot interactively (Print)
+  - {
+      schema: "org.gnome.shell.keybindings",
+      key: "show-screenshot-ui",
+      value: "['Print']",
+    }
+
+  # ============================================================================
+  # SYSTEM (org.gnome.settings-daemon.plugins.media-keys)
+  # ============================================================================
+
+  # Lock Screen (Super + L)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys",
+      key: "screensaver",
+      value: "['<Super>l']",
+    }
+
+  # Log Out (Super + Escape)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys",
+      key: "logout",
+      value: "['<Super>Escape']",
+    }
+
+  # ============================================================================
+  # WINDOWS (org.gnome.desktop.wm.keybindings)
+  # ============================================================================
+
+  # Close Window (Super + X)
+  - {
+      schema: "org.gnome.desktop.wm.keybindings",
+      key: "close",
+      value: "['<Super>x']",
+    }
+
+  # ============================================================================
+  # CUSTOM SHORTCUTS
+  # ============================================================================
+
+  # Define custom keybindings list
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys",
+      key: "custom-keybindings",
+      value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']",
+    }
+
+  # Custom 0: Open Steam (Super + S)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0",
+      key: "binding",
+      value: "'<Super>s'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0",
+      key: "command",
+      value: "'flatpak run com.valvesoftware.Steam'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0",
+      key: "name",
+      value: "'Open Steam'",
+    }
+
+  # Custom 1: Open Discord (Super + D)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom1",
+      key: "binding",
+      value: "'<Super>d'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom1",
+      key: "command",
+      value: "'flatpak run com.discordapp.Discord'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom1",
+      key: "name",
+      value: "'Open Discord'",
+    }
+
+  # Custom 2: Open Notes (Super + N)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom2",
+      key: "binding",
+      value: "'<Super>n'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom2",
+      key: "command",
+      value: "'gnome-text-editor'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom2",
+      key: "name",
+      value: "'Open Notes'",
+    }
+
+  # Custom 3: Open Work (Super + W)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom3",
+      key: "binding",
+      value: "'<Super>w'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom3",
+      key: "command",
+      value: "'sh /home/hcnureth/scripts/start_work_env.sh &'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom3",
+      key: "name",
+      value: "'Open Work'",
+    }
+
+  # Custom 4: Open Chrome (Super + B)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom4",
+      key: "binding",
+      value: "'<Super>b'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom4",
+      key: "command",
+      value: '''flatpak run com.google.Chrome --profile-directory="Default"''',
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom4",
+      key: "name",
+      value: "'Open Chrome'",
+    }
+
+  # Custom 5: Open Gemini (Super + G)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom5",
+      key: "binding",
+      value: "'<Super>g'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom5",
+      key: "command",
+      value: '''flatpak run com.google.Chrome https://gemini.google.com/ --profile-directory="Default"''',
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom5",
+      key: "name",
+      value: "'Open Gemini'",
+    }
+
+  # Custom 6: Open YouTube (Super + Y)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom6",
+      key: "binding",
+      value: "'<Super>y'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom6",
+      key: "command",
+      value: '''flatpak run com.google.Chrome https://youtube.com/ --profile-directory="Default"''',
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom6",
+      key: "name",
+      value: "'Open YouTube'",
+    }
+
+  # Custom 7: Open Phone (Super + P)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom7",
+      key: "binding",
+      value: "'<Super>p'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom7",
+      key: "command",
+      value: '''flatpak run com.google.Chrome https://messages.google.com/ --profile-directory="Default"''',
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom7",
+      key: "name",
+      value: "'Open Phone'",
+    }
+
+  # Custom 8: Record Screen (Super + ])
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom8",
+      key: "binding",
+      value: "'<Super>bracketright'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom8",
+      key: "command",
+      value: "'simplescreenrecorder'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom8",
+      key: "name",
+      value: "'Record Screen'",
+    }
