@@ -6,6 +6,7 @@ apt_general:
   - cron
   - python3-psutil
   - simplescreenrecorder
+  - xclip
   - xdotool
 
 apt_home: []

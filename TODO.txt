@@ -1,5 +1,4 @@
 FEATURES:
-- Add xclip install!
 - Add kitty terminal with zellij
 - Update keybindings
 - Get extensions to download correctly
