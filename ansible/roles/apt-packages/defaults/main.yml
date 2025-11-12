@@ -4,6 +4,7 @@ apt_general:
   - clamav-daemon
   - code
   - cron
+  - kitty
   - python3-psutil
   - simplescreenrecorder
   - xclip
