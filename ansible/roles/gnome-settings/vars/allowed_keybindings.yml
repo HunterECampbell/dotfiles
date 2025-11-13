@@ -74,6 +74,13 @@ allowed_keybindings:
       value: "['<Super>x']",
     }
 
+  # Switch Applications (Alt + Tab)
+  - {
+      schema: "org.gnome.desktop.wm.keybindings",
+      key: "switch-applications",
+      value: "['<Alt>Tab']",
+    }
+
   # ============================================================================
   # CUSTOM SHORTCUTS
   # ============================================================================

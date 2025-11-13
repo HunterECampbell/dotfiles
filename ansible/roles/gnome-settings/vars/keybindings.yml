@@ -1,5 +1,5 @@
 ---
-# Generated GNOME keybindings snapshot (regenerated 2025-11-11T19:23:46-07:00).
+# Generated GNOME keybindings snapshot (regenerated 2025-11-12T17:05:42-07:00).
 # Regenerate with: scripts/export_gnome_keybindings.sh
 # This list is applied by the gnome-settings role.
 # 
@@ -15,6 +15,7 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver", value: "['<Super>l']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/logout", value: "['<Super>Escape']" }
   - { key: "/org/gnome/desktop/wm/keybindings/close", value: "['<Super>x']" }
+  - { key: "/org/gnome/desktop/wm/keybindings/switch-applications", value: "['<Alt>Tab']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings", value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding", value: "'<Super>s'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command", value: "'steam'" }
@@ -94,7 +95,6 @@ gnome_keybindings:
   - { key: "/org/gnome/desktop/wm/keybindings/raise-or-lower", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/set-spew-mark", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/show-desktop", value: "['']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/switch-applications", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/switch-applications-backward", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/switch-group", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/switch-group-backward", value: "['']" }
