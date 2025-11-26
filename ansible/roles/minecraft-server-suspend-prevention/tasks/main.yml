@@ -1,0 +1,127 @@
+---
+# Role: minecraft-server-suspend-prevention
+# Purpose: Verify dependencies for Minecraft server suspend prevention functionality
+#          Ensures systemd-inhibit and screen are available, and script is executable
+
+- name: Determine if root escalation is required
+  ansible.builtin.set_fact:
+    escalate_root: "{{ (ansible_user_id | default(ansible_user) | lower) != 'root' }}"
+
+- name: Verify systemd-inhibit command exists
+  ansible.builtin.command: which systemd-inhibit
+  register: systemd_inhibit_check
+  changed_when: false
+  failed_when: false
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Fail if systemd-inhibit not found
+  ansible.builtin.fail:
+    msg: "systemd-inhibit command not found. This is required for suspend prevention. Please ensure systemd is properly installed."
+  when: systemd_inhibit_check.rc != 0
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Verify screen command exists
+  ansible.builtin.command: which screen
+  register: screen_check
+  changed_when: false
+  failed_when: false
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Install screen package if missing
+  ansible.builtin.apt:
+    name: screen
+    state: present
+    update_cache: yes
+  become: "{{ escalate_root }}"
+  become_user: root
+  when: screen_check.rc != 0
+  failed_when: false
+  register: screen_install_result
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Warn if screen installation failed
+  ansible.builtin.debug:
+    msg: "WARNING: Could not install screen package automatically. Please install manually: sudo apt install screen"
+  when:
+    - screen_check.rc != 0
+    - screen_install_result.failed | default(false)
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Set dotfiles root absolute path
+  ansible.builtin.set_fact:
+    dotfiles_root: "{{ playbook_dir | regex_replace('/ansible$', '') }}"
+
+- name: Define script path
+  ansible.builtin.set_fact:
+    mc_server_script: "{{ dotfiles_root }}/scripts/zsh_scripts/start_minecraft_server.zsh"
+
+- name: Verify start_minecraft_server.zsh script exists
+  ansible.builtin.stat:
+    path: "{{ mc_server_script }}"
+  register: mc_script_stat
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Fail if script not found
+  ansible.builtin.fail:
+    msg: "Minecraft server script not found at {{ mc_server_script }}"
+  when: not mc_script_stat.stat.exists
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Ensure script is executable (try without sudo first)
+  ansible.builtin.file:
+    path: "{{ mc_server_script }}"
+    mode: "0755"
+  when: mc_script_stat.stat.exists
+  failed_when: false
+  register: script_chmod_result
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Ensure script is executable (with sudo if previous attempt failed)
+  ansible.builtin.file:
+    path: "{{ mc_server_script }}"
+    mode: "0755"
+  become: "{{ escalate_root }}"
+  become_user: root
+  when: 
+    - mc_script_stat.stat.exists
+    - script_chmod_result.failed | default(false)
+    - escalate_root | default(false)
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Test systemd-inhibit can be invoked (dry-run)
+  ansible.builtin.command: systemd-inhibit --help
+  register: systemd_inhibit_test
+  changed_when: false
+  failed_when: false
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Verify systemd-inhibit works
+  ansible.builtin.assert:
+    that:
+      - systemd_inhibit_test.rc == 0 or systemd_inhibit_test.rc == 1  # Help returns 1, but command works
+    fail_msg: "systemd-inhibit command exists but cannot be invoked"
+    success_msg: "systemd-inhibit command verified"
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Test screen command works
+  ansible.builtin.command: screen -v
+  register: screen_test
+  changed_when: false
+  failed_when: false
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Verify screen works
+  ansible.builtin.assert:
+    that:
+      - screen_test.rc == 0
+    fail_msg: "screen command exists but cannot be invoked"
+    success_msg: "screen command verified"
+  when: screen_check.rc == 0
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+
+- name: Warn if screen is not available
+  ansible.builtin.debug:
+    msg: "WARNING: screen command is not available. The Minecraft server script requires screen to function. Please install it: sudo apt install screen"
+  when: screen_check.rc != 0
+  tags: ["minecraft", "minecraft-server", "suspend-prevention"]
+

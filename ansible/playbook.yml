@@ -26,5 +26,10 @@
         when: "install_profile | default('all') in ['home','all']",
         tags: ["minecraft", "minecraft-port"],
       }
+    - {
+        role: minecraft-server-suspend-prevention,
+        when: "install_profile | default('all') in ['home','all']",
+        tags: ["minecraft", "minecraft-server", "suspend-prevention"],
+      }
     - { role: clamav, tags: ["clamav"] }
     - { role: lid-switch, tags: ["lid", "lid-switch"] }
