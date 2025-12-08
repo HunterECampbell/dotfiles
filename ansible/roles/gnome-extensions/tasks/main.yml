@@ -1,8 +1,12 @@
 ---
 # ansible/roles/gnome-extensions/tasks/main.yml
-# Purpose: Ensure required GNOME Shell extensions are present (via apt packages or future manual installs).
+# Purpose: Ensure required GNOME Shell extensions are present (via apt packages or gext CLI).
 # This role does NOT manage enabled state ordering (that is handled by gnome-settings dconf key).
 # It focuses on presence/installation so that settings enforced elsewhere apply cleanly.
+
+# ============================================================================
+# APT PACKAGE EXTENSIONS
+# ============================================================================
 
 - name: Gather candidate packaged extensions
   set_fact:
@@ -43,10 +47,11 @@
     - item.failed
   loop: "{{ _gnome_extension_pkg_results.results | default([]) }}"
 
-# Manual install placeholder (future enhancement)
-# Expected dictionary members for manual items:
-#   uuid, source=manual, manual_url, manual_version
-- name: Filter manual extensions (not yet implemented)
+# ============================================================================
+# GEXT CLI INSTALLATION (for manual extensions from extensions.gnome.org)
+# ============================================================================
+
+- name: Filter manual extensions
   set_fact:
     _gnome_manual_extensions: >-
       {{ gnome_extensions
@@ -54,13 +59,87 @@
          | selectattr('source','equalto','manual')
          | list }}
 
-- name: Assert no manual extensions (implementation pending)
-  assert:
-    that: _gnome_manual_extensions | length == 0
-    fail_msg: "Manual extensions declared but manual installation logic not yet implemented."
-    success_msg: "No manual extensions declared."
+- name: Check if python3-pip is installed
+  command: which pip3
+  register: _pip3_check
+  changed_when: false
+  failed_when: false
+  become: no
+  when: _gnome_manual_extensions | length > 0
 
-# Verification: ensure each declared extension directory exists in either user or system path
+- name: Install python3-pip if missing
+  apt:
+    name: python3-pip
+    state: present
+  become: yes
+  when:
+    - _gnome_manual_extensions | length > 0
+    - _pip3_check is defined
+    - _pip3_check.rc != 0
+
+- name: Check if gext command is available
+  command: which gext
+  register: _gext_check
+  changed_when: false
+  failed_when: false
+  become: no
+  when: _gnome_manual_extensions | length > 0
+
+- name: Install gnome-extensions-cli via pip
+  pip:
+    name: gnome-extensions-cli
+    state: present
+    extra_args: --user
+  become: no
+  when:
+    - _gnome_manual_extensions | length > 0
+    - _gext_check is defined
+    - _gext_check.rc != 0
+
+- name: Update PATH for gext (ensure ~/.local/bin is available)
+  set_fact:
+    _gext_path: "{{ ansible_user_dir }}/.local/bin/gext"
+  when: _gnome_manual_extensions | length > 0
+
+- name: Check if manual extensions are already installed
+  stat:
+    path: "{{ ansible_user_dir }}/.local/share/gnome-shell/extensions/{{ item.uuid }}"
+  loop: "{{ _gnome_manual_extensions }}"
+  register: _manual_ext_stats
+  become: no
+  when: _gnome_manual_extensions | length > 0
+
+- name: Install manual extensions using gext
+  command: "{{ ansible_user_dir }}/.local/bin/gext install {{ item.item.uuid }}"
+  loop: "{{ _manual_ext_stats.results | default([]) }}"
+  when:
+    - _manual_ext_stats is defined
+    - not item.stat.exists
+  become: no
+  register: _installed_extensions
+  ignore_errors: yes
+
+- name: Report installed extensions
+  debug:
+    msg: "Installed extension: {{ item.item.item.uuid }}"
+  loop: "{{ _installed_extensions.results | default([]) }}"
+  when:
+    - _installed_extensions is defined
+    - item.changed is defined
+    - item.changed
+
+- name: Restart GNOME Shell to recognize new extensions
+  command: busctl --user call org.gnome.Shell /org/gnome/Shell org.gnome.Shell Eval s 'Meta.restart("Restarting GNOME Shell...")'
+  when:
+    - _installed_extensions is defined
+    - _installed_extensions.results | selectattr('changed','defined') | selectattr('changed') | list | length > 0
+  become: no
+  ignore_errors: yes
+
+# ============================================================================
+# VERIFICATION
+# ============================================================================
+
 - name: Build list of declared extension UUIDs
   set_fact:
     _declared_extension_uuids: "{{ gnome_extensions | map(attribute='uuid') | list }}"
@@ -70,6 +149,7 @@
     path: "{{ ansible_user_dir }}/.local/share/gnome-shell/extensions/{{ item }}"
   loop: "{{ _declared_extension_uuids }}"
   register: _user_ext_stats
+  become: no
 
 - name: Stat extension directories (system)
   stat:

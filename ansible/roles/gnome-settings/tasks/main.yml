@@ -12,7 +12,7 @@
     # Shell and favorites
     - {
         key: "/org/gnome/shell/enabled-extensions",
-        value: "['ding@rastersoft.com', 'pop-cosmic@system76.com', 'pop-shell@system76.com', 'system76-power@system76.com', 'ubuntu-appindicators@ubuntu.com', 'cosmic-dock@system76.com', 'cosmic-workspaces@system76.com', 'popx11gestures@system76.com', 'dash-to-panel@jderose9.github.com', 'sound-output-device-chooser@kgshank.net', 'lockkeys@vaina.lt', 'drive-menu@gnome-shell-extensions.gcampax.github.com', 'color-picker@tuberry']",
+        value: "['dash-to-panel@jderose9.github.com', 'sound-output-device-chooser@kgshank.net', 'lockkeys@vaina.lt', 'color-picker@tuberry', 'printers@linux-man.org', 'clipboard-indicator@tudmotu.com', 'Vitals@CoreCoding.com']",
       }
     - {
         key: "/org/gnome/shell/favorite-apps",
