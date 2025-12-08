@@ -1,5 +1,3 @@
 FEATURES:
-- Update minecraft server to be what it was before
-- Replace VSCode with Cursor
 
 BUGS:

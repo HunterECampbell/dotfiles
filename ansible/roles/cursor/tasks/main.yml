@@ -1,0 +1,39 @@
+---
+# Cursor installation via .deb package
+# Download page: https://cursor.com/download
+
+- name: Create temporary directory for Cursor download
+  ansible.builtin.tempfile:
+    state: directory
+    suffix: cursor
+  register: cursor_temp_dir
+
+- name: Download Cursor .deb package
+  ansible.builtin.get_url:
+    url: https://api2.cursor.sh/updates/download/golden/linux-x64-deb/cursor/2.1
+    dest: "{{ cursor_temp_dir.path }}/cursor.deb"
+    mode: "0644"
+  register: cursor_download
+
+- name: Install Cursor .deb package
+  ansible.builtin.apt:
+    deb: "{{ cursor_temp_dir.path }}/cursor.deb"
+    state: present
+  become: yes
+  when: cursor_download is succeeded
+
+- name: Clean up temporary directory
+  ansible.builtin.file:
+    path: "{{ cursor_temp_dir.path }}"
+    state: absent
+
+- name: Verify Cursor installation
+  ansible.builtin.command: which cursor
+  register: cursor_install_check
+  changed_when: false
+  failed_when: false
+
+- name: Display Cursor installation status
+  ansible.builtin.debug:
+    msg: "Cursor installed successfully"
+  when: cursor_install_check.rc == 0

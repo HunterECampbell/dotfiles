@@ -7,6 +7,7 @@
     ansible_user_dir: "{{ lookup('env','HOME') }}"
   roles:
     - { role: apt-packages, tags: ["apt", "apt-packages"] }
+    - { role: cursor, tags: ["cursor"] }
     - { role: chezmoi-setup, tags: ["chezmoi", "dotfiles"] }
     - { role: zsh, tags: ["zsh", "ohmyzsh"] }
     - { role: zellij, tags: ["zellij"] }
