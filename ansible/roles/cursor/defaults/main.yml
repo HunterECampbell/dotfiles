@@ -1,0 +1,16 @@
+# Cursor installation configuration
+# Download page: https://cursor.com/download
+
+# Base API URL for Cursor downloads
+cursor_api_base: "https://api2.cursor.sh/updates/download/golden"
+
+# Platform identifier
+cursor_platform: "linux-x64-deb"
+
+# Product name
+cursor_product: "cursor"
+
+# Fallback version if "latest" endpoint doesn't work
+# Update this when new major versions are released
+cursor_fallback_version: "2.1"
+

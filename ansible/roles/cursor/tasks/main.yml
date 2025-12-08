@@ -1,6 +1,9 @@
 ---
 # Cursor installation via .deb package
 # Download page: https://cursor.com/download
+#
+# This role attempts to download from a "latest" endpoint first,
+# falling back to a versioned URL if that fails.
 
 - name: Create temporary directory for Cursor download
   ansible.builtin.tempfile:
@@ -8,19 +11,48 @@
     suffix: cursor
   register: cursor_temp_dir
 
-- name: Download Cursor .deb package
+- name: Build Cursor download URLs
+  ansible.builtin.set_fact:
+    cursor_latest_url: "{{ cursor_api_base }}/{{ cursor_platform }}/{{ cursor_product }}/latest"
+    cursor_fallback_url: "{{ cursor_api_base }}/{{ cursor_platform }}/{{ cursor_product }}/{{ cursor_fallback_version }}"
+
+- name: Try downloading Cursor from latest endpoint
   ansible.builtin.get_url:
-    url: https://api2.cursor.sh/updates/download/golden/linux-x64-deb/cursor/2.1
+    url: "{{ cursor_latest_url }}"
     dest: "{{ cursor_temp_dir.path }}/cursor.deb"
     mode: "0644"
-  register: cursor_download
+  register: cursor_latest_download
+  failed_when: false
+
+- name: Download Cursor from fallback URL if latest failed
+  ansible.builtin.get_url:
+    url: "{{ cursor_fallback_url }}"
+    dest: "{{ cursor_temp_dir.path }}/cursor.deb"
+    mode: "0644"
+  register: cursor_fallback_download
+  when: cursor_latest_download.failed | default(false) or cursor_latest_download.status_code | default(200) != 200
+
+- name: Determine download result
+  ansible.builtin.set_fact:
+    cursor_download_success: >-
+      {{ (cursor_latest_download.status_code | default(0) == 200) or
+         (cursor_fallback_download.status_code | default(0) == 200) }}
+
+- name: Fail if both download attempts failed
+  ansible.builtin.fail:
+    msg: >-
+      Failed to download Cursor. Tried:
+      - Latest: {{ cursor_latest_url }}
+      - Fallback: {{ cursor_fallback_url }}
+      Please check if URLs are still valid at https://cursor.com/download
+  when: not cursor_download_success
 
 - name: Install Cursor .deb package
   ansible.builtin.apt:
     deb: "{{ cursor_temp_dir.path }}/cursor.deb"
     state: present
   become: yes
-  when: cursor_download is succeeded
+  when: cursor_download_success
 
 - name: Clean up temporary directory
   ansible.builtin.file:
@@ -35,5 +67,7 @@
 
 - name: Display Cursor installation status
   ansible.builtin.debug:
-    msg: "Cursor installed successfully"
+    msg: >-
+      Cursor installed successfully
+      (downloaded from {{ 'latest endpoint' if cursor_latest_download.status_code | default(0) == 200 else 'fallback URL v' + cursor_fallback_version }})
   when: cursor_install_check.rc == 0
