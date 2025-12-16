@@ -191,10 +191,7 @@ alias dlog='f() { docker logs -f $1 };f' # $1 is the container name
 ## NPM Specific Aliases
 alias i='npm i'
 alias u='npm uninstall'
-alias rb='npm run build'
 alias rd='npm run dev'
-alias lint='npm run lint'
-alias lint:check='npm run lint:check'
 
 
 ## PNPM Specific Aliases
@@ -223,6 +220,10 @@ alias prtsu='pnpm -F @vac/storage test:watch'
 # alias rtwu='npm run test:watch -w @vac/workflow'
 alias rb='pnpm run build'
 alias rbs='pnpm -F @vasion/storage build'
+alias rl='pnpm run lint:check'
+alias rlf='pnpm run lint --fix'
+alias rls='pnpm -F @vasion/storage lint:check'
+alias rlsf='pnpm -F @vasion/storage lint --fix'
 alias rs='npm run storybook'
 alias prdp='pnpm run:prod'
 alias fixfe='pnpm --filter @vasion/root dev'
