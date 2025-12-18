@@ -50,7 +50,7 @@ function start_minecraft_server() {
 
     # Start the server
     echo "Found and executing $script_to_run..."
-    cd "$server_dir" && "./$script_to_run"
+    "$server_dir/$script_to_run"
 }
 
 # Optional: Create a shorter alias for convenience
