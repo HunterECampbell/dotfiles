@@ -8,6 +8,8 @@ flatpak_home:
   - com.valvesoftware.Steam
   - org.prismlauncher.PrismLauncher
   - org.vinegarhq.Sober
+  - com.obsproject.Studio
+  - org.kde.kdenlive
 
 flatpak_work:
   - us.zoom.Zoom
