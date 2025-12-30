@@ -1,5 +1,5 @@
 ---
-# Generated GNOME keybindings snapshot (regenerated 2025-11-12T17:05:42-07:00).
+# Generated GNOME keybindings snapshot (regenerated 2025-12-30T15:19:50-07:00).
 # Regenerate with: scripts/export_gnome_keybindings.sh
 # This list is applied by the gnome-settings role.
 # 
@@ -16,7 +16,7 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/logout", value: "['<Super>Escape']" }
   - { key: "/org/gnome/desktop/wm/keybindings/close", value: "['<Super>x']" }
   - { key: "/org/gnome/desktop/wm/keybindings/switch-applications", value: "['<Alt>Tab']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings", value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings", value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding", value: "'<Super>s'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command", value: "'steam'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name", value: "'Open Steam'" }
@@ -33,8 +33,8 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command", value: "'flatpak run com.google.Chrome --profile-directory=\"Default\"'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name", value: "'Open Chrome'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/binding", value: "'<Super>g'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/command", value: "'flatpak run com.google.Chrome https://gemini.google.com/ --profile-directory=\"Default\"'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/name", value: "'Open Gemini'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/command", value: "'flatpak run com.google.Chrome https://claude.ai/new --profile-directory=\"Default\"'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/name", value: "'Open AI'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/binding", value: "'<Super>y'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/command", value: "'flatpak run com.google.Chrome https://youtube.com/ --profile-directory=\"Default\"'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/name", value: "'Open YouTube'" }
@@ -44,6 +44,9 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/binding", value: "'<Super>bracketright'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/command", value: "'simplescreenrecorder'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name", value: "'Record Screen'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/binding", value: "'<Shift>F8'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/command", value: "'/home/hcnureth/Development/repos/dotfiles/scripts/autoshifter.sh'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/name", value: "'Start Autoshifter'" }
   - { key: "/org/gnome/desktop/wm/keybindings/activate-window-menu", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/always-on-top", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/begin-move", value: "['']" }

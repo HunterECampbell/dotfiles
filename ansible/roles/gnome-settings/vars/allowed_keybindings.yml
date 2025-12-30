@@ -89,7 +89,7 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys",
       key: "custom-keybindings",
-      value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/']",
+      value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/']",
     }
 
   # Custom 0: Open Steam (Super + S)
@@ -177,7 +177,7 @@ allowed_keybindings:
       value: "'Open Chrome'",
     }
 
-  # Custom 5: Open Gemini (Super + G)
+  # Custom 5: Open AI (Super + G)
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom5",
       key: "binding",
@@ -186,12 +186,12 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom5",
       key: "command",
-      value: '''flatpak run com.google.Chrome https://gemini.google.com/ --profile-directory="Default"''',
+      value: '''flatpak run com.google.Chrome https://claude.ai/new --profile-directory="Default"''',
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom5",
       key: "name",
-      value: "'Open Gemini'",
+      value: "'Open AI'",
     }
 
   # Custom 6: Open YouTube (Super + Y)
@@ -243,4 +243,21 @@ allowed_keybindings:
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom8",
       key: "name",
       value: "'Record Screen'",
+    }
+
+  # Custom 9: Start Autoshifter (Shift + F8) -> Turn off with the mouse back button on the side
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom9",
+      key: "binding",
+      value: "'<Shift>F8'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom9",
+      key: "command",
+      value: "'/home/hcnureth/Development/repos/dotfiles/scripts/autoshifter.sh'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom9",
+      key: "name",
+      value: "'Start Autoshifter'",
     }

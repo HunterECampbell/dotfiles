@@ -107,15 +107,16 @@ The following keybindings are currently allowed (as of your configuration):
 
 ### Custom Shortcuts
 
+- **Open AI**: `Super + G`
 - **Open Steam**: `Super + S`
 - **Open Discord**: `Super + D`
 - **Open Notes**: `Super + N`
 - **Open Work**: `Super + W`
 - **Open Chrome**: `Super + B`
-- **Open Gemini**: `Super + G`
 - **Open YouTube**: `Super + Y`
 - **Open Phone**: `Super + P`
 - **Record Screen**: `Super + ]`
+- **Start Autoshifter**: `Shift + F8`
 
 ## How It Works
 
