@@ -1,3 +1,4 @@
 FEATURES:
+- SMB File Sharing -> https://www.reddit.com/r/pop_os/comments/sawoxu/file_sharing_with_smb_in_pop_os/
 
 BUGS:
