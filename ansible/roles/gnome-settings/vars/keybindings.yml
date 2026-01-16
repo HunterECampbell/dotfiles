@@ -1,5 +1,5 @@
 ---
-# Generated GNOME keybindings snapshot (regenerated 2025-12-30T15:19:50-07:00).
+# Generated GNOME keybindings snapshot (regenerated 2026-01-16T13:20:26-07:00).
 # Regenerate with: scripts/export_gnome_keybindings.sh
 # This list is applied by the gnome-settings role.
 # 
@@ -14,9 +14,10 @@ gnome_keybindings:
   - { key: "/org/gnome/shell/keybindings/show-screenshot-ui", value: "['Print']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/screensaver", value: "['<Super>l']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/logout", value: "['<Super>Escape']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/control-center", value: "['<Super>slash']" }
   - { key: "/org/gnome/desktop/wm/keybindings/close", value: "['<Super>x']" }
   - { key: "/org/gnome/desktop/wm/keybindings/switch-applications", value: "['<Alt>Tab']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings", value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/']" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings", value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding", value: "'<Super>s'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command", value: "'steam'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name", value: "'Open Steam'" }
@@ -47,6 +48,12 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/binding", value: "'<Shift>F8'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/command", value: "'/home/hcnureth/Development/repos/dotfiles/scripts/autoshifter.sh'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/name", value: "'Start Autoshifter'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/binding", value: "'<Super>o'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/command", value: "'flatpak run com.obsproject.Studio'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/name", value: "'Open OBS Studio'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/binding", value: "'<Super>k'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/command", value: "'flatpak run org.kde.kdenlive'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/name", value: "'Open Kdenlive'" }
   - { key: "/org/gnome/desktop/wm/keybindings/activate-window-menu", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/always-on-top", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/begin-move", value: "['']" }
@@ -133,7 +140,6 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/battery-status", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/battery-status-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/calculator-static", value: "['']" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/control-center", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/control-center-static", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/decrease-text-size", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/eject", value: "['']" }

@@ -63,6 +63,13 @@ allowed_keybindings:
       value: "['<Super>Escape']",
     }
 
+  # Open Settings (Super + /)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys",
+      key: "control-center",
+      value: "['<Super>slash']",
+    }
+
   # ============================================================================
   # WINDOWS (org.gnome.desktop.wm.keybindings)
   # ============================================================================
@@ -89,7 +96,7 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys",
       key: "custom-keybindings",
-      value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/']",
+      value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/']",
     }
 
   # Custom 0: Open Steam (Super + S)
@@ -260,4 +267,38 @@ allowed_keybindings:
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom9",
       key: "name",
       value: "'Start Autoshifter'",
+    }
+
+  # Custom 10: Open OBS Studio (Super + O)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom10",
+      key: "binding",
+      value: "'<Super>o'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom10",
+      key: "command",
+      value: "'flatpak run com.obsproject.Studio'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom10",
+      key: "name",
+      value: "'Open OBS Studio'",
+    }
+
+  # Custom 11: Open Kdenlive (Super + K)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom11",
+      key: "binding",
+      value: "'<Super>k'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom11",
+      key: "command",
+      value: "'flatpak run org.kde.kdenlive'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom11",
+      key: "name",
+      value: "'Open Kdenlive'",
     }
