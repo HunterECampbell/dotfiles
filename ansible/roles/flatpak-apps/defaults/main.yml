@@ -10,6 +10,7 @@ flatpak_home:
   - org.vinegarhq.Sober
   - com.obsproject.Studio
   - org.kde.kdenlive
+  - org.inkscape.Inkscape
 
 flatpak_work:
   - us.zoom.Zoom
