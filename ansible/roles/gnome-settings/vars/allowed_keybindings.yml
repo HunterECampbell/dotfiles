@@ -303,11 +303,11 @@ allowed_keybindings:
       value: "'Open Kdenlive'",
     }
 
-  # Custom 12: Open Inkscape (Super + I)
+  # Custom 12: Open Inkscape (Super + .)
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom12",
       key: "binding",
-      value: "'<Super>i'",
+      value: "'<Super>period'",
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom12",

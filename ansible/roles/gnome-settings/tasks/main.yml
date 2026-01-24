@@ -158,6 +158,19 @@
       }
   become: no
 
+- name: Cleanup orphaned custom keybindings
+  ansible.builtin.script:
+    cmd: "{{ playbook_dir }}/../scripts/cleanup_orphaned_keybindings.sh"
+  register: cleanup_result
+  changed_when: "'Cleaned up' in cleanup_result.stdout"
+  become: no
+
+- name: Show cleanup results
+  ansible.builtin.debug:
+    var: cleanup_result.stdout_lines
+  when: cleanup_result.stdout_lines | length > 2
+  become: no
+
 - name: Load GNOME keybindings snapshot vars
   ansible.builtin.include_vars:
     file: "{{ role_path }}/vars/keybindings.yml"
