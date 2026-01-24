@@ -13,6 +13,7 @@ mkdir -p "$BACKUP_DIR/Game Recordings"
 
 # Copy Shared items
 cp -r "$HOME/Shared/Thumbnails" "$BACKUP_DIR/Shared/"
+cp -r "$HOME/Shared/Video Editing Helpers" "$BACKUP_DIR/Shared/"
 for f in "$HOME/Shared/"*; do
     if [[ -f "$f" ]] && file --mime-type -b "$f" | grep -q "^text/"; then
         cp "$f" "$BACKUP_DIR/Shared/"
