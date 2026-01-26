@@ -10,7 +10,7 @@ rm -rf "$BACKUP_DIR"
 mkdir -p "$BACKUP_DIR/Shared"
 mkdir -p "$BACKUP_DIR/Minecraft Servers"
 mkdir -p "$BACKUP_DIR/Game Recordings"
-mkdir -p "$BACKUP_DIR/Music"
+mkdir -p "$BACKUP_DIR/Game Recordings/Music"
 
 # Copy Shared items
 cp -r "$HOME/Shared/Thumbnails" "$BACKUP_DIR/Shared/"
@@ -33,4 +33,4 @@ for f in "$HOME/Desktop/Game Recordings/"*; do
 done
 
 # Copy Music items
-cp -r "$HOME/Music/"* "$BACKUP_DIR/Music/"
+cp -r "$HOME/Game Recordings/Music/"* "$BACKUP_DIR/Game Recordings/Music/"
