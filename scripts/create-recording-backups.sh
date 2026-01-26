@@ -10,7 +10,6 @@ rm -rf "$BACKUP_DIR"
 mkdir -p "$BACKUP_DIR/Shared"
 mkdir -p "$BACKUP_DIR/Minecraft Servers"
 mkdir -p "$BACKUP_DIR/Game Recordings"
-mkdir -p "$BACKUP_DIR/Game Recordings/Music"
 
 # Copy Shared items
 cp -r "$HOME/Shared/Thumbnails" "$BACKUP_DIR/Shared/"
