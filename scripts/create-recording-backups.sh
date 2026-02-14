@@ -22,8 +22,38 @@ for f in "$HOME/Shared/"*; do
     fi
 done
 
-# Copy Minecraft server
-cp -r "$HOME/Minecraft Servers/gtnh" "$BACKUP_DIR/Minecraft Servers/"
+# Copy Minecraft server (selective backup - only essential files for restoration)
+GTNH_DIR="$HOME/Minecraft Servers/gtnh"
+GTNH_BACKUP="$BACKUP_DIR/Minecraft Servers/gtnh"
+
+# Create Minecraft server backup directory structure
+mkdir -p "$GTNH_BACKUP"
+
+# Copy World directory - Contains all world chunks, player data, quests, and mod-specific world data
+# This includes: region/ (world chunks), playerdata/ (inventory/character), stats/, betterquesting/ (quests),
+# level.dat (world metadata), all DIM* directories (dimensions), and mod data directories
+cp -r "$GTNH_DIR/World" "$GTNH_BACKUP/"
+
+# Copy JourneyMap data - Contains map data for all explored areas
+cp -r "$GTNH_DIR/journeymap" "$GTNH_BACKUP/"
+
+# Copy server configuration files - Essential for server settings and player management
+cp "$GTNH_DIR/server.properties" "$GTNH_BACKUP/"  # Server configuration (port, difficulty, etc.)
+cp "$GTNH_DIR/ops.json" "$GTNH_BACKUP/"          # Operator/admin list
+cp "$GTNH_DIR/whitelist.json" "$GTNH_BACKUP/"    # Whitelisted players
+cp "$GTNH_DIR/usercache.json" "$GTNH_BACKUP/"    # User cache data
+cp "$GTNH_DIR/usernamecache.json" "$GTNH_BACKUP/" 2>/dev/null || true  # Username cache (may not exist)
+cp "$GTNH_DIR/banned-ips.json" "$GTNH_BACKUP/"   # Banned IP addresses
+cp "$GTNH_DIR/banned-players.json" "$GTNH_BACKUP/"  # Banned players
+
+# Copy quest configuration - Contains custom quest data and settings
+mkdir -p "$GTNH_BACKUP/config"
+cp -r "$GTNH_DIR/config/betterquesting" "$GTNH_BACKUP/config/"  # Quest configuration directory
+cp "$GTNH_DIR/config/betterquesting.cfg" "$GTNH_BACKUP/config/" 2>/dev/null || true  # Quest config file (may not exist)
+
+# Copy custom automation scripts - Essential for server functionality
+cp "$GTNH_DIR/daylight_monitor.sh" "$GTNH_BACKUP/"  # Custom script that toggles daylight cycle based on player presence
+cp "$GTNH_DIR/start.sh" "$GTNH_BACKUP/"             # Server startup script that launches the daylight monitor
 
 # Copy Game Recordings items
 cp -r "$HOME/Desktop/Game Recordings/Helpers" "$BACKUP_DIR/Game Recordings/"
