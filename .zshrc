@@ -124,6 +124,7 @@ source $ZSH/oh-my-zsh.sh
 
 # Scripts
 source ~/scripts/zsh_scripts/*
+export PATH="$HOME/scripts/zsh_scripts:$PATH"
 # This source includes:
 # start_minecraft_server.zsh
 # virus_scan.zsh
@@ -144,7 +145,7 @@ alias update-pop='sudo apt update -y && sudo apt upgrade -y'
 
 
 ## Virus Scanning Specific Aliases
-alias virus-scan='virus_scan'
+alias virus-scan='virus_scan.zsh'
 alias full-system-virus-scan="~/Development/repos/dotfiles/clamav/clamav-full-scan"
 alias quarantine-virus='f() { sudo /usr/local/bin/clamscan --move=/var/quarantine $1 };f'
 alias remove-virus='f() { sudo /usr/local/bin/clamscan --remove $1 };f'
@@ -179,13 +180,18 @@ alias gstp='git stash pop'
 
 ## Docker Specific Aliases
 alias dcu='docker compose up -d'
+alias dcu-local='dcu --build --pull=never'
 alias dcd='docker compose down'
 alias dcdu='dcd && dcu'
-alias dps='docker ps -a' # Lists all containers
+alias dps='docker compose ps --format "table {{.Name}}\t{{.Status}}"' # Lists all containers
 alias dstart='f() { docker compose start $1 };f' # $1 is the container name to start -> Turns the container on
 alias drestart='f() { docker compose restart $1 };f' # $1 is the container name to restart -> Turns the container off and then on
+alias drestart-unhealthy='docker ps --filter "health=unhealthy" --format "{{.Names}}" | xargs -r docker compose restart'
 alias dprune='docker system prune --all --volumes'
 alias dlog='f() { docker logs -f $1 };f' # $1 is the container name
+alias mu='make up-d'
+alias md='make down'
+alias mdu='md && mu'
 
 
 ## NPM Specific Aliases
@@ -224,6 +230,8 @@ alias rl='pnpm run lint:check'
 alias rlf='pnpm run lint --fix'
 alias rls='pnpm -F @vasion/storage lint:check'
 alias rlfs='pnpm -F @vasion/storage lint --fix'
+alias rlsu='pnpm -F @vac/storage lint:check'
+alias rlfsu='pnpm -F @vac/storage lint --fix'
 alias rs='npm run storybook'
 alias prdp='pnpm run:prod'
 alias fixfe='pnpm --filter @vasion/root dev'
@@ -268,3 +276,5 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 [ -s "/home/hcnureth/.jabba/jabba.sh" ] && source "/home/hcnureth/.jabba/jabba.sh"
 export PATH="$HOME/.local/bin:$PATH"
+
+export NODE_OPTIONS="--max-old-space-size=2048"

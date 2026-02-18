@@ -1,3 +1,5 @@
+#!/usr/bin/env zsh
+
 # Function to scan files/directories for viruses with desktop notifications
 # Usage: virus_scan "/path/to/file/or/directory"
 function virus_scan() {
@@ -55,3 +57,4 @@ function virus_scan() {
         return 0
     fi
 }
+virus_scan "$@"
