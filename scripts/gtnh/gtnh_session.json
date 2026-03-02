@@ -1,0 +1,649 @@
+{
+  "metadata": {
+    "file_type": "session",
+    "exported_at": "2026-03-02T21:07:15.795247+00:00",
+    "gtnh_version": "3.7.15-GTNH",
+    "player_uuid": "e4592d69-b3d6-45fe-ad62-ca1f3b1bbb0e",
+    "player_name": "Hcnureth",
+    "exporter_version": "1.0.0"
+  },
+  "quest_progress": {
+    "summary": {
+      "total_quests": 3739,
+      "completed": 154,
+      "in_progress": 82,
+      "not_started": 3503
+    },
+    "by_quest_line": {
+      "And So, It Begins": {
+        "total": 45,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 0 - Stone Age": {
+        "total": 92,
+        "completed": 5,
+        "in_progress": 1,
+        "completed_names": [
+          "A Better Furnace!",
+          "The power of prospecting!",
+          "NEI Next Level Recipe Search",
+          "NEI Next Level Search",
+          "NEI is EVEN MORE POWERFUL NOW?"
+        ],
+        "in_progress_names": [
+          "Your First Flint Sword"
+        ]
+      },
+      "Tier 0.5 - Steam": {
+        "total": 114,
+        "completed": 2,
+        "in_progress": 1,
+        "completed_names": [
+          "Better Make that Two!",
+          "Multiblock Revolution"
+        ],
+        "in_progress_names": [
+          "Handpicking Crops is So Old School"
+        ]
+      },
+      "Tier 1 - LV": {
+        "total": 155,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 2 - MV": {
+        "total": 146,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 3 - HV": {
+        "total": 115,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 4 - EV": {
+        "total": 94,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 5 - IV": {
+        "total": 133,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 6 - LuV": {
+        "total": 83,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "How to Generate Power": {
+        "total": 166,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Fishing, Farming, Cooking": {
+        "total": 107,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "...Without Dying": {
+        "total": 112,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Multiblock Goals": {
+        "total": 150,
+        "completed": 0,
+        "in_progress": 1,
+        "completed_names": [],
+        "in_progress_names": [
+          "Powerfail Notifications"
+        ]
+      },
+      "Building Better Bases": {
+        "total": 94,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Basic Automation": {
+        "total": 35,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Working with Oil": {
+        "total": 46,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Coins, Coins, Coins": {
+        "total": 188,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Mass Processing": {
+        "total": 67,
+        "completed": 1,
+        "in_progress": 0,
+        "completed_names": [
+          "Multiblock Revolution"
+        ],
+        "in_progress_names": []
+      },
+      "Forestry and Multifarms": {
+        "total": 71,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Be(e) Breeding": {
+        "total": 169,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "How to Be(e)": {
+        "total": 81,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Bio for the Masses": {
+        "total": 49,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Novice Thaumaturgy": {
+        "total": 101,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Adept Thaumaturgy": {
+        "total": 77,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Kaaami, Haaaami, ... HA!": {
+        "total": 32,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Focus on Wand Foci & EMT": {
+        "total": 42,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Powerful Nuclear Physics": {
+        "total": 61,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Look to the Edges": {
+        "total": 92,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Paying the Highest Price": {
+        "total": 73,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Endgame Goals": {
+        "total": 19,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 7 - ZPM": {
+        "total": 67,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "SFM and Computers": {
+        "total": 53,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Flower Power": {
+        "total": 44,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Storing and Transforming EU": {
+        "total": 69,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Space Race": {
+        "total": 147,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Applied Energistics": {
+        "total": 193,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Kill All the Things": {
+        "total": 82,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Hardcore End(er) Expansion": {
+        "total": 40,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tips and Tricks": {
+        "total": 33,
+        "completed": 4,
+        "in_progress": 1,
+        "completed_names": [
+          "Lootbag Uptiering",
+          "NEI Next Level Recipe Search",
+          "NEI Next Level Search",
+          "NEI is EVEN MORE POWERFUL NOW?"
+        ],
+        "in_progress_names": [
+          "Powerfail Notifications"
+        ]
+      },
+      "Tier 8 - UV": {
+        "total": 48,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 9 - UHV": {
+        "total": 44,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 10 - UEV": {
+        "total": 44,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Getting Around...": {
+        "total": 71,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 12 - UMV": {
+        "total": 29,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Handle Logistics with Pipes": {
+        "total": 30,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      },
+      "Tier 11 - UIV": {
+        "total": 39,
+        "completed": 0,
+        "in_progress": 0,
+        "completed_names": [],
+        "in_progress_names": []
+      }
+    },
+    "completed_quest_ids": [
+      "0",
+      "472",
+      "18",
+      "37",
+      "1738",
+      "74",
+      "93",
+      "1623",
+      "15",
+      "34",
+      "33",
+      "52",
+      "1508",
+      "71",
+      "2737",
+      "1866",
+      "12",
+      "11",
+      "30",
+      "49",
+      "1505",
+      "68",
+      "67",
+      "634",
+      "444",
+      "2145",
+      "481",
+      "1937",
+      "8",
+      "27",
+      "46",
+      "1501",
+      "-5376193048649833794:7263787550099521813",
+      "1859",
+      "705",
+      "2161",
+      "478",
+      "2406",
+      "5",
+      "24",
+      "496",
+      "742",
+      "42",
+      "835",
+      "2",
+      "474",
+      "493",
+      "20",
+      "1495",
+      "58",
+      "76",
+      "95",
+      "586",
+      "1834",
+      "698",
+      "17",
+      "36",
+      "54",
+      "73",
+      "92",
+      "695",
+      "1205",
+      "32",
+      "51",
+      "70",
+      "561",
+      "88",
+      "-5816092802750880657:9012220195932555052",
+      "1790",
+      "1146",
+      "-7957069611279940583:7836976352036995675",
+      "29",
+      "48",
+      "539",
+      "558",
+      "66",
+      "576",
+      "7",
+      "26",
+      "744",
+      "-5617553811869142035:-8762838053115180989",
+      "536",
+      "44",
+      "1500",
+      "-8810216742118145435:-7990133041073338491",
+      "3031",
+      "666",
+      "4",
+      "23",
+      "495",
+      "741",
+      "41",
+      "1497",
+      "60",
+      "97",
+      "834",
+      "2402",
+      "1",
+      "19",
+      "38",
+      "75",
+      "868",
+      "697",
+      "716",
+      "489",
+      "35",
+      "-4916213553338882423:-1997546526317785722",
+      "53",
+      "72",
+      "-5030660532125308103:-6458462290926483945",
+      "1092",
+      "865",
+      "1129",
+      "3096",
+      "3095",
+      "694",
+      "486",
+      "1204",
+      "13",
+      "31",
+      "50",
+      "1506",
+      "69",
+      "560",
+      "825",
+      "-8198041923981670459:-8913988738481632378",
+      "1107",
+      "1126",
+      "3092",
+      "-5649038508759348891:-6316535045498188988",
+      "955",
+      "9",
+      "28",
+      "1503",
+      "65",
+      "84",
+      "1841",
+      "442",
+      "914",
+      "479",
+      "6",
+      "743",
+      "1008",
+      "43",
+      "535",
+      "1157",
+      "948",
+      "3",
+      "494",
+      "21",
+      "40",
+      "1496",
+      "59",
+      "871"
+    ],
+    "in_progress_quest_ids": [
+      "718",
+      "491",
+      "2721",
+      "1832",
+      "867",
+      "1132",
+      "677",
+      "696",
+      "450",
+      "469",
+      "1735",
+      "562",
+      "864",
+      "656",
+      "484",
+      "596",
+      "-4815840969987309766:5764157890012922125",
+      "745",
+      "1085",
+      "686",
+      "440",
+      "-9128088765873917748:-8650347315666466864",
+      "947",
+      "985",
+      "2441",
+      "2440",
+      "471",
+      "2985",
+      "1112",
+      "1849",
+      "3097",
+      "487",
+      "14",
+      "826",
+      "863",
+      "2073",
+      "446",
+      "483",
+      "1504",
+      "577",
+      "632",
+      "1124",
+      "480",
+      "912",
+      "685",
+      "2160",
+      "2443",
+      "645",
+      "2346",
+      "909",
+      "492",
+      "1475",
+      "1096",
+      "1095",
+      "1151",
+      "470",
+      "1926",
+      "2075",
+      "1130",
+      "485",
+      "-6573279534847578607:7755046755390540638",
+      "1789",
+      "597",
+      "1108",
+      "862",
+      "691",
+      "1086",
+      "2333",
+      "650",
+      "687",
+      "498",
+      "497",
+      "2445",
+      "1536",
+      "911",
+      "665",
+      "684",
+      "2404",
+      "77",
+      "1779",
+      "625",
+      "945"
+    ]
+  },
+  "player_stats": {
+    "play_time_hours": 72.05,
+    "distance_walked_km": 208.88,
+    "deaths": 4,
+    "mobs_killed": 69,
+    "items_crafted": 41116,
+    "blocks_mined": 70717,
+    "notable_crafts": {
+      "gregtech:gt.metaitem.01": 16019,
+      "265": 4701,
+      "dreamcraft:item.CokeOvenBrick": 2499,
+      "dreamcraft:item.UnfiredCokeOvenBrick": 2499,
+      "5": 2288,
+      "gregtech:gt.blockmachines": 1715,
+      "etfuturum:deepslate_bricks": 1140,
+      "etfuturum:polished_deepslate": 1140,
+      "263": 1018,
+      "gregtech:gt.metaitem.02": 726,
+      "1": 715,
+      "Railcraft:machine.alpha": 650,
+      "280": 634,
+      "BiomesOPlenty:planks": 558,
+      "50": 455,
+      "351": 399,
+      "Natura:barleyFood": 350,
+      "ProjRed|Transportation:projectred.transportation.pipe": 256,
+      "TConstruct:GlassPane": 256,
+      "TConstruct:CraftedSoil": 248
+    }
+  },
+  "thaumcraft": {
+    "researches_completed": [],
+    "aspects_discovered": {},
+    "scanned_entities": [],
+    "scanned_objects": [],
+    "scanned_phenomena": []
+  },
+  "baubles": {
+    "equipped": []
+  },
+  "player_state": null,
+  "world_state": null,
+  "journeymap_waypoints": []
+}

@@ -32,5 +32,10 @@
         when: "install_profile | default('all') in ['home','all']",
         tags: ["minecraft", "minecraft-server", "suspend-prevention"],
       }
+    - {
+        role: gtnh-python-deps,
+        when: "install_profile | default('all') in ['home','all']",
+        tags: ["minecraft", "gtnh", "gtnh-python-deps"],
+      }
     - { role: clamav, tags: ["clamav"] }
     - { role: lid-switch, tags: ["lid", "lid-switch"] }

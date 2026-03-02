@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=GTNH Export (Session)
+Comment=Export GTNH session JSON only (fast, for frequent updates)
+Exec=$HOME/Development/repos/dotfiles/scripts/gtnh/gtnh-export.sh --session-only
+Path=$HOME/Development/repos/dotfiles/scripts/gtnh
+Terminal=true
+Categories=Utility;

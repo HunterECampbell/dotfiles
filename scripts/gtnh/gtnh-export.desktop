@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=GTNH Export (Full)
+Comment=Export GTNH static and session JSON to Desktop
+Exec=$HOME/Development/repos/dotfiles/scripts/gtnh/gtnh-export.sh
+Path=$HOME/Development/repos/dotfiles/scripts/gtnh
+Terminal=true
+Categories=Utility;

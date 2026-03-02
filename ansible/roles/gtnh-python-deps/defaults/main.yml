@@ -1,0 +1,5 @@
+---
+# Python packages required for GTNH scripts (gtnh-export.sh).
+# Installed with --user so they're available for the user's python3.
+gtnh_pip_packages:
+  - nbtlib
