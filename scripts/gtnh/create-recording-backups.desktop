@@ -2,7 +2,7 @@
 Type=Application
 Name=GTNH Recording Backups
 Comment=Backup Shared, GTNH server, and Game Recordings to Desktop
-Exec=$HOME/Development/repos/dotfiles/scripts/gtnh/create-recording-backups.sh
-Path=$HOME/Development/repos/dotfiles/scripts/gtnh
+Exec=/home/hcnureth/Development/repos/dotfiles/scripts/gtnh/create-recording-backups.sh
+Path=/home/hcnureth/Development/repos/dotfiles/scripts/gtnh
 Terminal=true
 Categories=Utility;

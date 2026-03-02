@@ -129,7 +129,7 @@ def _parse_quest_lines(quest_db: dict) -> dict:
             if isinstance(q, dict):
                 low = q.get("questIDLow:4", 0)
                 high = q.get("questIDHigh:4", 0)
-                quest_ids.append(low if high == 0 else f"{low}:{high}")
+                quest_ids.append(_quest_id_key(low, high))
         result[name] = {"quest_ids": quest_ids, "total_quests": len(quest_ids)}
     return result
 
