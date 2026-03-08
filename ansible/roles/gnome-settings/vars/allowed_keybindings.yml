@@ -218,7 +218,7 @@ allowed_keybindings:
       value: "'Open YouTube'",
     }
 
-  # Custom 7: Open Phone (Super + P)
+  # Custom 7: Open Prism (Super + P)
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom7",
       key: "binding",
@@ -227,12 +227,12 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom7",
       key: "command",
-      value: '''flatpak run com.google.Chrome https://messages.google.com/ --profile-directory="Default"''',
+      value: "'flatpak run org.prismlauncher.PrismLauncher'",
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom7",
       key: "name",
-      value: "'Open Phone'",
+      value: "'Open Prism'",
     }
 
   # Custom 8: Record Screen (Super + ])

@@ -114,7 +114,7 @@ The following keybindings are currently allowed (as of your configuration):
 - **Open Work**: `Super + W`
 - **Open Chrome**: `Super + B`
 - **Open YouTube**: `Super + Y`
-- **Open Phone**: `Super + P`
+- **Open Prism**: `Super + P`
 - **Record Screen**: `Super + ]`
 - **Start Autoshifter**: `Shift + F8`
 

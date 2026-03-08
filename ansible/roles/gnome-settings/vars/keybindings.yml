@@ -1,5 +1,5 @@
 ---
-# Generated GNOME keybindings snapshot (regenerated 2026-01-23T20:44:09-07:00).
+# Generated GNOME keybindings snapshot (regenerated 2026-03-08T11:59:23-06:00).
 # Regenerate with: scripts/export_gnome_keybindings.sh
 # This list is applied by the gnome-settings role.
 # 
@@ -40,8 +40,8 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/command", value: "'flatpak run com.google.Chrome https://youtube.com/ --profile-directory=\"Default\"'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/name", value: "'Open YouTube'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/binding", value: "'<Super>p'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/command", value: "'flatpak run com.google.Chrome https://messages.google.com/ --profile-directory=\"Default\"'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/name", value: "'Open Phone'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/command", value: "'flatpak run org.prismlauncher.PrismLauncher'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/name", value: "'Open Prism'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/binding", value: "'<Super>bracketright'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/command", value: "'simplescreenrecorder'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/name", value: "'Record Screen'" }
