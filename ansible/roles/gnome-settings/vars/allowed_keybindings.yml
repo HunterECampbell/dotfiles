@@ -96,7 +96,7 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys",
       key: "custom-keybindings",
-      value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom9/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom12/']",
+      value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom12/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom13/']",
     }
 
   # Custom 0: Open Steam (Super + S)
@@ -252,23 +252,6 @@ allowed_keybindings:
       value: "'Record Screen'",
     }
 
-  # Custom 9: Start Autoshifter (Shift + F8) -> Turn off with the mouse back button on the side
-  - {
-      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom9",
-      key: "binding",
-      value: "'<Shift>F8'",
-    }
-  - {
-      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom9",
-      key: "command",
-      value: "'/home/hcnureth/Development/repos/dotfiles/scripts/autoshifter.sh'",
-    }
-  - {
-      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom9",
-      key: "name",
-      value: "'Start Autoshifter'",
-    }
-
   # Custom 10: Open OBS Studio (Super + O)
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom10",
@@ -318,4 +301,21 @@ allowed_keybindings:
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom12",
       key: "name",
       value: "'Open Inkscape'",
+    }
+
+  # Custom 13: Open YouTube Studio (Super + Shift + Y)
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom13",
+      key: "binding",
+      value: "'<Shift><Super>y'",
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom13",
+      key: "command",
+      value: '''flatpak run com.google.Chrome https://studio.youtube.com/channel/UCLcG0zbj6cKkcrwjHGotcOg --profile-directory="Default"''',
+    }
+  - {
+      schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom13",
+      key: "name",
+      value: "'Open YouTube Studio'",
     }
