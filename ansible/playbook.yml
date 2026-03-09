@@ -23,6 +23,11 @@
     - { role: gnome-settings, tags: ["gnome", "gnome-settings"] }
     - { role: firewall, tags: ["firewall"] }
     - {
+        role: smb-file-sharing,
+        when: "install_profile | default('all') == 'home'",
+        tags: ["smb-file-sharing", "smb", "file-sharing"],
+      }
+    - {
         role: minecraft-port,
         when: "install_profile | default('all') in ['home','all']",
         tags: ["minecraft", "minecraft-port"],

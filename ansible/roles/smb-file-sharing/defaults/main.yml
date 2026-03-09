@@ -1,0 +1,3 @@
+---
+# smb-file-sharing role defaults
+samba_enable_homes_share: true

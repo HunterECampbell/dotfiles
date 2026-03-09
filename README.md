@@ -11,9 +11,10 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [GNOME Keybindings Management](#5-gnome-keybindings-management)
 1. [Google Messages Setup](#6-google-messages-setup)
 1. [NVM Setup](#7-nvm-setup)
-1. [Steam Settings](#8-steam-settings)
-1. [VPN Setup](#9-vpn-setup)
-1. [Zoom Settings](#10-zoom-settings)
+1. [SMB File Sharing](#8-smb-file-sharing)
+1. [Steam Settings](#9-steam-settings)
+1. [VPN Setup](#10-vpn-setup)
+1. [Zoom Settings](#11-zoom-settings)
 
 ## 1. Post-Installation Setup
 
@@ -29,7 +30,7 @@ chmod +x ~/Development/repos/dotfiles/scripts/bootstrap.sh
 
 `bootstrap.sh` can be run in 3 modes:
 
-1. `home` - Adds things used specifically for a home setup (Steam, Minecraft setup, etc.)
+1. `home` - Adds things used specifically for a home setup (SMB file sharing, Steam, Minecraft setup, etc.)
 1. `work` - Adds things used specifically for a work setup (Slack, Zoom, etc.)
 1. `all` - Adds things used in both a home and work setup
 
@@ -137,7 +138,20 @@ curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
 Close your terminal and re-open it. You may need to source your `.zshrc` with `s` (alias).
 
-## 8. Steam Settings
+## 8. SMB File Sharing
+
+> [!IMPORTANT]
+> SMB file sharing is configured automatically when running `bootstrap.sh` with the **Home** profile. The below are reference notes if needed.
+
+1. Your Samba password is set to match your sudo password (the one you enter when `bootstrap.sh` prompts you).
+1. **Log out and back in** (or run `newgrp sambashare`) for group membership to take effect.
+1. **Manual fallback:** If Samba authentication fails (e.g. you ran the playbook directly without `-K`), run:
+
+```
+sudo smbpasswd -a $USER
+```
+
+## 9. Steam Settings
 
 > [!IMPORTANT]
 > Steam settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.
@@ -150,14 +164,14 @@ Close your terminal and re-open it. You may need to source your `.zshrc` with `s
 1. Make sure the box that says **"Enable GPU accelerated rendering in web views"** is **checked**.
 1. Click **OK** and **restart Steam**.
 
-## 9. VPN Setup
+## 10. VPN Setup
 
 1. Go to Notion and search VPN Linux
 1. Follow the video guide
 
 Follow the steps at work to finish your VPN setup
 
-## 10. Zoom Settings
+## 11. Zoom Settings
 
 > [!IMPORTANT]
 > Zoom settings should automatically be setup when running `bootstrap.sh`. The below are setting references if needed.

@@ -1,0 +1,58 @@
+---
+# Role: smb-file-sharing
+# Purpose: Configure SMB file sharing for Pop!_OS (Home profile only).
+# - Installs samba and nautilus-share
+# - Adds user to sambashare group (right-click "Local Network Share" in Nautilus)
+# - Enables [homes] share so $HOME is accessible as \\server\username
+# - Sets Samba password from ansible_become_password (same as sudo, from bootstrap --ask-become-pass)
+
+- name: Install Samba and Nautilus share packages
+  ansible.builtin.apt:
+    name:
+      - samba
+      - nautilus-share
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Add user to sambashare group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: sambashare
+    append: true
+  become: true
+
+- name: Ensure [homes] share is configured in smb.conf
+  ansible.builtin.blockinfile:
+    path: /etc/samba/smb.conf
+    block: |
+      [homes]
+         comment = Home Directories
+         browseable = no
+         read only = no
+         create mask = 0700
+         directory mask = 0700
+         valid users = %S
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - smb-file-sharing [homes]"
+    create: true
+  when: samba_enable_homes_share | default(true)
+  notify: Restart Samba services
+  become: true
+
+- name: Ensure Samba services are enabled
+  ansible.builtin.systemd:
+    name: "{{ item }}"
+    enabled: true
+    state: started
+  loop:
+    - smbd
+    - nmbd
+  become: true
+
+- name: Set Samba password for user (uses sudo password from bootstrap --ask-become-pass)
+  ansible.builtin.command:
+    argv: ["/usr/bin/smbpasswd", "-a", "-s", "{{ ansible_user }}"]
+    stdin: "{{ ansible_become_password }}\n{{ ansible_become_password }}\n"
+  no_log: true
+  when: ansible_become_password is defined
+  become: true
