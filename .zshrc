@@ -131,6 +131,7 @@ export PATH="$HOME/scripts/zsh_scripts:$PATH"
 
 # Script Aliases
 alias mcserver='start_minecraft_server'
+alias clean-node='~/Development/repos/dotfiles/scripts/cleanup-dev-node-processes.sh'
 
 
 # Aliases
