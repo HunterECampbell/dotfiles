@@ -57,4 +57,5 @@ function virus_scan() {
         return 0
     fi
 }
-virus_scan "$@"
+# Only run when executed with args (not when sourced)
+(( $# )) && virus_scan "$@"

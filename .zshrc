@@ -123,7 +123,9 @@ source $ZSH/oh-my-zsh.sh
 
 
 # Scripts
-source ~/scripts/zsh_scripts/*
+for f in ~/scripts/zsh_scripts/*.zsh; do
+  [[ -e "$f" ]] && source "$f"
+done
 export PATH="$HOME/scripts/zsh_scripts:$PATH"
 # This source includes:
 # start_minecraft_server.zsh
@@ -146,7 +148,7 @@ alias update-pop='sudo apt update -y && sudo apt upgrade -y'
 
 
 ## Virus Scanning Specific Aliases
-alias virus-scan='virus_scan.zsh'
+alias virus-scan='virus_scan'
 alias full-system-virus-scan="~/Development/repos/dotfiles/clamav/clamav-full-scan"
 alias quarantine-virus='f() { sudo /usr/local/bin/clamscan --move=/var/quarantine $1 };f'
 alias remove-virus='f() { sudo /usr/local/bin/clamscan --remove $1 };f'
