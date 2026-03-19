@@ -15,10 +15,11 @@ This repository contains my personal configuration files (dotfiles) and setup sc
 1. [Steam Settings](#9-steam-settings)
 1. [VPN Setup](#10-vpn-setup)
 1. [Zoom Settings](#11-zoom-settings)
+1. [Firefox Developer Edition](#12-firefox-developer-edition)
 
 ## 1. Post-Installation Setup
 
-After a fresh Pop!\_OS Linux install, your entire system can be automatically configured by running a single command. The `bootstrap.sh` script serves as the sole entry point to your self-contained automation. This script will handle all necessary steps, including installing Ansible and its dependencies in a dedicated virtual environment, and then executing the main Ansible playbook to set up your applications, system settings, and dotfiles.
+After a fresh Pop!\_OS Linux install, your entire system can be automatically configured by running a single command. The `bootstrap.sh` script serves as the sole entry point to your self-contained automation. This script will handle all necessary steps, including installing Ansible and its dependencies in a dedicated virtual environment, and then executing the main Ansible playbook to set up your applications, system settings, and dotfiles. That playbook installs **Firefox Developer Edition** (official Mozilla linux64 tarball under `/opt/firefox-dev`), registers a `firefox-dev.desktop` launcher, sets it as the **default web browser** for your user, and applies GNOME favorites/keybindings that use it. **Google Chrome** remains installed (Flatpak) but is no longer the default or the target of those shortcuts.
 
 ### 1. Make `bootstrap.sh` executable
 
@@ -116,11 +117,15 @@ A full snapshot of GNOME keybindings is applied by the Ansible role `gnome-setti
   ansible-playbook ansible/playbook.yml --tags gnome-settings
   ```
 
+**Ansible spot-check:** When you only want to validate or apply **keybindings / GNOME settings** from this repo, run **that** command (`--tags gnome-settings`) and **do not** use other tags, `--check` sweeps, or the full playbook as a casual test—those runs can still change unrelated system state (Firefox install, Flatpak, firewall, etc.).
+
+On a **new** system, run **`bootstrap.sh`** (or a deliberate `ansible-playbook … --tags firefox-dev` when you mean to install/update Firefox) **before** relying on keybindings that launch `/opt/firefox-dev/firefox/firefox`, so the binary exists.
+
 ## 6. Google Messages Setup
 
 This is so you can use the phone keybind ($SUPER + P).
 
-Set up browser texting at: [Google Messages Web](https://messages.google.com/web)
+Set up browser texting at: [Google Messages Web](https://messages.google.com/web) in your **default browser** (Firefox Developer Edition after bootstrap).
 
 ## 7. NVM Setup
 
@@ -192,4 +197,40 @@ Check the following settings:
 - Meetings & webinars -> Join Experience -> Select **"Show video preview first"**
 - Meetings & webinars -> Join Experience -> Select **"Keep my camera off"**
 - Meetings & webinars -> My Video -> Select **"Show me as an active speaker when I talk"**
-- Meetings & webinars -> Controls -> Select **"Keep meeting controls visible**
+- Meetings & webinars -> Controls -> Select **"Keep meeting controls visible"**
+
+## 12. Firefox Developer Edition
+
+> [!IMPORTANT]
+> This is applied automatically when you run `bootstrap.sh` (Ansible role `firefox-dev-edition` runs **after** `apt-packages` and **before** `gnome-settings`).
+
+### What gets installed
+
+- **Binary:** `/opt/firefox-dev/firefox/firefox` (from Mozilla’s latest Developer Edition `.tar.bz2`, not a `.deb`).
+- **Launcher:** `/usr/local/share/applications/firefox-dev.desktop` (used for the GNOME dash favorite and `xdg-settings` default browser).
+- **Default browser:** `xdg-settings set default-web-browser firefox-dev.desktop` for your login user.
+- **Chrome:** Still installed via Flatpak (`com.google.Chrome`); not removed.
+
+### Firefox profiles (keybindings)
+
+Custom shortcuts and `scripts/start_work_env.sh` use **named profiles** with `-P` and `--no-remote`:
+
+| Profile    | Use                                                                 |
+| ---------- | ------------------------------------------------------------------- |
+| `Hcnureth` | Personal shortcuts (e.g. Super+B, Claude, YouTube, YouTube Studio) |
+| `Work`     | Work environment script (Super+W / `start_work_env.sh`)             |
+
+Create or rename profiles in Firefox if a new install does not match these names (`about:profiles`).
+
+### Update Firefox Dev only (optional)
+
+Use this when you **intend** to upgrade Firefox Dev—not as a substitute for testing Ansible changes (for that, use `--tags gnome-settings` only; see [§5](#5-gnome-keybindings-management)).
+
+By default the role does **not** re-download on every playbook run. To fetch and extract the **latest** tarball again:
+
+```bash
+cd ~/Development/repos/dotfiles/ansible
+ansible-playbook playbook.yml --inventory inventory.ini --tags firefox-dev --diff -e firefox_dev_update=true --ask-become-pass
+```
+
+(`sudo` is only needed for `/opt` and `/usr/local/share/applications`.)

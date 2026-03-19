@@ -167,7 +167,7 @@ allowed_keybindings:
       value: "'Open Work'",
     }
 
-  # Custom 4: Open Chrome (Super + B)
+  # Custom 4: Open Firefox Dev — personal profile (Super + B)
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom4",
       key: "binding",
@@ -176,12 +176,12 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom4",
       key: "command",
-      value: '''flatpak run com.google.Chrome --profile-directory="Default"''',
+      value: '''/opt/firefox-dev/firefox/firefox -P "Hcnureth" --no-remote''',
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom4",
       key: "name",
-      value: "'Open Chrome'",
+      value: "'Open Firefox (personal)'",
     }
 
   # Custom 5: Open AI (Super + G)
@@ -193,7 +193,7 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom5",
       key: "command",
-      value: '''flatpak run com.google.Chrome https://claude.ai/new --profile-directory="Default"''',
+      value: '''/opt/firefox-dev/firefox/firefox -P "Hcnureth" --no-remote https://claude.ai/new''',
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom5",
@@ -210,7 +210,7 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom6",
       key: "command",
-      value: '''flatpak run com.google.Chrome https://youtube.com/ --profile-directory="Default"''',
+      value: '''/opt/firefox-dev/firefox/firefox -P "Hcnureth" --no-remote https://youtube.com/''',
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom6",
@@ -312,7 +312,7 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom13",
       key: "command",
-      value: '''flatpak run com.google.Chrome https://studio.youtube.com/channel/UCLcG0zbj6cKkcrwjHGotcOg --profile-directory="Default"''',
+      value: '''/opt/firefox-dev/firefox/firefox -P "Hcnureth" --no-remote https://studio.youtube.com/channel/UCLcG0zbj6cKkcrwjHGotcOg''',
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom13",

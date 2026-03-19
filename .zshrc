@@ -238,7 +238,7 @@ alias rlfsu='pnpm -F @vac/storage lint --fix'
 alias rs='npm run storybook'
 alias prdp='pnpm run:prod'
 alias fixfe='pnpm --filter @vasion/root dev'
-alias start-stage='flatpak run com.google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"com.google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"flatpak run com.google.Chrome --disable-web-security --user-data-dir="/tmp/chrome_dev_session"'
+alias start-stage='/opt/firefox-dev/firefox/firefox -profile /tmp/firefox_dev_session --no-remote'
 
 
 ## Zellij Specific Aliases

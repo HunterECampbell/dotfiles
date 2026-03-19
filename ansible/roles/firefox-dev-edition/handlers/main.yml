@@ -1,0 +1,7 @@
+---
+- name: Firefox dev update desktop database
+  ansible.builtin.command:
+    argv:
+      - update-desktop-database
+      - /usr/local/share/applications
+  become: true

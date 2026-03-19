@@ -16,7 +16,7 @@
       }
     - {
         key: "/org/gnome/shell/favorite-apps",
-        value: "['pop-cosmic-applications.desktop', 'com.google.Chrome.desktop', 'com.discordapp.Discord.desktop', 'slack.desktop', 'cursor.desktop', 'kitty.desktop']",
+        value: "['pop-cosmic-applications.desktop', 'firefox-dev.desktop', 'com.discordapp.Discord.desktop', 'slack.desktop', 'cursor.desktop', 'kitty.desktop']",
       }
 
     # Dash to Panel (layout and visuals)
@@ -162,13 +162,16 @@
   ansible.builtin.script:
     cmd: "{{ playbook_dir }}/../scripts/cleanup_orphaned_keybindings.sh"
   register: cleanup_result
-  changed_when: "'Cleaned up' in cleanup_result.stdout"
+  changed_when: "'Cleaned up' in (cleanup_result.stdout | default(''))"
+  when: not ansible_check_mode
   become: no
 
 - name: Show cleanup results
   ansible.builtin.debug:
     var: cleanup_result.stdout_lines
-  when: cleanup_result.stdout_lines | length > 2
+  when:
+    - not ansible_check_mode
+    - cleanup_result.stdout_lines | default([]) | length > 2
   become: no
 
 - name: Load GNOME keybindings snapshot vars

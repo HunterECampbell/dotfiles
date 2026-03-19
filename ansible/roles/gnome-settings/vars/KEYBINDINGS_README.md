@@ -81,6 +81,8 @@ This is the **comprehensive** keybindings file that gets applied by Ansible. It 
 2. Regenerate: `./scripts/export_gnome_keybindings.sh`
 3. Apply: `ansible-playbook ansible/playbook.yml --tags gnome-settings`
 
+**Ansible spot-check:** Use **only** `--tags gnome-settings` when validating keybinding-related Ansible changes (see repo [README §5](../../../../README.md#5-gnome-keybindings-management)). Do not run other tags or the full playbook as a casual test.
+
 ## Current Allowed Keybindings
 
 The following keybindings are currently allowed (as of your configuration):
@@ -112,7 +114,7 @@ The following keybindings are currently allowed (as of your configuration):
 - **Open Discord**: `Super + D`
 - **Open Notes**: `Super + N`
 - **Open Work**: `Super + W`
-- **Open Chrome**: `Super + B`
+- **Open Firefox (personal)**: `Super + B`
 - **Open YouTube**: `Super + Y`
 - **Open YouTube Studio**: `Super + Shift + Y`
 - **Open Prism**: `Super + P`

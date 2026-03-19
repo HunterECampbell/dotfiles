@@ -31,13 +31,13 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/command", value: "'sh /home/hcnureth/scripts/start_work_env.sh &'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/name", value: "'Open Work'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/binding", value: "'<Super>b'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command", value: "'flatpak run com.google.Chrome --profile-directory=\"Default\"'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name", value: "'Open Chrome'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/command", value: "'/opt/firefox-dev/firefox/firefox -P \"Hcnureth\" --no-remote'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/name", value: "'Open Firefox (personal)'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/binding", value: "'<Super>g'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/command", value: "'flatpak run com.google.Chrome https://claude.ai/new --profile-directory=\"Default\"'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/command", value: "'/opt/firefox-dev/firefox/firefox -P \"Hcnureth\" --no-remote https://claude.ai/new'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/name", value: "'Open AI'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/binding", value: "'<Super>y'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/command", value: "'flatpak run com.google.Chrome https://youtube.com/ --profile-directory=\"Default\"'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/command", value: "'/opt/firefox-dev/firefox/firefox -P \"Hcnureth\" --no-remote https://youtube.com/'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/name", value: "'Open YouTube'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/binding", value: "'<Super>p'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/command", value: "'flatpak run org.prismlauncher.PrismLauncher'" }
@@ -55,7 +55,7 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom12/command", value: "'flatpak run org.inkscape.Inkscape'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom12/name", value: "'Open Inkscape'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom13/binding", value: "'<Shift><Super>y'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom13/command", value: "'flatpak run com.google.Chrome https://studio.youtube.com/channel/UCLcG0zbj6cKkcrwjHGotcOg --profile-directory=\"Default\"'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom13/command", value: "'/opt/firefox-dev/firefox/firefox -P \"Hcnureth\" --no-remote https://studio.youtube.com/channel/UCLcG0zbj6cKkcrwjHGotcOg'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom13/name", value: "'Open YouTube Studio'" }
   - { key: "/org/gnome/desktop/wm/keybindings/activate-window-menu", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/always-on-top", value: "['']" }

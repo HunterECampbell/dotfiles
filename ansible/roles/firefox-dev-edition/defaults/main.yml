@@ -1,0 +1,15 @@
+---
+# Firefox Developer Edition — official Linux64 .tar.bz2 (not .deb).
+# Set firefox_dev_update: true (extra-var or here) to re-download and extract over an existing install.
+firefox_dev_update: false
+
+firefox_dev_download_url: >-
+  https://download.mozilla.org/?product=firefox-devedition-latest-ssl&os=linux64&lang=en-US
+
+firefox_dev_install_root: /opt/firefox-dev
+
+firefox_dev_download_dest: /tmp/firefox-devedition-latest.tar.bz2
+
+firefox_dev_binary: "{{ firefox_dev_install_root }}/firefox/firefox"
+
+firefox_dev_desktop_id: firefox-dev.desktop

@@ -1,0 +1,86 @@
+---
+# Installs Mozilla Firefox Developer Edition from the official latest linux64 tarball.
+# Safe scope: writes only under firefox_dev_install_root, one .desktop under
+# /usr/local/share/applications, and runs xdg-settings for the login user.
+# Does not remove Chrome or other browsers.
+
+- name: Check whether Firefox Developer Edition binary is present
+  ansible.builtin.stat:
+    path: "{{ firefox_dev_binary }}"
+  register: firefox_dev_stat
+  become: false
+
+- name: Download Firefox Developer Edition (latest linux64)
+  ansible.builtin.get_url:
+    url: "{{ firefox_dev_download_url }}"
+    dest: "{{ firefox_dev_download_dest }}"
+    mode: "0644"
+    timeout: 120
+  become: false
+  when: (not firefox_dev_stat.stat.exists) or (firefox_dev_update | bool)
+  register: firefox_dev_get_url
+
+- name: Ensure Firefox install directory exists
+  ansible.builtin.file:
+    path: "{{ firefox_dev_install_root }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+  when: (not firefox_dev_stat.stat.exists) or (firefox_dev_update | bool)
+
+- name: Extract Firefox Developer Edition (first install)
+  ansible.builtin.unarchive:
+    src: "{{ firefox_dev_download_dest }}"
+    dest: "{{ firefox_dev_install_root }}"
+    remote_src: true
+    creates: "{{ firefox_dev_binary }}"
+  become: true
+  when: not firefox_dev_stat.stat.exists
+
+- name: Extract Firefox Developer Edition (upgrade; overwrites shipped tree)
+  ansible.builtin.unarchive:
+    src: "{{ firefox_dev_download_dest }}"
+    dest: "{{ firefox_dev_install_root }}"
+    remote_src: true
+  become: true
+  when:
+    - firefox_dev_stat.stat.exists
+    - firefox_dev_update | bool
+
+- name: Install Firefox Developer Edition desktop entry
+  ansible.builtin.copy:
+    src: firefox-dev.desktop
+    dest: "/usr/local/share/applications/{{ firefox_dev_desktop_id }}"
+    owner: root
+    group: root
+    mode: "0644"
+  become: true
+  notify: Firefox dev update desktop database
+
+- name: Flush handlers so desktop database updates before xdg-settings
+  ansible.builtin.meta: flush_handlers
+
+- name: Read current default web browser (xdg)
+  ansible.builtin.command:
+    argv:
+      - xdg-settings
+      - get
+      - default-web-browser
+  register: firefox_dev_xdg_current
+  changed_when: false
+  failed_when: false
+  become: false
+
+- name: Set default web browser to Firefox Developer Edition
+  ansible.builtin.command:
+    argv:
+      - xdg-settings
+      - set
+      - default-web-browser
+      - "{{ firefox_dev_desktop_id }}"
+  become: false
+  when: firefox_dev_xdg_current.stdout | default('', true) | trim != firefox_dev_desktop_id
+  register: firefox_dev_xdg_set
+  changed_when: firefox_dev_xdg_set.rc == 0

@@ -1,5 +1,5 @@
 # Start Applications
-flatpak run com.google.Chrome --profile-directory="Profile 2" &
+/opt/firefox-dev/firefox/firefox -P "Work" --no-remote &
 flatpak run com.discordapp.Discord &
 slack &
 /opt/cisco/secureclient/bin/vpnui &
