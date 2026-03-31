@@ -1,0 +1,8 @@
+[Desktop Entry]
+Type=Application
+Name=GTNH World Share Zip
+Comment=Zip World, journeymap, and visualprospecting for sharing
+Exec=/home/hcnureth/Development/repos/dotfiles/scripts/gtnh/gtnh-world-share.sh
+Path=/home/hcnureth/Development/repos/dotfiles/scripts/gtnh
+Terminal=true
+Categories=Utility;
