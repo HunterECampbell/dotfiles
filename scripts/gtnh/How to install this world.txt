@@ -1,0 +1,48 @@
+How to install Hcnureth's GregTech New Horizons world
+
+================================================================================
+
+IMPORTANT — Use a SEPARATE instance from your main game
+-----------------------------------
+Do not overwrite your main GTNH world. Use a duplicated instance or a spare
+install, then follow the steps below.
+
+What is in the zip
+------------------
+The zip file and the folder inside it use the same name, for example:
+
+  Hcnureth's World - Episode 12.zip
+  Hcnureth's World - Episode 12   (folder inside, no .zip)
+
+The episode number in the filename matches the episode you downloaded. The
+folder inside always matches the zip name without .zip.
+
+Minecraft / GTNH expect that folder to be renamed to "World" in your instance
+root (the same folder that contains "mods" and "config").
+
+Steps
+-----
+1. Quit Minecraft completely (and stop any server if you use one).
+
+2. Download the episode zip from this Drive folder.
+
+3. Unzip it. You should see a folder named like "Hcnureth's World - Episode …".
+
+4. Open your SEPARATE instance's folder from your launcher (e.g. Prism: right-
+   click instance → Folder → open instance folder).
+
+5. Back up or remove the existing "World" folder in that instance if you need to
+   keep it.
+
+6. Copy that "Hcnureth's World - Episode …" folder into that instance root and
+   rename the copy to "World" (exact name, capital W). It must sit next to
+   "mods", not inside it.
+
+7. Launch that instance to play this world. Your main GTNH instance stays
+   unchanged if you used a separate copy.
+
+At spawn
+--------
+There is a chest with a book with notes on how to find the base.
+
+Have fun!
