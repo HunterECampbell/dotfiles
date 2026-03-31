@@ -1,6 +1,7 @@
 #!/usr/bin/env bash
 # Zip only the GTNH World folder for sharing. Prompts for episode number; the
-# folder inside the zip and the .zip filename become "Hcnureth's World - Episode <N>".
+# folder inside the zip and the .zip filename become "Hcnureths World Episode <N>"
+# (no apostrophe or hyphen — friendlier for Drive / some tools).
 # Live server is never modified.
 #
 # Usage: gtnh-world-share.sh
@@ -28,7 +29,7 @@ if [[ ! "$EPISODE" =~ ^[[:space:]]*([0-9]+)[[:space:]]*$ ]]; then
 fi
 EPISODE="${BASH_REMATCH[1]}"
 
-WORLD_ZIP_DIR="Hcnureth's World - Episode ${EPISODE}"
+WORLD_ZIP_DIR="Hcnureths World Episode ${EPISODE}"
 OUT_ZIP="$HOME/Desktop/${WORLD_ZIP_DIR}.zip"
 
 STAGE=$(mktemp -d)

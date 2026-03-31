@@ -11,8 +11,8 @@ What is in the zip
 ------------------
 The zip file and the folder inside it use the same name, for example:
 
-  Hcnureth's World - Episode 12.zip
-  Hcnureth's World - Episode 12   (folder inside, no .zip)
+  Hcnureths World Episode 12.zip
+  Hcnureths World Episode 12   (folder inside, no .zip)
 
 The episode number in the filename matches the episode you downloaded. The
 folder inside always matches the zip name without .zip.
@@ -26,7 +26,8 @@ Steps
 
 2. Download the episode zip from this Drive folder.
 
-3. Unzip it. You should see a folder named like "Hcnureth's World - Episode …".
+3. Unzip it. You should see a folder named like "Hcnureths World Episode …"
+   (with your episode number at the end).
 
 4. Open your SEPARATE instance's folder from your launcher (e.g. Prism: right-
    click instance → Folder → open instance folder).
@@ -34,7 +35,7 @@ Steps
 5. Back up or remove the existing "World" folder in that instance if you need to
    keep it.
 
-6. Copy that "Hcnureth's World - Episode …" folder into that instance root and
+6. Copy that "Hcnureths World Episode …" folder into that instance root and
    rename the copy to "World" (exact name, capital W). It must sit next to
    "mods", not inside it.
 
