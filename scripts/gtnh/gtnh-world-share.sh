@@ -16,6 +16,10 @@ command -v zip >/dev/null || {
   echo "error: zip is required (e.g. apt install zip)" >&2
   exit 1
 }
+python3 -c "import nbtlib" 2>/dev/null || {
+  echo "error: nbtlib is required to patch level.dat (pip install nbtlib)" >&2
+  exit 1
+}
 
 if [[ ! -d "$GTNH_DIR/World" ]]; then
   echo "error: missing $GTNH_DIR/World" >&2
@@ -41,6 +45,16 @@ else
   cp -a "$GTNH_DIR/World" "$STAGE/$WORLD_ZIP_DIR"
 fi
 
+# Break hardlink on level.dat so NBT edits never touch the live server copy
+LEVEL_DAT="$STAGE/$WORLD_ZIP_DIR/level.dat"
+if [[ -f "$LEVEL_DAT" ]]; then
+  cp -a "$LEVEL_DAT" "${LEVEL_DAT}.unlinktmp"
+  mv -f "${LEVEL_DAT}.unlinktmp" "$LEVEL_DAT"
+fi
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+python3 "$SCRIPT_DIR/gtnh_world_share_patch_level.py" "$STAGE/$WORLD_ZIP_DIR" || exit 1
+
 ZIP_TMP=$(mktemp -u /tmp/gtnh-world-share.XXXXXX.zip)
 trap 'rm -rf "$STAGE"; rm -f "$ZIP_TMP"' EXIT
 
@@ -53,6 +67,5 @@ rm -f "$OUT_ZIP"
 mv "$ZIP_TMP" "$OUT_ZIP"
 trap 'rm -rf "$STAGE"' EXIT
 
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 echo "Wrote: $OUT_ZIP"
 echo "Install guide (static; upload once to Drive root): $SCRIPT_DIR/How to install this world.txt"
