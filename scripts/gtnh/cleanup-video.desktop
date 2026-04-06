@@ -1,0 +1,9 @@
+[Desktop Entry]
+Type=Application
+Name=Clean Video
+Comment=Remove silent stretches from a video (picker opens in ~; output beside source)
+Exec=/usr/bin/python3 /home/hcnureth/Development/repos/dotfiles/scripts/gtnh/cleanup-video.py
+Path=/home/hcnureth
+Terminal=true
+Categories=AudioVideo;Video;
+Icon=multimedia-video-player
