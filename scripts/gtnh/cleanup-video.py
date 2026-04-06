@@ -5,8 +5,8 @@ cleanup-video.py — Remove silent pauses from video based on one audio track (e
 Cuts apply to all streams; silence is detected on the chosen audio track only.
 The original file is never modified.
 
-Dependencies: ffmpeg, ffprobe. If you run with no input path, zenity is used to pick a file
-(sudo apt install zenity on Debian/Ubuntu).
+Dependencies: ffmpeg, ffprobe, zenity for the GUI picker (sudo apt install zenity).
+With no input path, the picker opens in your home directory (~).
 
 Examples:
     clean-video                              # zenity picker, then process
@@ -25,6 +25,7 @@ import shutil
 import subprocess
 import sys
 import tempfile
+import time
 from pathlib import Path
 
 DEFAULT_THRESHOLD_DB = -35.0
@@ -57,9 +58,11 @@ def run_cmd(cmd: list[str], capture: bool = True) -> subprocess.CompletedProcess
 
 def pick_video_path() -> str | None:
     require_cmd("zenity", "Install with: sudo apt install zenity")
+    start_dir = str(Path.home()) + os.sep
     cmd = [
         "zenity",
         "--file-selection",
+        f"--filename={start_dir}",
         "--title=Select video",
         "--file-filter=Video files | *.mkv *.mp4 *.mov *.webm *.avi *.m4v",
         "--file-filter=All files | *",
@@ -195,12 +198,46 @@ def compute_segments(
     return merged
 
 
+def format_eta_human(seconds: float) -> str:
+    """Short ETA string for linear segment-average estimate."""
+    s = max(0.0, seconds)
+    if s < 60:
+        return f"{int(s)}s"
+    m = int(s // 60)
+    rem = int(s % 60)
+    if m < 60:
+        return f"{m}m {rem}s" if rem else f"{m}m"
+    h = m // 60
+    m = m % 60
+    return f"{h}h {m}m"
+
+
+def segment_progress_line(
+    done: int,
+    total: int,
+    bar_width: int = 20,
+    eta_seconds: float | None = None,
+) -> str:
+    """ASCII bar for segment encode progress (done/total complete)."""
+    if total <= 0:
+        return f"[{'#' * bar_width}] 0/0 (100%)"
+    pct = min(100, int(100 * done / total))
+    filled = min(bar_width, (done * bar_width + total - 1) // total)
+    bar = "#" * filled + "-" * (bar_width - filled)
+    line = f"[{bar}] {done}/{total} ({pct}%)"
+    if eta_seconds is not None and 0 < done < total:
+        line += f"  ~{format_eta_human(eta_seconds)} left"
+    return line
+
+
 def build_output(input_file: str, output_file: str, segments: list[tuple[float, float]]) -> None:
     if not segments:
         die("No non-silent segments found. Nothing to output.")
 
-    print(f"Cutting {len(segments)} segments...")
+    total_seg = len(segments)
+    print(f"Cutting {total_seg} segments (this can take a while)...", flush=True)
 
+    t0 = time.perf_counter()
     with tempfile.TemporaryDirectory(prefix="cleanup_video_") as tmpdir:
         segment_files: list[str] = []
         for i, (start, end) in enumerate(segments):
@@ -237,10 +274,24 @@ def build_output(input_file: str, output_file: str, segments: list[tuple[float, 
             ]
             result = subprocess.run(cmd, capture_output=True, **SUBPROCESS_KW)
             if result.returncode != 0:
+                print(file=sys.stderr)
                 die(
-                    f"ffmpeg failed cutting segment {i} ({start:.2f}s–{end:.2f}s).\n"
+                    f"ffmpeg failed cutting segment {i + 1}/{total_seg} "
+                    f"({start:.2f}s–{end:.2f}s).\n"
                     f"{result.stderr or '(no stderr)'}",
                 )
+            done = i + 1
+            elapsed = time.perf_counter() - t0
+            eta: float | None = None
+            if done < total_seg:
+                eta = (elapsed / done) * (total_seg - done)
+            print(
+                f"\rCutting {segment_progress_line(done, total_seg, eta_seconds=eta)}",
+                end="",
+                flush=True,
+            )
+
+        print(flush=True)
 
         concat_file = os.path.join(tmpdir, "concat.txt")
         with open(concat_file, "w", encoding="utf-8") as f:
