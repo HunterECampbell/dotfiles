@@ -3,7 +3,6 @@
   hosts: localhost
   # You can run a specific role with: `ansible-playbook --tags role-name` (e.g. ansible-playbook --tags chezmoi)
   vars:
-    ansible_user: "{{ lookup('env','USER') }}"
     ansible_user_dir: "{{ lookup('env','HOME') }}"
   roles:
     - { role: apt-packages, tags: ["apt", "apt-packages"] }

@@ -3,11 +3,11 @@
   ansible.builtin.file:
     path: "{{ ansible_user_dir }}/.local/bin"
     state: directory
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
     mode: "0755"
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
 
 - name: Get latest Chezmoi release info via GitHub API
   ansible.builtin.uri:
@@ -21,7 +21,7 @@
     path: "{{ ansible_user_dir }}/.local/bin/chezmoi"
   register: chezmoi_stat
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
 
 - name: Determine chezmoi asset URLs for current architecture
   ansible.builtin.set_fact:
@@ -75,11 +75,11 @@
   ansible.builtin.copy:
     src: "/tmp/chezmoi-unpack/chezmoi"
     dest: "{{ ansible_user_dir }}/.local/bin/chezmoi"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
     mode: "0755"
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
   when:
     - not chezmoi_stat.stat.exists
     - chezmoi_tar_url != ''
@@ -108,11 +108,11 @@
   ansible.builtin.copy:
     src: "{{ playbook_dir }}/bin/chezmoi"
     dest: "{{ ansible_user_dir }}/.local/bin/chezmoi"
-    owner: "{{ ansible_user }}"
-    group: "{{ ansible_user }}"
+    owner: "{{ ansible_facts['user_id'] }}"
+    group: "{{ ansible_facts['user_id'] }}"
     mode: "0755"
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
   when:
     - not chezmoi_stat.stat.exists
     - chezmoi_tar_url == ''
@@ -123,7 +123,7 @@
   args:
     creates: "{{ ansible_user_dir }}/.local/share/chezmoi"
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
 
 - name: Check Chezmoi pending changes
   ansible.builtin.command:
@@ -141,7 +141,7 @@
   register: chezmoi_diff
   changed_when: false
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
 
 - name: Apply Chezmoi changes
   ansible.builtin.command:
@@ -158,7 +158,7 @@
     EDITOR: /bin/true
     VISUAL: /bin/true
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
   when:
     - chezmoi_diff.stdout is not defined or chezmoi_diff.stdout != ''
 
@@ -172,7 +172,7 @@
   register: chezmoi_update
   changed_when: "chezmoi_update.stdout is defined and ('Already up to date' not in chezmoi_update.stdout)"
   become: yes
-  become_user: "{{ ansible_user }}"
+  become_user: "{{ ansible_facts['user_id'] }}"
 
 - name: Include symlink creation tasks
   ansible.builtin.include_tasks: symlinks.yml

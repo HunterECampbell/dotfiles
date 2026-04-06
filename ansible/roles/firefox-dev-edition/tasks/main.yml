@@ -49,6 +49,15 @@
     - firefox_dev_stat.stat.exists
     - firefox_dev_update | bool
 
+- name: Ensure system local applications directory exists
+  ansible.builtin.file:
+    path: /usr/local/share/applications
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  become: true
+
 - name: Install Firefox Developer Edition desktop entry
   ansible.builtin.copy:
     src: firefox-dev.desktop

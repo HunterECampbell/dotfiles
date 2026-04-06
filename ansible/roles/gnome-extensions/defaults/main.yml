@@ -5,10 +5,10 @@
 #   enabled: whether it should remain in enabled list (informational if another role enforces the list)
 #   package: apt / deb package name providing the extension (if packaged)
 #   alternate_packages: list of fallback package names (NOT automatically attempted yet; informational)
-#   source: 'system' (already provided by OS), or 'manual' (installed via gext CLI)
+#   source: 'system' (already provided by OS), or 'manual' (zip from extensions.gnome.org)
 #
-# NOTE: For manual extensions, gext automatically selects the correct version
-#       compatible with your GNOME Shell version. No URL needed!
+# NOTE: For manual extensions, the role queries extensions.gnome.org for a build
+#       matching the installed GNOME Shell major version (works without a display).
 #
 # NOTE: Enabling order / full enabled extensions array is currently enforced
 #       by the existing gnome-settings role via the dconf key
@@ -18,7 +18,7 @@
 #       construct the list from the enabled items here.
 
 gnome_extensions:
-  # Extensions from extensions.gnome.org (installed via gext CLI tool)
+  # Extensions from extensions.gnome.org (downloaded via API; no gext / no display required)
   - uuid: dash-to-panel@jderose9.github.com
     enabled: true
     source: manual

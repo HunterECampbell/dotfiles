@@ -82,6 +82,7 @@ pip install github3.py requests
 
 # Step 6: Execute the main Ansible playbook with selected profile
 echo "Running the main Ansible playbook..."
+export ANSIBLE_CONFIG="${REPO_ROOT_DIR}/ansible.cfg"
 cd "${REPO_ROOT_DIR}/ansible"
 ansible-playbook playbook.yml \
   --inventory inventory.ini \

@@ -1,0 +1,31 @@
+---
+# Install one extension from extensions.gnome.org (headless-safe).
+# Required vars: ego_uuid, _gnome_shell_major, ansible_user_dir
+
+- name: Fetch extension metadata from extensions.gnome.org
+  ansible.builtin.uri:
+    url: "https://extensions.gnome.org/extension-info/?uuid={{ ego_uuid | urlencode }}&shell_version={{ _gnome_shell_major }}"
+    return_content: true
+    status_code: [200]
+  register: _ego_uri
+
+- name: Fail when EGO has no download for this Shell version
+  ansible.builtin.fail:
+    msg: >-
+      No compatible build on extensions.gnome.org for {{ ego_uuid }}
+      (GNOME Shell {{ _gnome_shell_major }}). Install from a graphical session or pick another Shell version.
+  when: _ego_uri.json.download_url is not defined or (_ego_uri.json.download_url | length) == 0
+
+- name: Download extension archive
+  ansible.builtin.get_url:
+    url: "https://extensions.gnome.org{{ _ego_uri.json.download_url }}"
+    dest: "/tmp/gnome-ego-{{ ego_uuid | regex_replace('[^a-zA-Z0-9._-]', '_') }}.zip"
+    mode: "0644"
+  register: _ego_zip
+
+- name: Unpack extension into user extensions directory
+  ansible.builtin.unarchive:
+    src: "{{ _ego_zip.dest }}"
+    dest: "{{ ansible_user_dir }}/.local/share/gnome-shell/extensions"
+    remote_src: true
+  register: _ego_unpacked

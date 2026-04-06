@@ -1,6 +1,6 @@
 ---
 # Python packages required for GTNH scripts (gtnh-export.sh).
-# Installed with --user so they're available for the user's python3.
+# Installed with pip --break-system-packages (PEP 668 / externally-managed environments).
 gtnh_pip_packages:
   - nbtlib
   # Pip bundle needs a recent glibc (see GLIBC_2.38); fails on Pop/Ubuntu 22.04 — use 24.04+ or container.
