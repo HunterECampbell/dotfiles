@@ -9,7 +9,10 @@ apt_general:
   - xclip
   - xdotool
 
-apt_home: []
+# ffmpeg/ffprobe + zenity: scripts/gtnh/cleanup-video.py (clean-video alias)
+apt_home:
+  - ffmpeg
+  - zenity
 
 apt_work:
   - slack-desktop

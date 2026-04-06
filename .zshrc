@@ -130,10 +130,12 @@ export PATH="$HOME/scripts/zsh_scripts:$PATH"
 # This source includes:
 # start_minecraft_server.zsh
 # virus_scan.zsh
+# cleanup-video.zsh
 
 # Script Aliases
 alias mcserver='start_minecraft_server'
 alias clean-node='cleanup-dev-node-processes'
+alias clean-video='cleanup-video'
 
 
 # Aliases
