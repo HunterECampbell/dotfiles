@@ -9,6 +9,14 @@ Dependencies: ffmpeg (auto-editor uses it), ffprobe, zenity for the GUI picker, 
 Install auto-editor: pip install --user auto-editor  (ensure ~/.local/bin is on PATH).
 
 --edit syntax for stream index: https://auto-editor.com/ref/edit
+
+Troubleshooting — GLIBC_2.38 not found (common on Pop!_OS 22.04 / Ubuntu 22.04):
+  The PyPI package downloads a prebuilt Linux binary linked against a newer glibc than 22.04 ships.
+  The system `apt install auto-editor` on 22.04 is too old for `--export resolve`. Practical options:
+  (1) Upgrade to Pop!_OS 24.04+ / Ubuntu 24.04+ (or run this on another machine with newer OS),
+  (2) Try an older `pip install 'auto-editor==<version>'` in case that release’s binary matches your libc
+      (trial and error; no guarantee),
+  (3) Run auto-editor inside a container or Distrobox based on Ubuntu 24.04+ and share the media folder.
 """
 
 from __future__ import annotations
@@ -138,6 +146,11 @@ def run_auto_editor(input_path: str, margin: str, edit_expr: str) -> None:
     # Let auto-editor draw its own progress; inherit stdout/stderr.
     result = subprocess.run(cmd)
     if result.returncode != 0:
+        print(
+            "\nIf you saw GLIBC_2.38 above: the pip binary targets newer libc than Ubuntu/Pop 22.04. "
+            "See Troubleshooting in this script’s top docstring.",
+            file=sys.stderr,
+        )
         die(f"auto-editor exited with code {result.returncode}.")
 
 
