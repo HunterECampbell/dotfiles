@@ -83,7 +83,7 @@ pip install github3.py requests
 # Step 6: Execute the main Ansible playbook with selected profile
 echo "Running the main Ansible playbook..."
 cd "${REPO_ROOT_DIR}/ansible"
-ANSIBLE_STDOUT_CALLBACK=yaml ansible-playbook playbook.yml \
+ansible-playbook playbook.yml \
   --inventory inventory.ini \
   --ask-become-pass \
   --diff \

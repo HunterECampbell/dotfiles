@@ -9,5 +9,5 @@
   pip:
     name: "{{ gtnh_pip_packages }}"
     state: present
-    extra_args: --user
+    extra_args: --break-system-packages
   become: no
