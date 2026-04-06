@@ -212,6 +212,14 @@ def format_eta_human(seconds: float) -> str:
     return f"{h}h {m}m"
 
 
+def format_elapsed_wall(seconds: float) -> str:
+    """Wall-clock duration for run summary (sub-minute shows one decimal)."""
+    s = max(0.0, seconds)
+    if s < 60:
+        return f"{s:.1f}s"
+    return format_eta_human(s)
+
+
 def segment_progress_line(
     done: int,
     total: int,
@@ -346,57 +354,7 @@ def resolve_voice_track(
     return 0
 
 
-def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Remove silent pauses from video based on a specific audio track.",
-    )
-    parser.add_argument(
-        "input",
-        nargs="?",
-        default=None,
-        help="Input video (optional: omit to open a file picker via zenity)",
-    )
-    parser.add_argument(
-        "-o",
-        "--output",
-        help="Output file (default: <input_stem>_desilenced.<ext> next to input)",
-    )
-    parser.add_argument(
-        "--voice-track",
-        type=int,
-        default=None,
-        metavar="N",
-        help=(
-            f"0-based audio stream for silence detection (default: 0 if one stream, "
-            f"else {DEFAULT_VOICE_TRACK_MULTI} i.e. second stream)"
-        ),
-    )
-    parser.add_argument(
-        "--threshold",
-        type=float,
-        default=DEFAULT_THRESHOLD_DB,
-        help=f"Silence threshold in dB (default: {DEFAULT_THRESHOLD_DB}). More negative = stricter.",
-    )
-    parser.add_argument(
-        "--min-silence",
-        type=float,
-        default=DEFAULT_MIN_SILENCE,
-        help=f"Minimum silence duration in seconds to cut (default: {DEFAULT_MIN_SILENCE})",
-    )
-    parser.add_argument(
-        "--padding",
-        type=float,
-        default=DEFAULT_PADDING,
-        help=f"Padding in seconds around kept speech (default: {DEFAULT_PADDING})",
-    )
-    parser.add_argument(
-        "--dry-run",
-        action="store_true",
-        help="Show silence intervals and stats; do not write output",
-    )
-
-    args = parser.parse_args()
-
+def _run(args: argparse.Namespace) -> None:
     require_cmd("ffmpeg", "Install with: sudo apt install ffmpeg")
     require_cmd("ffprobe", "Install with: sudo apt install ffmpeg")
 
@@ -503,6 +461,73 @@ def main() -> None:
         in_sz = os.path.getsize(input_path) / (1024 * 1024)
         print(f"\nInput:  {in_sz:.1f} MB")
         print(f"Output: {out_sz:.1f} MB")
+
+
+def main() -> None:
+    parser = argparse.ArgumentParser(
+        description="Remove silent pauses from video based on a specific audio track.",
+    )
+    parser.add_argument(
+        "input",
+        nargs="?",
+        default=None,
+        help="Input video (optional: omit to open a file picker via zenity)",
+    )
+    parser.add_argument(
+        "-o",
+        "--output",
+        help="Output file (default: <input_stem>_desilenced.<ext> next to input)",
+    )
+    parser.add_argument(
+        "--voice-track",
+        type=int,
+        default=None,
+        metavar="N",
+        help=(
+            f"0-based audio stream for silence detection (default: 0 if one stream, "
+            f"else {DEFAULT_VOICE_TRACK_MULTI} i.e. second stream)"
+        ),
+    )
+    parser.add_argument(
+        "--threshold",
+        type=float,
+        default=DEFAULT_THRESHOLD_DB,
+        help=f"Silence threshold in dB (default: {DEFAULT_THRESHOLD_DB}). More negative = stricter.",
+    )
+    parser.add_argument(
+        "--min-silence",
+        type=float,
+        default=DEFAULT_MIN_SILENCE,
+        help=f"Minimum silence duration in seconds to cut (default: {DEFAULT_MIN_SILENCE})",
+    )
+    parser.add_argument(
+        "--padding",
+        type=float,
+        default=DEFAULT_PADDING,
+        help=f"Padding in seconds around kept speech (default: {DEFAULT_PADDING})",
+    )
+    parser.add_argument(
+        "--dry-run",
+        action="store_true",
+        help="Show silence intervals and stats; do not write output",
+    )
+
+    args = parser.parse_args()
+
+    wall_start = time.time()
+    print(
+        f"Started: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(wall_start))}",
+        flush=True,
+    )
+    try:
+        _run(args)
+    finally:
+        wall_end = time.time()
+        print(
+            f"\nFinished: {time.strftime('%Y-%m-%d %H:%M:%S', time.localtime(wall_end))}  "
+            f"Total elapsed: {format_elapsed_wall(wall_end - wall_start)}",
+            flush=True,
+        )
 
 
 if __name__ == "__main__":
