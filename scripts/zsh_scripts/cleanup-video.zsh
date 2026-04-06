@@ -1,17 +1,14 @@
 #!/usr/bin/env zsh
-# Remove silent stretches from a video using ffmpeg (voice track + silencedetect).
-# Entry: clean-video (alias in .zshrc). Forwards all args to cleanup-video.py.
+# DaVinci Resolve prep: run auto-editor (--export resolve) on a video via cleanup-video.py.
+# Entry: clean-video (alias in .zshrc). Forwards all args to the Python script.
 #
-# Omit the input path to open a GTK file picker (zenity). Output defaults to
-#   <same_dir>/<stem>_desilenced<ext> unless -o/--output is set.
+# Omit the input path to open a GTK file picker (zenity) starting in ~.
 #
-# Flags (same as python script):
-#   --voice-track N   0-based audio stream for detection (default: 0 if one stream, else 1)
-#   --threshold DB    silence threshold in dB (default: -35)
-#   --min-silence S   min silence length to cut in seconds (default: 1.5)
-#   --padding S       keep this much audio around speech (default: 0.15)
-#   --dry-run         print silence intervals only; no output file
-#   -o / --output     explicit output path
+# Options (see cleanup-video.py --help):
+#   --margin STR       auto-editor margin (default: 0.3s)
+#   --audio-stream N   0-based stream for detection (default: 1; single-stream files use 0)
+#
+# Output: Resolve XML beside the source — import in Resolve (File → Import → Timeline… / XML).
 
 function cleanup-video() {
   local _cleanup_video_py="${${(%):-%x}:A:h}/../gtnh/cleanup-video.py"

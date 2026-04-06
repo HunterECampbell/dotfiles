@@ -1,7 +1,7 @@
 [Desktop Entry]
 Type=Application
 Name=Clean Video
-Comment=Remove silent stretches from a video (picker opens in ~; output beside source)
+Comment=auto-editor → DaVinci Resolve XML (picker opens in ~; import XML in Resolve)
 Exec=/home/hcnureth/Development/repos/dotfiles/scripts/gtnh/cleanup-video-desktop-launcher.sh
 Path=/home/hcnureth
 Terminal=true
