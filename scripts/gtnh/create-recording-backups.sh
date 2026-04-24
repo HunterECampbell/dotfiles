@@ -16,6 +16,7 @@ cp -r "$HOME/Shared/Series Goals" "$BACKUP_DIR/Shared/"
 cp -r "$HOME/Shared/Thumbnails" "$BACKUP_DIR/Shared/"
 cp -r "$HOME/Shared/TODO - Pinned Comments" "$BACKUP_DIR/Shared/"
 cp -r "$HOME/Shared/Video Editing Helpers" "$BACKUP_DIR/Shared/"
+cp -r "$HOME/Shared/Scripts" "$BACKUP_DIR/Shared/"
 for f in "$HOME/Shared/"*; do
     if [[ -f "$f" ]] && file --mime-type -b "$f" | grep -q "^text/"; then
         cp "$f" "$BACKUP_DIR/Shared/"
