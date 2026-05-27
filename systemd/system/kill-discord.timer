@@ -1,0 +1,10 @@
+[Unit]
+Description=Kill Discord daily at midnight
+
+[Timer]
+OnCalendar=*-*-* 00:00:00
+Persistent=true
+Unit=kill-discord.service
+
+[Install]
+WantedBy=timers.target

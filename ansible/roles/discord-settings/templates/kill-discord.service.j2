@@ -1,0 +1,8 @@
+[Unit]
+Description=Kill Discord to free X client slots
+
+[Service]
+Type=oneshot
+User={{ kill_discord_user }}
+ExecStart=/usr/bin/pkill -9 -i discord
+SuccessExitStatus=0 1

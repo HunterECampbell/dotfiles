@@ -64,3 +64,44 @@
         key: "/org/gnome/desktop/notifications/application/com.discordapp.Discord/force-expanded",
         value: "false",
       }
+
+# System timer: runs at midnight even when logged out (no user-session linger required).
+- name: Set dotfiles root for kill-discord systemd units
+  ansible.builtin.set_fact:
+    dotfiles_root: "{{ playbook_dir | regex_replace('/ansible$', '') }}"
+    kill_discord_user: "{{ ansible_facts['user_id'] }}"
+
+- name: Install kill-discord service unit
+  ansible.builtin.template:
+    src: kill-discord.service.j2
+    dest: /etc/systemd/system/kill-discord.service
+    mode: "0644"
+  become: true
+
+- name: Install kill-discord timer unit
+  ansible.builtin.copy:
+    src: "{{ dotfiles_root }}/systemd/system/kill-discord.timer"
+    dest: /etc/systemd/system/kill-discord.timer
+    mode: "0644"
+  become: true
+
+- name: Reload systemd daemon (kill-discord units)
+  ansible.builtin.systemd:
+    daemon_reload: true
+  become: true
+
+- name: Enable and start kill-discord timer
+  ansible.builtin.systemd:
+    name: kill-discord.timer
+    enabled: true
+    state: started
+  become: true
+
+- name: Disable legacy user kill-discord timer if present
+  ansible.builtin.systemd:
+    name: kill-discord.timer
+    enabled: false
+    state: stopped
+    scope: user
+  failed_when: false
+  changed_when: false
