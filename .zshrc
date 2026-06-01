@@ -133,8 +133,8 @@ export PATH="$HOME/scripts/zsh_scripts:$PATH"
 
 # Script Aliases
 alias mcserver='start_minecraft_server'
-alias clean-node='cleanup-dev-node-processes'
 alias kill-node='kill-node-processes'
+alias stop-node='kill-node-processes'
 
 
 # Aliases
