@@ -1,0 +1,55 @@
+{
+  "document": {
+    "id": "TEST-JSON-001",
+    "title": "Sample JSON for text viewer testing",
+    "version": 2,
+    "active": true,
+    "tags": ["sample", "utf-8", "viewer-test"],
+    "metadata": {
+      "createdAt": "2026-07-01T12:00:00Z",
+      "author": {
+        "name": "Hunter Campbell",
+        "role": "Senior Frontend Engineer",
+        "location": "Saint George, Utah"
+      },
+      "encoding": "UTF-8",
+      "notes": "Whitespace and indentation should be preserved exactly as written."
+    },
+    "content": {
+      "prose": "The quick brown fox jumps over the lazy dog.",
+      "unicode": {
+        "accented": "café, naïve, résumé, jalapeño, façade, Zoë",
+        "greek": "αβγδε ζηθικ λμνξο πρστυ φχψω",
+        "cyrillic": "абвгд еёжзи йклмн опрст",
+        "japanese": "こんにちは 世界",
+        "chinese": "你好世界",
+        "symbols": "→ ← ↑ ↓ ± × ÷ ≈ ≠ ≤ ≥ ∞",
+        "emoji": "🌱 🌿 🌳 ⛰ 🌊"
+      },
+      "numbers": [1, 2, 3.14159, -42, 1e10, 0.0001],
+      "nested": {
+        "level1": {
+          "level2": {
+            "level3": {
+              "level4": "deep nesting preserved"
+            }
+          }
+        }
+      },
+      "list": [
+        { "id": 1, "name": "Alpha",   "value": 12.5 },
+        { "id": 2, "name": "Bravo",   "value":  8.75 },
+        { "id": 3, "name": "Charlie", "value": 21.0 },
+        { "id": 4, "name": "Delta",   "value":  3.25 }
+      ],
+      "specialStrings": {
+        "withQuotes": "She said \"hello\" and left.",
+        "withBackslash": "path\\to\\file",
+        "withNewlines": "line one\nline two\nline three",
+        "withTabs": "col1\tcol2\tcol3",
+        "empty": "",
+        "null": null
+      }
+    }
+  }
+}

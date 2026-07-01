@@ -1,0 +1,22 @@
+Café Report — Quarterly Summary
+================================
+
+Prepared by: François Müller
+Location:    Zürich, Switzerland
+Date:        1er juillet 2026
+
+Résumé
+------
+Sales at the café rose 12% this quarter. Naïve projections
+suggested only 5% growth, but jalapeño-themed pastries
+proved unexpectedly popular. The señor from the corner
+bakery placed a large recurring order.
+
+Notes
+-----
+• Curly quotes used throughout: “hello” and ‘world’
+• Em dash used for asides — like this one — frequently
+• Accented names: Zoë, André, Chloé, Naïla, Björn
+• Currency mentioned: £, €, ¥, ¢
+
+End of report.
