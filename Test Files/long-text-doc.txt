@@ -1,0 +1,204 @@
+========================================
+SAMPLE TEXT DOCUMENT FOR DISPLAY TESTING
+========================================
+
+Document ID: TEST-DOC-001
+Generated: 2026-07-01
+Purpose: Text file rendering / display testing
+Encoding: UTF-8
+
+
+----------------------------------------
+SECTION 1: STANDARD PROSE PARAGRAPHS
+----------------------------------------
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
+
+Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum. Curabitur pretium tincidunt lacus. Nulla gravida orci a odio. Nullam varius, turpis et commodo pharetra, est eros bibendum elit, nec luctus magna felis sollicitudin mauris.
+
+Integer in mauris eu nibh euismod gravida. Duis ac tellus et risus vulputate vehicula. Donec lobortis risus a elit. Etiam tempor. Ut ullamcorper, ligula eu tempor congue, eros est euismod turpis, id tincidunt sapien risus a quam. Maecenas fermentum consequat mi. Donec fermentum. Pellentesque malesuada nulla a mi.
+
+Duis sapien sem, aliquet nec, commodo eget, consequat quis, neque. Aliquam faucibus, elit ut dictum aliquet, felis nisl adipiscing sapien, sed malesuada diam lacus eget erat. Cras mollis scelerisque nunc. Nullam arcu. Aliquam consequat. Curabitur augue lorem, dapibus quis, laoreet et, pretium ac, nisi.
+
+
+----------------------------------------
+SECTION 2: SHORT LINES AND FRAGMENTS
+----------------------------------------
+
+Line one.
+Line two.
+A slightly longer line three.
+Four.
+Five is here.
+Six follows five, which follows four.
+Seven.
+Eight.
+
+The quick brown fox jumps over the lazy dog.
+Sphinx of black quartz, judge my vow.
+Pack my box with five dozen liquor jugs.
+How vexingly quick daft zebras jump.
+
+
+----------------------------------------
+SECTION 3: NUMBERED LIST
+----------------------------------------
+
+  1. First item in the list.
+  2. Second item, slightly longer than the first to add some variety to the line widths.
+  3. Third item.
+  4. Fourth item with a bit more content attached to it for testing wrap behavior on narrower viewports.
+  5. Fifth.
+  6. Sixth item.
+  7. Seventh item, containing the word "seventh" for search testing.
+  8. Eighth.
+  9. Ninth item in the list.
+ 10. Tenth and final item.
+
+
+----------------------------------------
+SECTION 4: BULLETED NOTES
+----------------------------------------
+
+  - Alpha
+  - Bravo
+  - Charlie
+    - Charlie sub-item one
+    - Charlie sub-item two
+  - Delta
+  - Echo
+  - Foxtrot
+  - Golf
+    - Golf sub-item
+  - Hotel
+  - India
+  - Juliet
+
+
+----------------------------------------
+SECTION 5: DIALOGUE-STYLE TEXT
+----------------------------------------
+
+"So this is the test document," she said, flipping through the pages.
+
+"That's the one," he replied. "It's meant to be dense enough to span several screens."
+
+She nodded. "Does it have to mean anything?"
+
+"Not really. It just has to be text."
+
+"Fine by me."
+
+They sat in silence for a moment, watching the cursor blink.
+
+
+----------------------------------------
+SECTION 6: TABLE-LIKE STRUCTURE
+----------------------------------------
+
+ID     Name          Category      Value
+----   -----------   -----------   -------
+001    Alpha         Primary       12.50
+002    Bravo         Secondary     8.75
+003    Charlie       Primary       21.00
+004    Delta         Tertiary      3.25
+005    Echo          Secondary     15.80
+006    Foxtrot       Primary       9.90
+007    Golf          Tertiary      42.15
+008    Hotel         Secondary     6.60
+009    India         Primary       18.45
+010    Juliet        Tertiary      2.10
+
+
+----------------------------------------
+SECTION 7: MORE PROSE
+----------------------------------------
+
+Vivamus vestibulum sagittis sapien. Cum sociis natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Etiam vel neque nec dui dignissim bibendum. Vivamus id enim. Phasellus neque orci, porta a, aliquet quis, semper a, massa.
+
+Phasellus purus. Pellentesque tristique imperdiet tortor. Nam euismod tellus id erat. Aliquam posuere. Sed id ligula quis est convallis tempor. Curabitur lacinia pulvinar nibh. Nam a sapien.
+
+In hac habitasse platea dictumst. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit. Sed lectus. Integer euismod lacus luctus magna.
+
+Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae; Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam.
+
+In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet. Donec lacus nunc, viverra nec, blandit vel, egestas et, augue. Vestibulum tincidunt malesuada tellus. Ut ultrices ultrices enim.
+
+
+----------------------------------------
+SECTION 8: SPECIAL CHARACTERS
+----------------------------------------
+
+ASCII punctuation: ! @ # $ % ^ & * ( ) - _ = + [ ] { } ; : ' " , . < > / ? \ |
+
+Curly quotes: "hello" and 'world'
+Em dash — like this — and en dash – like that
+Ellipsis… trailing off
+Bullet • middle • dots
+Arrows: → ← ↑ ↓ ↔
+Math: ± × ÷ ≈ ≠ ≤ ≥ ∞ √ ∑ ∏ ∆
+Currency: $ € £ ¥ ¢ ₹ ₩
+Accents: café, naïve, résumé, jalapeño, façade, Zoë
+
+Non-Latin samples:
+  - Greek: αβγδε ζηθικ λμνξο πρστυ φχψω
+  - Cyrillic: абвгд еёжзи йклмн опрст уфхцч
+  - Japanese: こんにちは 世界
+  - Chinese: 你好世界
+  - Emoji: 🌱 🌿 🌳 ⛰ 🌊
+
+
+----------------------------------------
+SECTION 9: LONG PARAGRAPH (WRAP TEST)
+----------------------------------------
+
+This paragraph exists specifically to test how a viewer handles long, uninterrupted blocks of text that keep going and going without any obvious break points, forcing the renderer to make decisions about soft-wrapping, line-height, and how comfortably the reader's eye moves across the display. It contains no lists, no dialogue, and no headings — just prose that flows continuously in a single stream so that any wrapping bugs, off-by-one column errors, or awkward hyphenation behaviors become visible immediately when the file is opened at various window widths, whether narrow enough that each sentence breaks across three or four lines or wide enough that the whole paragraph collapses into just a few extended lines that stretch across the entire visible area. If your viewer handles this section gracefully, the rest of the document should present no meaningful challenge.
+
+
+----------------------------------------
+SECTION 10: MIXED SHORT AND LONG
+----------------------------------------
+
+Short.
+
+Now a longer sentence that adds a bit more content to see how the transition between very brief and moderately sized paragraphs looks in the flow.
+
+Tiny.
+
+Another moderate paragraph, one that sits comfortably between the extremes without doing anything particularly noteworthy other than existing here to fill space and provide contrast against its shorter neighbors.
+
+End.
+
+
+----------------------------------------
+SECTION 11: NUMERIC DATA BLOCK
+----------------------------------------
+
+  1024   2048   4096   8192  16384
+  0.001  0.010  0.100  1.000  10.00
+  -42    -17    0      17     42
+  3.14159265358979323846
+  2.71828182845904523536
+  1.61803398874989484820
+
+Timestamps:
+  2026-01-01T00:00:00Z
+  2026-03-15T12:30:45Z
+  2026-07-01T09:15:22Z
+  2026-12-31T23:59:59Z
+
+
+----------------------------------------
+SECTION 12: CLOSING PROSE
+----------------------------------------
+
+Nulla facilisi. Ut fringilla. Suspendisse potenti. Nunc feugiat mi a tellus consequat imperdiet. Vestibulum sapien. Proin quam. Etiam ultrices. Suspendisse in justo eu magna luctus suscipit.
+
+Sed lectus. Integer euismod lacus luctus magna. Quisque cursus, metus vitae pharetra auctor, sem massa mattis sem, at interdum magna augue eget diam. Vestibulum ante ipsum primis in faucibus orci luctus et ultrices posuere cubilia curae.
+
+Morbi lacinia molestie dui. Praesent blandit dolor. Sed non quam. In vel mi sit amet augue congue elementum. Morbi in ipsum sit amet pede facilisis laoreet.
+
+
+========================================
+END OF SAMPLE TEXT DOCUMENT
+========================================
