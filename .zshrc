@@ -282,3 +282,13 @@ export NVM_DIR="$HOME/.nvm"
 export PATH="$HOME/.local/bin:$PATH"
 
 export NODE_OPTIONS="--max-old-space-size=2048"
+
+export CLAUDE_CODE_MAX_OUTPUT_TOKENS=8196
+export MAX_THINKING_TOKENS=2048
+
+# bun completions
+[ -s "/home/hcnureth/.bun/_bun" ] && source "/home/hcnureth/.bun/_bun"
+
+# bun
+export BUN_INSTALL="$HOME/.bun"
+export PATH="$BUN_INSTALL/bin:$PATH"

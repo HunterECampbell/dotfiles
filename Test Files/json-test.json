@@ -7,11 +7,6 @@
     "tags": ["sample", "utf-8", "viewer-test"],
     "metadata": {
       "createdAt": "2026-07-01T12:00:00Z",
-      "author": {
-        "name": "Hunter Campbell",
-        "role": "Senior Frontend Engineer",
-        "location": "Saint George, Utah"
-      },
       "encoding": "UTF-8",
       "notes": "Whitespace and indentation should be preserved exactly as written."
     },
