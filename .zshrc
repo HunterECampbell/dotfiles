@@ -135,6 +135,7 @@ export PATH="$HOME/scripts/zsh_scripts:$PATH"
 alias mcserver='start_minecraft_server'
 alias kill-node='kill-node-processes'
 alias stop-node='kill-node-processes'
+alias analytics='~/Shared/yt_pull.py'
 
 
 # Aliases
