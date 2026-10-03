@@ -99,7 +99,7 @@ allowed_keybindings:
       value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom12/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom13/']",
     }
 
-  # Custom 0: Open Steam (Super + S)
+  # Custom 0: Open Sober (Super + S)
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0",
       key: "binding",
@@ -108,12 +108,12 @@ allowed_keybindings:
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0",
       key: "command",
-      value: "'steam'",
+      value: "'flatpak run org.vinegarhq.Sober'",
     }
   - {
       schema: "org.gnome.settings-daemon.plugins.media-keys.custom-keybindings.custom0",
       key: "name",
-      value: "'Open Steam'",
+      value: "'Open Sober'",
     }
 
   # Custom 1: Open Discord (Super + D)

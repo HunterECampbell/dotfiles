@@ -110,7 +110,7 @@ The following keybindings are currently allowed (as of your configuration):
 ### Custom Shortcuts
 
 - **Open AI**: `Super + G`
-- **Open Steam**: `Super + S`
+- **Open Sober**: `Super + S`
 - **Open Discord**: `Super + D`
 - **Open Notes**: `Super + N`
 - **Open Work**: `Super + W`

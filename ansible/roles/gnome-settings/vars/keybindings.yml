@@ -1,5 +1,5 @@
 ---
-# Generated GNOME keybindings snapshot (regenerated 2026-03-09T14:24:00-06:00).
+# Generated GNOME keybindings snapshot (regenerated 2026-10-02T19:00:59-06:00).
 # Regenerate with: scripts/export_gnome_keybindings.sh
 # This list is applied by the gnome-settings role.
 # 
@@ -19,8 +19,8 @@ gnome_keybindings:
   - { key: "/org/gnome/desktop/wm/keybindings/switch-applications", value: "['<Alt>Tab']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings", value: "['/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom2/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom3/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom4/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom5/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom6/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom7/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom8/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom10/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom11/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom12/', '/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom13/']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/binding", value: "'<Super>s'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command", value: "'steam'" }
-  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name", value: "'Open Steam'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/command", value: "'flatpak run org.vinegarhq.Sober'" }
+  - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom0/name", value: "'Open Sober'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/binding", value: "'<Super>d'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/command", value: "'flatpak run com.discordapp.Discord'" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/custom-keybindings/custom1/name", value: "'Open Discord'" }
@@ -138,7 +138,6 @@ gnome_keybindings:
   - { key: "/org/gnome/desktop/wm/keybindings/toggle-fullscreen", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/toggle-maximized", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/toggle-on-all-workspaces", value: "['']" }
-  - { key: "/org/gnome/desktop/wm/keybindings/toggle-shaded", value: "['']" }
   - { key: "/org/gnome/desktop/wm/keybindings/unmaximize", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/battery-status", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/battery-status-static", value: "['']" }
@@ -232,7 +231,15 @@ gnome_keybindings:
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/www", value: "['']" }
   - { key: "/org/gnome/settings-daemon/plugins/media-keys/www-static", value: "['']" }
   - { key: "/org/gnome/shell/keybindings/focus-active-notification", value: "['']" }
-  - { key: "/org/gnome/shell/keybindings/open-application-menu", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-1", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-2", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-3", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-4", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-5", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-6", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-7", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-8", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/open-new-window-application-9", value: "['']" }
   - { key: "/org/gnome/shell/keybindings/screenshot", value: "['']" }
   - { key: "/org/gnome/shell/keybindings/screenshot-window", value: "['']" }
   - { key: "/org/gnome/shell/keybindings/shift-overview-down", value: "['']" }
@@ -250,10 +257,10 @@ gnome_keybindings:
   - { key: "/org/gnome/shell/keybindings/toggle-application-view", value: "['']" }
   - { key: "/org/gnome/shell/keybindings/toggle-message-tray", value: "['']" }
   - { key: "/org/gnome/shell/keybindings/toggle-overview", value: "['']" }
+  - { key: "/org/gnome/shell/keybindings/toggle-quick-settings", value: "['']" }
+  - { key: "/org/gnome/mutter/keybindings/cancel-input-capture", value: "['']" }
   - { key: "/org/gnome/mutter/keybindings/rotate-monitor", value: "['']" }
   - { key: "/org/gnome/mutter/keybindings/switch-monitor", value: "['']" }
-  - { key: "/org/gnome/mutter/keybindings/tab-popup-cancel", value: "['']" }
-  - { key: "/org/gnome/mutter/keybindings/tab-popup-select", value: "['']" }
   - { key: "/org/gnome/mutter/keybindings/toggle-tiled-left", value: "['']" }
   - { key: "/org/gnome/mutter/keybindings/toggle-tiled-right", value: "['']" }
   - { key: "/org/gnome/mutter/wayland/keybindings/restore-shortcuts", value: "['']" }
